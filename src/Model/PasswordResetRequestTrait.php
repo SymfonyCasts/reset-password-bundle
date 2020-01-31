@@ -41,11 +41,7 @@ trait PasswordResetRequestTrait
 
     public function isExpired(): bool
     {
-        if ($this->expiresAt->getTimestamp() <= time()) {
-            return true;
-        }
-
-        return false;
+        return $this->expiresAt->getTimestamp() <= time();
     }
 
     public function getExpiresAt(): \DateTimeInterface
