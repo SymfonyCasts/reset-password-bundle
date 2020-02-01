@@ -88,4 +88,34 @@ class TokenGeneratorTest extends TestCase
             $result
         );
     }
+
+    /** @test */
+    public function returnsHashedHmac(): void
+    {
+        $key = 'abc';
+
+        $mockTime = $this->createMock(\DateTimeImmutable::class);
+        $mockTime
+            ->method('format')
+            ->willReturn('2020')
+        ;
+
+        $verifier = 'verify';
+        $userId = '1234';
+
+        $hashed = $this->fixture->getGenerateHashProtected(
+            $key,
+            $mockTime,
+            $verifier,
+            $userId
+        );
+
+        $expected = \hash_hmac(
+            'sha256',
+            \json_encode([$verifier, $userId, '2020']),
+            $key
+        );
+
+        self::assertSame($expected, $hashed);
+    }
 }

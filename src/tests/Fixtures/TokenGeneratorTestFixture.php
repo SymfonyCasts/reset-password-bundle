@@ -25,4 +25,14 @@ class TokenGeneratorTestFixture extends TokenGenerator
     ): string {
         return $this->encodeHashData($dateTimeImmutable, $verifier, $userId);
     }
+
+    public function getGenerateHashProtected(
+        string $signingKey,
+        \DateTimeImmutable $dateTime,
+        string $verifier,
+        string $userId
+    ): string
+    {
+        return $this->generateHash($signingKey, $dateTime, $verifier, $userId);
+    }
 }

@@ -8,6 +8,9 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 
 class TokenGenerator
 {
+    //@TODO default algo.. provide option to allow different algo?
+    public const HASH_ALGO = 'sha256';
+
     /** @var PasswordResetToken */
     private $token;
 
@@ -27,9 +30,21 @@ class TokenGenerator
         return new \Exception('OOPS');
     }
 
-    protected function generate()
-    {
-        //@TODO gen a token
+    protected function generateHash(
+        string $signingKey,
+        \DateTimeImmutable $expiresAt,
+        string $verifier,
+        string $userId
+    ): string {
+
+        //@TODO edge cases: empty strings...
+
+        return \hash_hmac(
+            self::HASH_ALGO,
+            $this->encodeHashData($expiresAt, $verifier, $userId),
+            $signingKey,
+            false
+        );
     }
 
     /**
