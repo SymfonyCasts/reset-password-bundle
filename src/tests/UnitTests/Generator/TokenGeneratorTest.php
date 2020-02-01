@@ -19,15 +19,6 @@ class TokenGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function throwsExceptionIfTokenNotInitialized(): void
-    {
-        $this->expectException(\Exception::class);
-
-        $generator = new TokenGenerator();
-        $generator->getToken();
-    }
-
-    /** @test */
     public function randomStrReturned(): void
     {
         $resultA = $this->fixture->getRandomAlphaNumStr(20);
@@ -117,5 +108,51 @@ class TokenGeneratorTest extends TestCase
         );
 
         self::assertSame($expected, $hashed);
+    }
+
+    public function emptyParamDataProvider(): \Generator
+    {
+        yield ['', 'verify', 'user'];
+        yield ['key', '', 'user'];
+        yield ['key', 'verify', ''];
+    }
+
+    /**
+     * @test
+     * @dataProvider emptyParamDataProvider
+     */
+    public function throwsExceptionWithEmptyParams($key, $verifier, $userId): void
+    {
+        $this->expectException(\Exception::class);
+
+        $mockDate = $this->createMock(\DateTimeImmutable::class);
+
+        $generator = new TokenGenerator();
+        $generator->getToken($key, $mockDate, $verifier, $userId);
+    }
+
+    /** @test */
+    public function returnsHmacHashedToken(): void
+    {
+        $mockExpectedAt = $this->createMock(\DateTimeImmutable::class);
+        $mockExpectedAt
+            ->method('format')
+            ->willReturn('2020')
+        ;
+
+        $signingKey = 'abcd';
+        $verifier = 'verify';
+        $userId = '1234';
+
+        $generator = new TokenGenerator();
+        $result = $generator->getToken($signingKey, $mockExpectedAt, $verifier, $userId);
+
+        $expected = \hash_hmac(
+            'sha256',
+            \json_encode([$verifier, $userId, '2020']),
+            $signingKey
+        );
+
+        self::assertSame($expected, $result);
     }
 }

@@ -6,22 +6,40 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
 
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 
+/**
+ * Generate hashed HMAC token
+ *
+ * Doesn't care about anything else other than making a token
+ */
 class TokenGenerator
 {
     //@TODO default algo.. provide option to allow different algo?
     public const HASH_ALGO = 'sha256';
 
-    /** @var PasswordResetToken */
-    private $token;
+    /** @throws \Throwable */
+    public function getToken(
+        string $signingKey,
+        \DateTimeImmutable $expiresAt,
+        string $verifier,
+        string $userId
+    ): string {
+        $checkEmpty = [$signingKey, $verifier, $userId];
 
-    public function getToken(): PasswordResetToken
-    {
-        /** @TODO bad oops */
-        if (!isset($this->token) && empty($this->token)) {
-            throw $this->oops();
+        foreach ($checkEmpty as $param) {
+            $this->isEmpty($param);
         }
 
-        return $this->token;
+        //@todo edgecase $expiresAt already in the past or invalid value. Save that case for controller/helper?
+
+        return $this->generateHash($signingKey, $expiresAt, $verifier, $userId);
+    }
+
+    /** @throws \Throwable */
+    private function isEmpty(string $value): void
+    {
+        if (empty($value)) {
+            throw $this->oops();
+        }
     }
 
     private function oops(): \Throwable
