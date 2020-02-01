@@ -21,8 +21,10 @@ class TokenGeneratorTest extends TestCase
     /** @test */
     public function randomStrReturned(): void
     {
-        $resultA = $this->fixture->getRandomAlphaNumStr(20);
-        $resultB = $this->fixture->getRandomAlphaNumStr(20);
+        $generator = new TokenGenerator();
+
+        $resultA = $generator->getRandomAlphaNumStr(20);
+        $resultB = $generator->getRandomAlphaNumStr(20);
 
         self::assertNotSame($resultA, $resultB);
     }
@@ -30,7 +32,8 @@ class TokenGeneratorTest extends TestCase
     /** @test */
     public function randomStrReturnsCorrectLength(): void
     {
-        $result = $this->fixture->getRandomAlphaNumStr(100);
+        $generator = new TokenGenerator();
+        $result = $generator->getRandomAlphaNumStr(100);
 
         self::assertSame(100, strlen($result));
     }

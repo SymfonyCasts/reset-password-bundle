@@ -64,7 +64,7 @@ class TokenGenerator
     /**
      * Original credit to Laravel's Str::random() method.
      */
-    protected function randomAlphaNumStr(int $length): string
+    public function getRandomAlphaNumStr(int $length): string
     {
         $string = '';
 
