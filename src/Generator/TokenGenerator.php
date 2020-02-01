@@ -13,16 +13,17 @@ class TokenGenerator
 
     public function getToken(): PasswordResetToken
     {
+        /** @TODO bad oops */
         if (!isset($this->token) && empty($this->token)) {
-            $this->oops();
+            throw $this->oops();
         }
 
         return $this->token;
     }
 
-    /** @throws \Exception */
-    private function oops(): void
+    private function oops(): \Throwable
     {
-        throw new \Exception('OOPS');
+        /** @TODO Need something better */
+        return new \Exception('OOPS');
     }
 }
