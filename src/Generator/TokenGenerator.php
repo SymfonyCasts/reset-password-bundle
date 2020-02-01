@@ -53,8 +53,6 @@ class TokenGenerator
         string $userId
     ): string {
 
-        //@TODO edge cases: empty strings...
-
         return \hash_hmac(
             self::HASH_ALGO,
             $this->encodeHashData($expiresAt, $verifier, $userId),
