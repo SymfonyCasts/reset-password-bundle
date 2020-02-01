@@ -58,4 +58,34 @@ class TokenGeneratorTest extends TestCase
 
         $this->assertSame(200, strlen(bin2hex($result)));
     }
+
+    /** @test */
+    public function hashDataEncodesToJson(): void
+    {
+        $mockDateTime = $this->createMock(\DateTimeImmutable::class);
+        $mockDateTime
+            ->expects($this->once())
+            ->method('format')
+            ->willReturn('2020')
+        ;
+
+        $result = $this->fixture->getEncodeHashedDataProtected($mockDateTime, 'verify', '1234');
+        self::assertJson($result);
+    }
+
+    /** @test */
+    public function hashDataEncodesWithProvidedParams(): void
+    {
+        $mockDateTime = $this->createMock(\DateTimeImmutable::class);
+        $mockDateTime
+            ->method('format')
+            ->willReturn('2020')
+        ;
+
+        $result = $this->fixture->getEncodeHashedDataProtected($mockDateTime, 'verify', '1234');
+        self::assertJsonStringEqualsJsonString(
+        '["verify", "1234", "2020"]',
+            $result
+        );
+    }
 }

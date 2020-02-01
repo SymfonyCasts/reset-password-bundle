@@ -63,4 +63,13 @@ class TokenGenerator
             throw $this->oops();
         }
     }
+
+    protected function encodeHashData(\DateTimeImmutable $expiresAt, string $verifier, string $userId): string
+    {
+        return \json_encode([
+            $verifier,
+            $userId,
+            $expiresAt->format('Y-m-d\TH:i:s')
+        ]);
+    }
 }
