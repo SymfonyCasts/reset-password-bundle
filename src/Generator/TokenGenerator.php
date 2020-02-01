@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\ResetPassword\Generator;
 
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
-
 /**
  * Generate hashed HMAC token
  *
