@@ -28,7 +28,7 @@ class TokenGenerator
             $this->isEmpty($param);
         }
 
-        //@todo edgecase $expiresAt already in the past or invalid value. Save that case for controller/helper?
+        $this->isExpireValid($expiresAt);
 
         return $this->generateHash($signingKey, $expiresAt, $verifier, $userId);
     }
@@ -38,6 +38,16 @@ class TokenGenerator
     {
         if (empty($value)) {
             throw new TokenException(TokenException::getIsEmpty());
+        }
+    }
+
+    /** @throws TokenException */
+    private function isExpireValid(\DateTimeImmutable $expire): void
+    {
+        $time = $expire->getTimestamp();
+
+        if ($time <= time()) {
+            throw new TokenException(TokenException::getInvalidTokenExpire());
         }
     }
 

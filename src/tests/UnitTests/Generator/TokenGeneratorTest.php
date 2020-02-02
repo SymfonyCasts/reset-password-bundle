@@ -136,12 +136,33 @@ class TokenGeneratorTest extends TestCase
     }
 
     /** @test */
+    public function throwsExceptionIfExpiresInThePast(): void
+    {
+        $mockDate = $this->createMock(\DateTimeImmutable::class);
+        $mockDate
+            ->expects($this->once())
+            ->method('getTimestamp')
+            ->willReturn(1580685011)
+        ;
+
+        $this->expectException(TokenException::class);
+
+        $generator = new TokenGenerator();
+        $generator->getToken('x', $mockDate, 'x', 'x');
+    }
+
+    /** @test */
     public function returnsHmacHashedToken(): void
     {
         $mockExpectedAt = $this->createMock(\DateTimeImmutable::class);
         $mockExpectedAt
             ->method('format')
             ->willReturn('2020')
+        ;
+
+        $mockExpectedAt
+            ->method('getTimestamp')
+            ->willReturn(9999999999999)
         ;
 
         $signingKey = 'abcd';
