@@ -63,11 +63,6 @@ class PasswordResetHelper
 //        $plainVerifierToken = $this->generateRandomAlphaNumericString(20);
         $plainVerifierToken = $this->tokenGenerator->getRandomAlphaNumStr(20);
 
-//        $hashedToken = $this->hashVerifierToken(
-//            $plainVerifierToken,
-//            $user->getId(),
-//            $expiresAt
-//        );
         $hashedToken = $this->tokenGenerator->getToken(
             $this->tokenSigningKey,
             $expiresAt,
@@ -101,11 +96,6 @@ class PasswordResetHelper
 
         $verifierToken = substr($fullToken, self::SELECTOR_LENGTH);
 
-//        $hashedVerifierToken = $this->hashVerifierToken(
-//            $verifierToken,
-//            $this->repository->getUserIdentifier($resetToken->getUser()),
-//            $resetToken->getExpiresAt()
-//        );
         $hashedVerifierToken = $this->tokenGenerator->getToken(
             $this->tokenSigningKey,
             $resetToken->getExpiresAt(),
@@ -126,37 +116,6 @@ class PasswordResetHelper
 
         return $this->repository->findPasswordResetRequest($selector);
     }
-
-//    /**
-//     * Original credit to Laravel's Str::random() method.
-//     */
-//    private function generateRandomAlphaNumericString(int $length)
-//    {
-//        $string = '';
-//
-//        while (($len = strlen($string)) < $length) {
-//            $size = $length - $len;
-//
-//            $bytes = random_bytes($size);
-//
-//            $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
-//        }
-//
-//        return $string;
-//    }
-
-//    private function hashVerifierToken(string $verifierToken, $userId, \DateTimeInterface $expiresAt): string
-//    {
-//        return \hash_hmac(
-//            'sha256',
-//            \json_encode([
-//                $verifierToken,
-//                $userId,
-//                $expiresAt->format('Y-m-d\TH:i:s')
-//            ]),
-//            $this->tokenSigningKey
-//        );
-//    }
 
     private function hasUserHisThrottling(object $user): bool
     {
