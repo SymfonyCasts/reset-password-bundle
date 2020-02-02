@@ -21,6 +21,7 @@ class TokenExceptionTest extends TestCase
     {
         yield ['getBadBytes', 'Invalid length expected. Change $size param to valid int.'];
         yield ['getIsEmpty', 'TokenGenerator::getToken() contains empty string parameter(s).'];
+        yield ['getInvalidTokenExpire', 'Token expire time is in the past.'];
     }
 
     /**

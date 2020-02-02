@@ -15,4 +15,9 @@ class TokenException extends \LogicException
     {
         return 'TokenGenerator::getToken() contains empty string parameter(s).';
     }
+
+    public static function getInvalidTokenExpire(): string
+    {
+        return 'Token expire time is in the past.';
+    }
 }
