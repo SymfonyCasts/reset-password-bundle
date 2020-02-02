@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Generator;
 
+use SymfonyCasts\Bundle\ResetPassword\Exception\TokenException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\TokenGeneratorTestFixture;
@@ -39,9 +40,9 @@ class TokenGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function RandomBytesThrowsExceptionWithBadSize(): void
+    public function randomBytesThrowsExceptionWithBadSize(): void
     {
-        $this->expectException(\Error::class);
+        $this->expectException(TokenException::class);
         $this->fixture->getRandomBytesFromProtected(0);
     }
 
@@ -126,7 +127,7 @@ class TokenGeneratorTest extends TestCase
      */
     public function throwsExceptionWithEmptyParams($key, $verifier, $userId): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(TokenException::class);
 
         $mockDate = $this->createMock(\DateTimeImmutable::class);
 

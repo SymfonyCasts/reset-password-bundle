@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\ResetPassword\Generator;
 
+use SymfonyCasts\Bundle\ResetPassword\Exception\TokenException;
+
 /**
  * Generate hashed HMAC token
  *
@@ -35,14 +37,8 @@ class TokenGenerator
     private function isEmpty(string $value): void
     {
         if (empty($value)) {
-            throw $this->oops();
+            throw new TokenException(TokenException::getIsEmpty());
         }
-    }
-
-    private function oops(): \Throwable
-    {
-        /** @TODO Need something better */
-        return new \Exception('OOPS');
     }
 
     protected function generateHash(
@@ -70,8 +66,6 @@ class TokenGenerator
         while (($len = strlen($string)) < $length) {
             $size = $length - $len;
 
-            /** @TODO ?Keep separated due to \Throwable? vs handle \Throwable in loop.. */
-//            $bytes = random_bytes($size);
             $bytes = $this->getRandomBytes($size);
 
             $string .= substr(
@@ -83,12 +77,10 @@ class TokenGenerator
 
     protected function getRandomBytes(int $size): string
     {
-        //@todo edge case: $size = 0 -> \Error
-        /** @TODO Bad oops */
         try {
             return \random_bytes($size);
-        } catch (\Exception $exception) {
-            throw $this->oops();
+        } catch (\Error $exception) {
+            throw new TokenException(TokenException::getBadBytes(), 0, $exception);
         }
     }
 
