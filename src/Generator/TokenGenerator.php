@@ -11,8 +11,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
  */
 class TokenGenerator
 {
-    //@TODO default algo.. provide option to allow different algo?
-    public const HASH_ALGO = 'sha256';
+    public const HMAC_HASH_ALGO = 'sha256';
 
     /** @throws \Throwable */
     public function getToken(
@@ -54,7 +53,7 @@ class TokenGenerator
     ): string {
 
         return \hash_hmac(
-            self::HASH_ALGO,
+            self::HMAC_HASH_ALGO,
             $this->encodeHashData($expiresAt, $verifier, $userId),
             $signingKey,
             false
