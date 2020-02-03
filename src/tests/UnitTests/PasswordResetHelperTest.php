@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests;
 
+use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
+use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\PasswordResetRequestTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\UserTestFixture;
 
 class PasswordResetHelperTest extends TestCase
 {
@@ -63,5 +66,86 @@ class PasswordResetHelperTest extends TestCase
     public function hasProperties(string $property): void
     {
         self::assertClassHasAttribute($property, PasswordResetHelper::class);
+    }
+
+    /** @test */
+    public function hasUserThrottlingReturnsFalseWithNoLastRequestDate(): void
+    {
+        $user = $this->createMock(UserTestFixture::class);
+        $user
+            ->expects($this->once())
+            ->method('getId')
+            ->willReturn('1234')
+        ;
+
+        $this->mockRepo
+            ->expects($this->once())
+            ->method('getMostRecentNonExpiredRequestDate')
+            ->willReturn(null)
+        ;
+
+        $this->mockRepo
+            ->method('createPasswordResetRequest')
+            ->willReturn(new PasswordResetRequestTestFixture())
+        ;
+
+        $helper = $this->getPasswordResetHelper();
+        $helper->generateResetToken($user);
+    }
+
+    /** @test */
+    public function hasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
+    {
+        $user = $this->createMock(UserTestFixture::class);
+        $user
+            ->expects($this->once())
+            ->method('getId')
+            ->willReturn('1234')
+        ;
+
+        $mockLastRequestTime = $this->createMock(\DateTimeImmutable::class);
+        $mockLastRequestTime
+            ->expects($this->once())
+            ->method('getTimestamp')
+            ->willReturn(1234)
+        ;
+
+        $this->mockRepo
+            ->expects($this->once())
+            ->method('getMostRecentNonExpiredRequestDate')
+            ->willReturn($mockLastRequestTime)
+        ;
+
+        $this->mockRepo
+            ->method('createPasswordResetRequest')
+            ->willReturn(new PasswordResetRequestTestFixture())
+        ;
+
+        $helper = $this->getPasswordResetHelper();
+        $helper->generateResetToken($user);
+    }
+
+    /** @test */
+    public function exceptionThrownIfRequestBeforeThrottleLimit(): void
+    {
+        $user = $this->createMock(UserTestFixture::class);
+
+        $mockLastRequestTime = $this->createMock(\DateTimeImmutable::class);
+        $mockLastRequestTime
+            ->expects($this->once())
+            ->method('getTimestamp')
+            ->willReturn(9999999999)
+        ;
+
+        $this->mockRepo
+            ->expects($this->once())
+            ->method('getMostRecentNonExpiredRequestDate')
+            ->willReturn($mockLastRequestTime)
+        ;
+
+        $this->expectException(TooManyPasswordRequestsException::class);
+
+        $helper = $this->getPasswordResetHelper();
+        $helper->generateResetToken($user);
     }
 }
