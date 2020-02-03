@@ -56,13 +56,8 @@ class PasswordResetHelper
 
         $expiresAt = (new \DateTimeImmutable('now'))
             ->modify(sprintf('+%d seconds', $this->resetRequestLifetime));
-
-//        $selector = $this->generateRandomAlphaNumericString(self::SELECTOR_LENGTH);
         $selector = $this->tokenGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
-
-//        $plainVerifierToken = $this->generateRandomAlphaNumericString(20);
         $plainVerifierToken = $this->tokenGenerator->getRandomAlphaNumStr(20);
-
         $hashedToken = $this->tokenGenerator->getToken(
             $this->tokenSigningKey,
             $expiresAt,
