@@ -37,7 +37,7 @@ class TokenGenerator
     private function isEmpty(string $value): void
     {
         if (empty($value)) {
-            throw new TokenException(TokenException::getIsEmpty());
+            throw TokenException::getIsEmpty();
         }
     }
 
@@ -47,7 +47,7 @@ class TokenGenerator
         $time = $expire->getTimestamp();
 
         if ($time <= time()) {
-            throw new TokenException(TokenException::getInvalidTokenExpire());
+            throw TokenException::getInvalidTokenExpire();
         }
     }
 
@@ -90,7 +90,7 @@ class TokenGenerator
         try {
             return \random_bytes($size);
         } catch (\Error $exception) {
-            throw new TokenException(TokenException::getBadBytes(), 0, $exception);
+            throw TokenException::getBadBytes();
         }
     }
 

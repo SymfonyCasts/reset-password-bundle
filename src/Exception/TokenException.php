@@ -6,18 +6,18 @@ namespace SymfonyCasts\Bundle\ResetPassword\Exception;
 
 class TokenException extends \LogicException
 {
-    public static function getBadBytes(): string
+    public static function getBadBytes(): self
     {
-        return 'Invalid length expected. Change $size param to valid int.';
+        return new self('Invalid length expected. Change $size param to valid int.');
     }
 
-    public static function getIsEmpty(): string
+    public static function getIsEmpty(): self
     {
-        return 'TokenGenerator::getToken() contains empty string parameter(s).';
+        return new self('TokenGenerator::getToken() contains empty string parameter(s).');
     }
 
-    public static function getInvalidTokenExpire(): string
+    public static function getInvalidTokenExpire(): self
     {
-        return 'Token expire time is in the past.';
+        return new self('Token expire time is in the past.');
     }
 }

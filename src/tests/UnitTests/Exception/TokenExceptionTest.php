@@ -33,6 +33,6 @@ class TokenExceptionTest extends TestCase
         $this->expectException(TokenException::class);
         $this->expectExceptionMessage($expected);
 
-        throw new TokenException(TokenException::$method());
+        throw TokenException::$method();
     }
 }
