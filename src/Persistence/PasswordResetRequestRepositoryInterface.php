@@ -6,7 +6,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 
 interface PasswordResetRequestRepositoryInterface
 {
-    public function createPasswordResetRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): PasswordResetRequest;
+    public function createPasswordResetRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): PasswordResetRequestInterface;
 
     public function persistPasswordResetRequest(PasswordResetRequestInterface $passwordResetRequest);
 
