@@ -11,7 +11,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
 
-class PasswordResetHelper
+class PasswordResetHelper implements PasswordResetHelperInterface
 {
     /**
      * The first 20 characters of the token are a "selector"

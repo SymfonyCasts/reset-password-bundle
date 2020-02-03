@@ -2,12 +2,15 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword;
 
-
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
+//@todo cleanup use statements
+use Symfony\Component\Security\Core\User\UserInterface;
+//use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 
 interface PasswordResetHelperInterface
 {
-    public function generateResetToken(object $user): PasswordResetRequestInterface;
+    //@todo return PasswordResetToken or PasswordResetRequestInterface?
+    public function generateResetToken(UserInterface $user): PasswordResetToken;
 
     public function validateTokenAndFetchUser(string $fullToken): object;
 }
