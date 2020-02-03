@@ -2,6 +2,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
@@ -48,7 +49,7 @@ class PasswordResetHelper
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
      */
-    public function generateResetToken(object $user): PasswordResetToken
+    public function generateResetToken(UserInterface $user): PasswordResetToken
     {
         if ($this->hasUserHisThrottling($user)) {
             throw new TooManyPasswordRequestsException();
@@ -112,7 +113,7 @@ class PasswordResetHelper
         return $this->repository->findPasswordResetRequest($selector);
     }
 
-    private function hasUserHisThrottling(object $user): bool
+    private function hasUserHisThrottling(UserInterface $user): bool
     {
         $lastRequestDate = $this->repository->getMostRecentNonExpiredRequestDate($user);
 
