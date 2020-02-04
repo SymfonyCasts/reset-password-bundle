@@ -7,7 +7,7 @@ class PasswordResetToken
     private $token;
     private $expiresAt;
 
-    public function __construct(string $token, \DateTimeInterface $expiresAt)
+    public function __construct(string $token, \DateTimeImmutable $expiresAt)
     {
         $this->token = $token;
         $this->expiresAt = $expiresAt;
@@ -25,7 +25,7 @@ class PasswordResetToken
         return $this->token;
     }
 
-    public function getExpiresAt(): \DateTimeInterface
+    public function getExpiresAt(): \DateTimeImmutable
     {
         return $this->expiresAt;
     }

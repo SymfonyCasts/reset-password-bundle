@@ -17,7 +17,7 @@ class PasswordResetRequestTestFixture implements PasswordResetRequestInterface
     {
     }
 
-    public function getExpiresAt(): \DateTimeInterface
+    public function getExpiresAt(): \DateTimeImmutable
     {
     }
 

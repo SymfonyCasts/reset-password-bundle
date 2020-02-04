@@ -26,7 +26,7 @@ trait PasswordResetRequestTrait
      */
     protected $expiresAt;
 
-    public function __construct(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    public function __construct(\DateTimeImmutable $expiresAt, string $selector, string $hashedToken)
     {
         $this->requestedAt = new \DateTimeImmutable('now');
         $this->expiresAt = $expiresAt;
@@ -44,7 +44,7 @@ trait PasswordResetRequestTrait
         return $this->expiresAt->getTimestamp() <= time();
     }
 
-    public function getExpiresAt(): \DateTimeInterface
+    public function getExpiresAt(): \DateTimeImmutable
     {
         return $this->expiresAt;
     }

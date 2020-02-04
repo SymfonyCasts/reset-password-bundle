@@ -8,7 +8,7 @@ interface PasswordResetRequestInterface
 
     public function isExpired(): bool;
 
-    public function getExpiresAt(): \DateTimeInterface;
+    public function getExpiresAt(): \DateTimeImmutable;
 
     public function getHashedToken(): string;
 
