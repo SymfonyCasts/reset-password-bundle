@@ -12,5 +12,5 @@ interface PasswordResetHelperInterface
     //@todo return PasswordResetToken or PasswordResetRequestInterface?
     public function generateResetToken(UserInterface $user): PasswordResetToken;
 
-    public function validateTokenAndFetchUser(string $fullToken): object;
+    public function validateTokenAndFetchUser(string $fullToken): UserInterface;
 }

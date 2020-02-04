@@ -82,28 +82,32 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         );
     }
 
-    public function validateTokenAndFetchUser(string $fullToken): object
+    public function validateTokenAndFetchUser(string $fullToken): UserInterface
     {
-        $resetToken = $this->findToken($fullToken);
+        /** @var PasswordResetRequestInterface $resetToken */
+        $resetRequest = $this->findToken($fullToken);
 
-        if ($resetToken->isExpired()) {
+        if ($resetRequest->isExpired()) {
             throw new ExpiredResetPasswordTokenException();
         }
+
+        /** @var UserInterface $user */
+        $user = $resetRequest->getUser();
 
         $verifierToken = substr($fullToken, self::SELECTOR_LENGTH);
 
         $hashedVerifierToken = $this->tokenGenerator->getToken(
             $this->tokenSigningKey,
-            $resetToken->getExpiresAt(),
+            $resetRequest->getExpiresAt(),
             $verifierToken,
-            $this->repository->getUserIdentifier($resetToken->getUser())
+            $user->getId()
         );
 
-        if (false === hash_equals($resetToken->getToken(), $hashedVerifierToken)) {
+        if (false === hash_equals($resetRequest->getHashedToken(), $hashedVerifierToken)) {
             throw new InvalidResetPasswordTokenException();
         }
 
-        return $resetToken->getUser();
+        return $user;
     }
 
     private function findToken(string $token): PasswordResetRequestInterface
