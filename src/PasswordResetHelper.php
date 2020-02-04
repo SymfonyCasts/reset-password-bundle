@@ -110,6 +110,16 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         return $user;
     }
 
+    public function removeResetRequest(string $fullToken): void
+    {
+        if (empty($fullToken)) {
+            throw new InvalidResetPasswordTokenException();
+        }
+
+        $request = $this->findToken($fullToken);
+        $this->repository->removeResetRequest($request);
+    }
+
     private function findToken(string $token): PasswordResetRequestInterface
     {
         $selector = substr($token, 0, self::SELECTOR_LENGTH);

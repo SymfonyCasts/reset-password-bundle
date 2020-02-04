@@ -14,4 +14,6 @@ interface PasswordResetRequestRepositoryInterface
     public function findPasswordResetRequest(string $selector): ?PasswordResetRequestInterface;
 
     public function getMostRecentNonExpiredRequestDate(UserInterface $user): ?\DateTimeImmutable;
+
+    public function removeResetRequest(PasswordResetRequestInterface $resetRequest): void;
 }

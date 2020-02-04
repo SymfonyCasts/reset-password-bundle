@@ -13,4 +13,6 @@ interface PasswordResetHelperInterface
     public function generateResetToken(UserInterface $user): PasswordResetToken;
 
     public function validateTokenAndFetchUser(string $fullToken): UserInterface;
+
+    public function removeResetRequest(string $fullToken): void;
 }

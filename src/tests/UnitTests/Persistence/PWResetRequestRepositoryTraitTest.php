@@ -16,6 +16,7 @@ class PWResetRequestRepositoryTraitTest extends TestCase
         yield ['persistPasswordResetRequest'];
         yield ['findPasswordResetRequest'];
         yield ['getMostRecentNonExpiredRequestDate'];
+        yield ['removeResetRequest'];
     }
 
     /**
