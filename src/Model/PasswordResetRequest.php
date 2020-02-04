@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
-class PasswordResetRequest implements PasswordResetRequestInterface
+//@TODO Class is disabled, but still exists until sure it should be deleted.
+class PasswordResetRequestt implements PasswordResetRequestInterface
 {
     use PasswordResetRequestTrait;
 
