@@ -39,20 +39,18 @@ trait PasswordResetRequestRepositoryTrait
     public function getMostRecentNonExpiredRequestDate(UserInterface $user): ?\DateTimeImmutable
     {
         // Normally there is only 1 max request per use, but written to be flexible
-        /** @var PasswordResetRequestInterface[] $resetRequests */
-        $resetRequests = $this->createQueryBuilder('t')
-            ->select('t.requestedAt')
+        /** @var PasswordResetRequestInterface $resetRequest */
+        $resetRequest = $this->createQueryBuilder('t')
             ->where('t.user = :user')
             ->setParameter('user', $user)
             ->orderBy('t.requestedAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->execute();
+            ->getOneorNullResult()
+        ;
 
-        foreach ($resetRequests as $resetRequest) {
-            if (!$resetRequest->isExpired()) {
-                return $resetRequest->getRequestedAt();
-            }
+        if (null !== $resetRequest && !$resetRequest->isExpired()) {
+            return $resetRequest->getRequestedAt();
         }
 
         return null;
