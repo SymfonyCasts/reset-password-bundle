@@ -55,4 +55,10 @@ trait PasswordResetRequestRepositoryTrait
 
         return null;
     }
+
+    public function removeResetRequest(PasswordResetRequestInterface $resetRequest): void
+    {
+        $this->getEntityManager()->remove($resetRequest);
+        $this->getEntityManager()->flush();
+    }
 }
