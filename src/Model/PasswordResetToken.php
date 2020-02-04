@@ -2,6 +2,8 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
+use SymfonyCasts\Bundle\ResetPassword\Exception\EmptyTokenStringException;
+
 class PasswordResetToken
 {
     private $token;
@@ -19,10 +21,18 @@ class PasswordResetToken
      * Internally, this consists of two parts - the selector and
      * the hashed token - but that's an implementation detail
      * of how the token will later be parsed.
+     *
+     * @throws EmptyTokenStringException
      */
     public function getToken(): string
     {
-        return $this->token;
+        $token = trim($this->token);
+
+        if (!empty($token)) {
+            return $token;
+        }
+
+        throw new EmptyTokenStringException();
     }
 
     public function getExpiresAt(): \DateTimeImmutable
