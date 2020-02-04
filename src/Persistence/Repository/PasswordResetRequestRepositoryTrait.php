@@ -7,15 +7,16 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 
 trait PasswordResetRequestRepositoryTrait
 {
-    public function createPasswordResetRequest(UserInterface $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): PasswordResetRequestInterface
-    {
-        return new PasswordResetRequest(
-            $user,
-            $expiresAt,
-            $selector,
-            $hashedToken
-        );
-    }
+    //@TODO Maker creates method in app as PasswordResetRequest is a userland entity
+//    public function createPasswordResetRequest(UserInterface $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): PasswordResetRequestInterface
+//    {
+//        return new PasswordResetRequest(
+//            $user,
+//            $expiresAt,
+//            $selector,
+//            $hashedToken
+//        );
+//    }
 
     public function getUserIdentifier(UserInterface $user): string
     {
