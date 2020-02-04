@@ -46,7 +46,12 @@ trait PasswordResetRequestTrait
 
     public function getExpiresAt(): \DateTimeImmutable
     {
-        return $this->expiresAt;
+        // Doctrine returns \DateTime::class from DB reference.
+        if ($this->expiresAt instanceof \DateTimeImmutable) {
+            return $this->expiresAt;
+        }
+
+        return \DateTimeImmutable::createFromMutable($this->expiresAt);
     }
 
     public function getHashedToken(): string
