@@ -5,6 +5,7 @@ namespace SymfonyCasts\Bundle\ResetPassword;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
+use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
@@ -30,12 +31,15 @@ class PasswordResetHelper
      */
     private $requestThrottleTime;
 
-    public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime)
+    private $tokenGenerator;
+
+    public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, TokenGenerator $generator)
     {
         $this->repository = $repository;
         $this->tokenSigningKey = $tokenSigningKey;
         $this->resetRequestLifetime = $resetRequestLifetime;
         $this->requestThrottleTime = $requestThrottleTime;
+        $this->tokenGenerator = $generator;
     }
 
     /**
@@ -52,12 +56,13 @@ class PasswordResetHelper
 
         $expiresAt = (new \DateTimeImmutable('now'))
             ->modify(sprintf('+%d seconds', $this->resetRequestLifetime));
-        $selector = $this->generateRandomAlphaNumericString(self::SELECTOR_LENGTH);
-        $plainVerifierToken = $this->generateRandomAlphaNumericString(20);
-        $hashedToken = $this->hashVerifierToken(
+        $selector = $this->tokenGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
+        $plainVerifierToken = $this->tokenGenerator->getRandomAlphaNumStr(20);
+        $hashedToken = $this->tokenGenerator->getToken(
+            $this->tokenSigningKey,
+            $expiresAt,
             $plainVerifierToken,
-            $user->getId(),
-            $expiresAt
+            $user->getId()
         );
 
         $passwordResetRequest = $this->repository->createPasswordResetRequest(
@@ -85,10 +90,12 @@ class PasswordResetHelper
         }
 
         $verifierToken = substr($fullToken, self::SELECTOR_LENGTH);
-        $hashedVerifierToken = $this->hashVerifierToken(
+
+        $hashedVerifierToken = $this->tokenGenerator->getToken(
+            $this->tokenSigningKey,
+            $resetToken->getExpiresAt(),
             $verifierToken,
-            $this->repository->getUserIdentifier($resetToken->getUser()),
-            $resetToken->getExpiresAt()
+            $this->repository->getUserIdentifier($resetToken->getUser())
         );
 
         if (false === hash_equals($resetToken->getToken(), $hashedVerifierToken)) {
@@ -103,37 +110,6 @@ class PasswordResetHelper
         $selector = substr($token, 0, self::SELECTOR_LENGTH);
 
         return $this->repository->findPasswordResetRequest($selector);
-    }
-
-    /**
-     * Original credit to Laravel's Str::random() method.
-     */
-    private function generateRandomAlphaNumericString(int $length)
-    {
-        $string = '';
-
-        while (($len = strlen($string)) < $length) {
-            $size = $length - $len;
-
-            $bytes = random_bytes($size);
-
-            $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
-        }
-
-        return $string;
-    }
-
-    private function hashVerifierToken(string $verifierToken, $userId, \DateTimeInterface $expiresAt): string
-    {
-        return \hash_hmac(
-            'sha256',
-            \json_encode([
-                $verifierToken,
-                $userId,
-                $expiresAt->format('Y-m-d\TH:i:s')
-            ]),
-            $this->tokenSigningKey
-        );
     }
 
     private function hasUserHisThrottling(object $user): bool
