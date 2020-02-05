@@ -14,6 +14,11 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepository
 class PasswordResetHelper implements PasswordResetHelperInterface
 {
     /**
+     * Length of time a reset request is valid for
+     */
+    public const LIFETIME_HOURS = 1;
+
+    /**
      * The first 20 characters of the token are a "selector"
      */
     private const SELECTOR_LENGTH = 20;
