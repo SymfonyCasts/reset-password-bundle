@@ -1,20 +1,34 @@
 <?php
 
-declare(strict_types=1);
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model;
 
 use SymfonyCasts\Bundle\ResetPassword\Exception\EmptyTokenStringException;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
-use PHPUnit\Framework\TestCase;
 
-class PasswordResetTokenTest extends TestCase
+/**
+ * @author  Jesse Rushlow <jr@geeshoe.com>
+ */
+class PasswordResetTokenTest extends AbstractModelUnitTest
 {
+    protected $sut = PasswordResetToken::class;
+
     /**
      * @var \DateTimeImmutable|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockExpiresAt;
 
+    /**
+     * @inheritDoc
+     */
     protected function setUp()
     {
         $this->mockExpiresAt = $this->createMock(\DateTimeImmutable::class);
@@ -22,20 +36,20 @@ class PasswordResetTokenTest extends TestCase
 
     public function propertyDataProvider(): \Generator
     {
-        yield ['token'];
-        yield ['expiresAt'];
+        yield ['token', 'private', ''];
+        yield ['expiresAt', 'private', ''];
+    }
+
+    public function methodDataProvider(): \Generator
+    {
+        yield ['getToken', 'public'];
+        yield ['getExpiresAt', 'public'];
     }
 
     /**
      * @test
-     * @dataProvider propertyDataProvider
+     * @throws EmptyTokenStringException
      */
-    public function hasProperty(string $property): void
-    {
-        self::assertClassHasAttribute($property, PasswordResetToken::class);
-    }
-
-    /** @test */
     public function constructorInitializesProperties(): void
     {
         $expectedToken = '12345';
@@ -47,6 +61,10 @@ class PasswordResetTokenTest extends TestCase
         self::assertSame($expectedExpires, $resetToken->getExpiresAt());
     }
 
+    /**
+     * @test
+     * @throws EmptyTokenStringException
+     */
     public function throwsExceptionWithEmptyToken(): void
     {
         $resetToken = new PasswordResetToken('', $this->mockExpiresAt);
@@ -55,6 +73,10 @@ class PasswordResetTokenTest extends TestCase
         $resetToken->getToken();
     }
 
+    /**
+     * @test
+     * @throws EmptyTokenStringException
+     */
     public function trimsWhiteSpaceFromToken(): void
     {
         $resetToken = new PasswordResetToken(' test ', $this->mockExpiresAt);
