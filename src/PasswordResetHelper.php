@@ -36,8 +36,14 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      */
     private const SELECTOR_LENGTH = 20;
 
+    /**
+     * @var PasswordResetRequestRepositoryInterface
+     */
     private $repository;
 
+    /**
+     * @var string Unique, random, cryptographically secure string
+     */
     private $tokenSigningKey;
 
     /**
@@ -50,6 +56,9 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      */
     private $requestThrottleTime;
 
+    /**
+     * @var TokenGenerator
+     */
     private $tokenGenerator;
 
     public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, TokenGenerator $generator)
@@ -100,6 +109,15 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         );
     }
 
+    /**
+     * Validate a PasswordResetRequest and fetch user from database
+     *
+     * @param string $fullToken selector + non-hashed verifier token
+     * @return UserInterface
+     * @throws ExpiredResetPasswordTokenException
+     * @throws InvalidResetPasswordTokenException
+     * @throws \Throwable @TODO Refactor TokenGenerator and change exception signature
+     */
     public function validateTokenAndFetchUser(string $fullToken): UserInterface
     {
         /** @var PasswordResetRequestInterface $resetToken */
@@ -128,6 +146,12 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         return $user;
     }
 
+    /**
+     * Remove a single PasswordResetRequest object from the database
+     *
+     * @param string $fullToken selector + non-hashed verifier token
+     * @throws InvalidResetPasswordTokenException
+     */
     public function removeResetRequest(string $fullToken): void
     {
         if (empty($fullToken)) {
