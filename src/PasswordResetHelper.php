@@ -73,10 +73,10 @@ class PasswordResetHelper implements PasswordResetHelperInterface
             throw new TooManyPasswordRequestsException();
         }
 
-        $expiresAt = (new \DateTimeImmutable('now'))
-            ->modify(sprintf('+%d seconds', $this->resetRequestLifetime));
+        $expiresAt = $this->getNewExpiresAt();
         $selector = $this->tokenGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
-        $plainVerifierToken = $this->tokenGenerator->getRandomAlphaNumStr(20);
+        $plainVerifierToken = $this->tokenGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
+
         $hashedToken = $this->tokenGenerator->getToken(
             $this->tokenSigningKey,
             $expiresAt,
@@ -158,5 +158,11 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         }
 
         return false;
+    }
+
+    private function getNewExpiresAt(): \DateTimeImmutable
+    {
+        return (new \DateTimeImmutable('now'))
+            ->modify(sprintf('+%d seconds', $this->resetRequestLifetime));
     }
 }
