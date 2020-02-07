@@ -20,13 +20,13 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
  */
 interface PasswordResetRequestRepositoryInterface
 {
-    public function createPasswordResetRequest(UserInterface $user, \DateTimeImmutable $expiresAt, string $selector, string $hashedToken): PasswordResetRequestInterface;
+    public function createPasswordResetRequest(UserInterface $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): PasswordResetRequestInterface;
 
     public function persistPasswordResetRequest(PasswordResetRequestInterface $passwordResetRequest);
 
     public function findPasswordResetRequest(string $selector): ?PasswordResetRequestInterface;
 
-    public function getMostRecentNonExpiredRequestDate(UserInterface $user): ?\DateTimeImmutable;
+    public function getMostRecentNonExpiredRequestDate(UserInterface $user): ?\DateTimeInterface;
 
     public function removeResetRequest(PasswordResetRequestInterface $resetRequest): void;
 }
