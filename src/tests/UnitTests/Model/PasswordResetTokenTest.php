@@ -11,7 +11,6 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model;
 
-use SymfonyCasts\Bundle\ResetPassword\Exception\EmptyTokenStringException;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 
 /**
@@ -48,7 +47,6 @@ class PasswordResetTokenTest extends AbstractModelUnitTest
 
     /**
      * @test
-     * @throws EmptyTokenStringException
      */
     public function constructorInitializesProperties(): void
     {
@@ -59,27 +57,5 @@ class PasswordResetTokenTest extends AbstractModelUnitTest
 
         self::assertSame($expectedToken, $resetToken->getToken());
         self::assertSame($expectedExpires, $resetToken->getExpiresAt());
-    }
-
-    /**
-     * @test
-     * @throws EmptyTokenStringException
-     */
-    public function throwsExceptionWithEmptyToken(): void
-    {
-        $resetToken = new PasswordResetToken('', $this->mockExpiresAt);
-
-        $this->expectException(EmptyTokenStringException::class);
-        $resetToken->getToken();
-    }
-
-    /**
-     * @test
-     * @throws EmptyTokenStringException
-     */
-    public function trimsWhiteSpaceFromToken(): void
-    {
-        $resetToken = new PasswordResetToken(' test ', $this->mockExpiresAt);
-        self::assertSame('test', $resetToken->getToken());
     }
 }

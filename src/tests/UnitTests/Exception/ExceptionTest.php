@@ -12,7 +12,6 @@
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Exception;
 
 use PHPUnit\Framework\TestCase;
-use SymfonyCasts\Bundle\ResetPassword\Exception\EmptyTokenStringException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
@@ -25,10 +24,6 @@ class ExceptionTest extends TestCase
 {
     public function exceptionDataProvider(): \Generator
     {
-        yield [
-            EmptyTokenStringException::class,
-            'Token value must be a non empty string.'
-        ];
         yield [
             ExpiredResetPasswordTokenException::class,
             'The link in your email is expired. Please try to reset your password again.'
