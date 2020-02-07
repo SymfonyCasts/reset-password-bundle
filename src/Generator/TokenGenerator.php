@@ -76,7 +76,8 @@ class TokenGenerator
         while (($len = strlen($string)) < $length) {
             $size = $length - $len;
 
-            $bytes = $this->getRandomBytes($size);
+            $bytes = \random_bytes($size);
+//            $bytes = $this->getRandomBytes($size);
 
             $string .= substr(
                 str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
@@ -85,14 +86,14 @@ class TokenGenerator
         return $string;
     }
 
-    protected function getRandomBytes(int $size): string
-    {
-        try {
-            return \random_bytes($size);
-        } catch (\Error $exception) {
-            throw TokenException::getBadBytes();
-        }
-    }
+//    protected function getRandomBytes(int $size): string
+//    {
+//        try {
+//            return \random_bytes($size);
+//        } catch (\Error $exception) {
+//            throw TokenException::getBadBytes();
+//        }
+//    }
 
     protected function encodeHashData(\DateTimeImmutable $expiresAt, string $verifier, string $userId): string
     {
