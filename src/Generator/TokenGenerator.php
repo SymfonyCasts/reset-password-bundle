@@ -22,12 +22,6 @@ class TokenGenerator
         string $verifier,
         string $userId
     ): string {
-        $checkEmpty = [$signingKey, $verifier, $userId];
-
-        foreach ($checkEmpty as $param) {
-            $this->isEmpty($param);
-        }
-
         $this->isExpireValid($expiresAt);
 
         return $this->generateHash($signingKey, $expiresAt, $verifier, $userId);
@@ -36,6 +30,7 @@ class TokenGenerator
     /** @throws \Throwable */
     private function isEmpty(string $value): void
     {
+        //@TODO safe to remove after refactoring
         if (empty($value)) {
             throw TokenException::getIsEmpty();
         }
