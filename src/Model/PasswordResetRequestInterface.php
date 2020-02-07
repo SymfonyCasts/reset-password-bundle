@@ -17,11 +17,11 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
  */
 interface PasswordResetRequestInterface
 {
-    public function getRequestedAt(): \DateTimeImmutable;
+    public function getRequestedAt(): \DateTimeInterface;
 
     public function isExpired(): bool;
 
-    public function getExpiresAt(): \DateTimeImmutable;
+    public function getExpiresAt(): \DateTimeInterface;
 
     public function getHashedToken(): string;
 
