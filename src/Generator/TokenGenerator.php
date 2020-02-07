@@ -13,7 +13,7 @@ class TokenGenerator
     //@TODO who was supposed to use me
     public const HMAC_HASH_ALGO = 'sha256';
 
-    public function getToken(string $signingKey, \DateTimeImmutable $expiresAt, string $verifier, string $userId): string
+    public function getToken(string $signingKey, \DateTimeInterface $expiresAt, string $verifier, string $userId): string
     {
         return \hash_hmac(
             self::HMAC_HASH_ALGO,
@@ -24,7 +24,7 @@ class TokenGenerator
     }
 
     //@todo make me private | fix tests for private
-    protected function encodeHashData(\DateTimeImmutable $expiresAt, string $verifier, string $userId): string
+    protected function encodeHashData(\DateTimeInterface $expiresAt, string $verifier, string $userId): string
     {
         return \json_encode([
             $verifier,

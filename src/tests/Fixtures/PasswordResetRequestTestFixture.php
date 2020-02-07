@@ -9,7 +9,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 class PasswordResetRequestTestFixture implements PasswordResetRequestInterface
 {
 
-    public function getRequestedAt(): \DateTimeImmutable
+    public function getRequestedAt(): \DateTimeInterface
     {
     }
 
@@ -17,7 +17,7 @@ class PasswordResetRequestTestFixture implements PasswordResetRequestInterface
     {
     }
 
-    public function getExpiresAt(): \DateTimeImmutable
+    public function getExpiresAt(): \DateTimeInterface
     {
     }
 
