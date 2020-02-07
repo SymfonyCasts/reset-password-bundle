@@ -22,7 +22,7 @@ class TokenGenerator
         string $verifier,
         string $userId
     ): string {
-        $this->isExpireValid($expiresAt);
+//        $this->isExpireValid($expiresAt);
 
         return $this->generateHash($signingKey, $expiresAt, $verifier, $userId);
     }
@@ -39,6 +39,7 @@ class TokenGenerator
     /** @throws TokenException */
     private function isExpireValid(\DateTimeImmutable $expire): void
     {
+        //@TODO safe to remove after refactoring
         $time = $expire->getTimestamp();
 
         if ($time <= time()) {
