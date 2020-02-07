@@ -7,8 +7,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @internal
  */
-class TokenGenerator
-//final class TokenGenerator @TODO make final? fix tests to do so
+final class ResetPasswordTokenGenerator
 {
     //@TODO who was supposed to use me
     public const HMAC_HASH_ALGO = 'sha256';

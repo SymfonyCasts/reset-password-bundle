@@ -13,7 +13,7 @@ class TokenException extends \LogicException
 
     public static function getIsEmpty(): self
     {
-        return new self('TokenGenerator::getToken() contains empty string parameter(s).');
+        return new self('ResetPasswordTokenGenerator::getToken() contains empty string parameter(s).');
     }
 
     public static function getInvalidTokenExpire(): self

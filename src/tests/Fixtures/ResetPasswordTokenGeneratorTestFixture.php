@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\Fixtures;
 
-use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 
-class TokenGeneratorTestFixture extends TokenGenerator
+class ResetPasswordTokenGeneratorTestFixture extends ResetPasswordTokenGenerator
 {
     public function getRandomAlphaNumStr(int $length): string
     {

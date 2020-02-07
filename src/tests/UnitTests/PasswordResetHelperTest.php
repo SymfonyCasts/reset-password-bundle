@@ -16,7 +16,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenExcepti
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
-use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
@@ -52,7 +52,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
     protected $requestThrottleTime;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|TokenGenerator
+     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordTokenGenerator
      */
     protected $mockTokenGenerator;
 
@@ -85,7 +85,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
         $this->tokenSigningKey = 'unit-test';
         $this->resetRequestLifetime = 99999999;
         $this->requestThrottleTime = 99999999;
-        $this->mockTokenGenerator = $this->createMock(TokenGenerator::class);
+        $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
         $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
         $this->mockResetRequest = $this->createMock(PasswordResetRequestInterface::class);
         $this->randomToken = \bin2hex(\random_bytes(10));

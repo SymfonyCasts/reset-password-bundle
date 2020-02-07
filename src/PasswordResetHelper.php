@@ -16,7 +16,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenExcepti
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
-use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
@@ -58,7 +58,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
     private $requestThrottleTime;
 
     /**
-     * @var TokenGenerator
+     * @var ResetPasswordTokenGenerator
      */
     private $tokenGenerator;
 
@@ -67,7 +67,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      */
     private $randomGenerator;
 
-    public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, TokenGenerator $generator, ResetPasswordRandomGenerator $randomGenerator)
+    public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, ResetPasswordTokenGenerator $generator, ResetPasswordRandomGenerator $randomGenerator)
     {
         $this->repository = $repository;
         $this->tokenSigningKey = $tokenSigningKey;
@@ -123,7 +123,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      * @return UserInterface
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
-     * @throws \Throwable @TODO Refactor TokenGenerator and change exception signature
+     * @throws \Throwable @TODO Refactor ResetPasswordTokenGenerator and change exception signature
      */
     public function validateTokenAndFetchUser(string $fullToken): UserInterface
     {

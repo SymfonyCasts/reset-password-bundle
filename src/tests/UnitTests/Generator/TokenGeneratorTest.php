@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Generator;
 
 use SymfonyCasts\Bundle\ResetPassword\Exception\TokenException;
-use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use PHPUnit\Framework\TestCase;
-use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\TokenGeneratorTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordTokenGeneratorTestFixture;
 
 class TokenGeneratorTest extends TestCase
 {
-    /** @var TokenGeneratorTestFixture */
+    /** @var ResetPasswordTokenGeneratorTestFixture */
     public $fixture;
 
     protected function setUp()
     {
-        $this->fixture = new TokenGeneratorTestFixture();
+        $this->fixture = new ResetPasswordTokenGeneratorTestFixture();
     }
 
     /** @test */
@@ -24,7 +24,7 @@ class TokenGeneratorTest extends TestCase
     {
         //@todo remove me
         $this->markTestSkipped('method removed');
-        $generator = new TokenGenerator();
+        $generator = new ResetPasswordTokenGenerator();
 
         $resultA = $generator->getRandomAlphaNumStr(20);
         $resultB = $generator->getRandomAlphaNumStr(20);
@@ -37,7 +37,7 @@ class TokenGeneratorTest extends TestCase
     {
         //@TODO remove me
         $this->markTestSkipped('Method to be removed');
-        $generator = new TokenGenerator();
+        $generator = new ResetPasswordTokenGenerator();
         $result = $generator->getRandomAlphaNumStr(100);
 
         self::assertSame(100, strlen($result));
@@ -143,7 +143,7 @@ class TokenGeneratorTest extends TestCase
 
         $mockDate = $this->createMock(\DateTimeImmutable::class);
 
-        $generator = new TokenGenerator();
+        $generator = new ResetPasswordTokenGenerator();
         $generator->getToken($key, $mockDate, $verifier, $userId);
     }
 
@@ -161,7 +161,7 @@ class TokenGeneratorTest extends TestCase
 
         $this->expectException(TokenException::class);
 
-        $generator = new TokenGenerator();
+        $generator = new ResetPasswordTokenGenerator();
         $generator->getToken('x', $mockDate, 'x', 'x');
     }
 
@@ -183,7 +183,7 @@ class TokenGeneratorTest extends TestCase
         $verifier = 'verify';
         $userId = '1234';
 
-        $generator = new TokenGenerator();
+        $generator = new ResetPasswordTokenGenerator();
         $result = $generator->getToken($signingKey, $mockExpectedAt, $verifier, $userId);
 
         $expected = \hash_hmac(
