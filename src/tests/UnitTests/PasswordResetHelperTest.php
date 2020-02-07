@@ -15,6 +15,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper;
@@ -53,7 +54,12 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|TokenGenerator
      */
-    protected $mockGenerator;
+    protected $mockTokenGenerator;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRandomGenerator
+     */
+    protected $mockRandomGenerator;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|PasswordResetRequestInterface
@@ -79,7 +85,8 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
         $this->tokenSigningKey = 'unit-test';
         $this->resetRequestLifetime = 99999999;
         $this->requestThrottleTime = 99999999;
-        $this->mockGenerator = $this->createMock(TokenGenerator::class);
+        $this->mockTokenGenerator = $this->createMock(TokenGenerator::class);
+        $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
         $this->mockResetRequest = $this->createMock(PasswordResetRequestInterface::class);
         $this->randomToken = \bin2hex(\random_bytes(10));
         $this->mockUserFixture = $this->createMock(UserTestFixture::class);
@@ -92,7 +99,8 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
             $this->tokenSigningKey,
             $this->resetRequestLifetime,
             $this->requestThrottleTime,
-            $this->mockGenerator
+            $this->mockTokenGenerator,
+            $this->mockRandomGenerator
         );
     }
 

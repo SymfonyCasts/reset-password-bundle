@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\TokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
@@ -61,13 +62,19 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      */
     private $tokenGenerator;
 
-    public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, TokenGenerator $generator)
+    /**
+     * @var ResetPasswordRandomGenerator
+     */
+    private $randomGenerator;
+
+    public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, TokenGenerator $generator, ResetPasswordRandomGenerator $randomGenerator)
     {
         $this->repository = $repository;
         $this->tokenSigningKey = $tokenSigningKey;
         $this->resetRequestLifetime = $resetRequestLifetime;
         $this->requestThrottleTime = $requestThrottleTime;
         $this->tokenGenerator = $generator;
+        $this->randomGenerator = $randomGenerator;
     }
 
     /**
@@ -83,8 +90,8 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         }
 
         $expiresAt = $this->getNewExpiresAt();
-        $selector = $this->tokenGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
-        $plainVerifierToken = $this->tokenGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
+        $selector = $this->randomGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
+        $plainVerifierToken = $this->randomGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
 
         $hashedToken = $this->tokenGenerator->getToken(
             $this->tokenSigningKey,

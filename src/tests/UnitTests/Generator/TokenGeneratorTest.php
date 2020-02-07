@@ -22,6 +22,8 @@ class TokenGeneratorTest extends TestCase
     /** @test */
     public function randomStrReturned(): void
     {
+        //@todo remove me
+        $this->markTestSkipped('method removed');
         $generator = new TokenGenerator();
 
         $resultA = $generator->getRandomAlphaNumStr(20);
@@ -33,6 +35,8 @@ class TokenGeneratorTest extends TestCase
     /** @test */
     public function randomStrReturnsCorrectLength(): void
     {
+        //@TODO remove me
+        $this->markTestSkipped('Method to be removed');
         $generator = new TokenGenerator();
         $result = $generator->getRandomAlphaNumStr(100);
 
