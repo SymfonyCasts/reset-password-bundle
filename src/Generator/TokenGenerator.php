@@ -24,7 +24,13 @@ class TokenGenerator
     ): string {
 //        $this->isExpireValid($expiresAt);
 
-        return $this->generateHash($signingKey, $expiresAt, $verifier, $userId);
+        return \hash_hmac(
+            self::HMAC_HASH_ALGO,
+            $this->encodeHashData($expiresAt, $verifier, $userId),
+            $signingKey,
+            false
+        );
+//        return $this->generateHash($signingKey, $expiresAt, $verifier, $userId);
     }
 
     /** @throws \Throwable */
@@ -46,21 +52,21 @@ class TokenGenerator
             throw TokenException::getInvalidTokenExpire();
         }
     }
-
-    protected function generateHash(
-        string $signingKey,
-        \DateTimeImmutable $expiresAt,
-        string $verifier,
-        string $userId
-    ): string {
-
-        return \hash_hmac(
-            self::HMAC_HASH_ALGO,
-            $this->encodeHashData($expiresAt, $verifier, $userId),
-            $signingKey,
-            false
-        );
-    }
+//
+//    protected function generateHash(
+//        string $signingKey,
+//        \DateTimeImmutable $expiresAt,
+//        string $verifier,
+//        string $userId
+//    ): string {
+//
+//        return \hash_hmac(
+//            self::HMAC_HASH_ALGO,
+//            $this->encodeHashData($expiresAt, $verifier, $userId),
+//            $signingKey,
+//            false
+//        );
+//    }
 
     /**
      * Original credit to Laravel's Str::random() method.

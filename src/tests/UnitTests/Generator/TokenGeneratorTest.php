@@ -91,6 +91,8 @@ class TokenGeneratorTest extends TestCase
     /** @test */
     public function returnsHashedHmac(): void
     {
+        //@todo consolidate test with getToken test
+        $this->markTestSkipped('method removed, getToken returns \hash_hmac directly');
         $key = 'abc';
 
         $mockTime = $this->createMock(\DateTimeImmutable::class);
