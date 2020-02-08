@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-trait PasswordResetRequestTrait
+trait ResetPasswordRequestTrait
 {
     /**
      * @ORM\Column(type="string", length=100)
