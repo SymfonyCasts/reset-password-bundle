@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Persistence;
 
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
-use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\PWResetPasswordRequestRepositoryTraitTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestRepositoryTraitTestFixture;
 use PHPUnit\Framework\TestCase;
-use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\PasswordResetRequestRepositoryTrait;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 
-class PWResetRequestRepositoryTraitTest extends TestCase
+class ResetPasswordRequestRepositoryTraitTest extends TestCase
 {
     public function methodDataProvider(): \Generator
     {
@@ -25,21 +25,21 @@ class PWResetRequestRepositoryTraitTest extends TestCase
      */
     public function hasMethod(string $method): void
     {
-        self::assertTrue(method_exists(PasswordResetRequestRepositoryTrait::class, $method));
+        self::assertTrue(method_exists(ResetPasswordRequestRepositoryTrait::class, $method));
     }
 
     /** @test */
     public function traitIsCompatibleWithInterface(): void
     {
         // Ensure fixture implements ResetPasswordRequestRepositoryInterface::class
-        $interfaces = class_implements(PWResetPasswordRequestRepositoryTraitTestFixture::class);
+        $interfaces = class_implements(ResetPasswordRequestRepositoryTraitTestFixture::class);
         self::assertArrayHasKey(ResetPasswordRequestRepositoryInterface::class, $interfaces);
 
-        // Ensure fixture uses PasswordResetRequestRepositoryTrait::class
-        $traits = class_uses(PWResetPasswordRequestRepositoryTraitTestFixture::class);
-        self::assertArrayHasKey(PasswordResetRequestRepositoryTrait::class, $traits);
+        // Ensure fixture uses ResetPasswordRequestRepositoryTrait::class
+        $traits = class_uses(ResetPasswordRequestRepositoryTraitTestFixture::class);
+        self::assertArrayHasKey(ResetPasswordRequestRepositoryTrait::class, $traits);
 
         // PHP throws fatal error if trait is not compatible with interface
-        new PWResetPasswordRequestRepositoryTraitTestFixture();
+        new ResetPasswordRequestRepositoryTraitTestFixture();
     }
 }

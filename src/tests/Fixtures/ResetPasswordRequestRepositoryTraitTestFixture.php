@@ -7,11 +7,11 @@ namespace SymfonyCasts\Bundle\ResetPassword\tests\Fixtures;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
-use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\PasswordResetRequestRepositoryTrait;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 
-class PWResetPasswordRequestRepositoryTraitTestFixture implements ResetPasswordRequestRepositoryInterface
+class ResetPasswordRequestRepositoryTraitTestFixture implements ResetPasswordRequestRepositoryInterface
 {
-    use PasswordResetRequestRepositoryTrait;
+    use ResetPasswordRequestRepositoryTrait;
 
     // createPasswordResetRequest() is a userland method.. To be reated by maker?
     public function createResetPasswordRequest(

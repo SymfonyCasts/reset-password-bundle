@@ -9,7 +9,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-trait PasswordResetRequestRepositoryTrait
+trait ResetPasswordRequestRepositoryTrait
 {
     public function getUserIdentifier(object $user): string
     {
