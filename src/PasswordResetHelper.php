@@ -83,7 +83,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
      */
-    public function generateResetToken(UserInterface $user): PasswordResetToken
+    public function generateResetToken(object $user): PasswordResetToken
     {
         if ($this->hasUserHisThrottling($user)) {
             throw new TooManyPasswordRequestsException();
@@ -120,12 +120,12 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      * Validate a PasswordResetRequest and fetch user from database
      *
      * @param string $fullToken selector + non-hashed verifier token
-     * @return UserInterface
+     * @return object
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
      * @throws \Throwable @TODO Refactor ResetPasswordTokenGenerator and change exception signature
      */
-    public function validateTokenAndFetchUser(string $fullToken): UserInterface
+    public function validateTokenAndFetchUser(string $fullToken): object
     {
         /** @var PasswordResetRequestInterface $resetToken */
         $resetRequest = $this->findToken($fullToken);
@@ -134,7 +134,6 @@ class PasswordResetHelper implements PasswordResetHelperInterface
             throw new ExpiredResetPasswordTokenException();
         }
 
-        /** @var UserInterface $user */
         $user = $resetRequest->getUser();
 
         $verifierToken = substr($fullToken, self::SELECTOR_LENGTH);
@@ -176,7 +175,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         return $this->repository->findPasswordResetRequest($selector);
     }
 
-    private function hasUserHisThrottling(UserInterface $user): bool
+    private function hasUserHisThrottling(object $user): bool
     {
         $lastRequestDate = $this->repository->getMostRecentNonExpiredRequestDate($user);
 

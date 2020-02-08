@@ -39,7 +39,7 @@ trait PasswordResetRequestRepositoryTrait
         return $this->findOneBy(['selector' => $selector]);
     }
 
-    public function getMostRecentNonExpiredRequestDate(UserInterface $user): ?\DateTimeInterface
+    public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
     {
         // Normally there is only 1 max request per use, but written to be flexible
         /** @var PasswordResetRequestInterface $resetRequest */
