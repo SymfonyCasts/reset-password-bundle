@@ -20,9 +20,9 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('password_request_repository')
+                ->scalarNode('request_password_repository')
                     ->isRequired()
-                    ->info('A class that implements ResetPasswordRequestRepositoryInterface - usually your PasswordResetTokenRepository.')
+                    ->info('A class that implements ResetPasswordRequestRepositoryInterface - usually your ResetPasswordTokenRepository.')
                 ->end()
                 ->scalarNode('signing_key')
                     ->info('App key to sign tokens')
