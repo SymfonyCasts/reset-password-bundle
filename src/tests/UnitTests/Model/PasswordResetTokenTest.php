@@ -2,14 +2,14 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model;
 
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 /**
  * @author  Jesse Rushlow <jr@geeshoe.com>
  */
 class PasswordResetTokenTest extends AbstractModelUnitTest
 {
-    protected $sut = PasswordResetToken::class;
+    protected $sut = ResetPasswordToken::class;
 
     /**
      * @var \DateTimeImmutable|\PHPUnit\Framework\MockObject\MockObject
@@ -44,7 +44,7 @@ class PasswordResetTokenTest extends AbstractModelUnitTest
         $expectedToken = '12345';
         $expectedExpires = $this->createMock(\DateTimeImmutable::class);
 
-        $resetToken = new PasswordResetToken($expectedToken, $expectedExpires);
+        $resetToken = new ResetPasswordToken($expectedToken, $expectedExpires);
 
         self::assertSame($expectedToken, $resetToken->getToken());
         self::assertSame($expectedExpires, $resetToken->getExpiresAt());

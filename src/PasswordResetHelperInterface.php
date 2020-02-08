@@ -3,7 +3,7 @@
 namespace SymfonyCasts\Bundle\ResetPassword;
 
 use Symfony\Component\Security\Core\User\UserInterface;
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -11,7 +11,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
  */
 interface PasswordResetHelperInterface
 {
-    public function generateResetToken(object $user): PasswordResetToken;
+    public function generateResetToken(object $user): ResetPasswordToken;
 
     public function validateTokenAndFetchUser(string $fullToken): object;
 

@@ -6,7 +6,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-final class PasswordResetToken
+final class ResetPasswordToken
 {
     private $token;
     private $expiresAt;

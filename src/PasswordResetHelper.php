@@ -9,7 +9,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
 
 /**
@@ -69,12 +69,12 @@ class PasswordResetHelper implements PasswordResetHelperInterface
     }
 
     /**
-     * Creates a PasswordResetToken object
+     * Creates a ResetPasswordToken object
      *
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
      */
-    public function generateResetToken(object $user): PasswordResetToken
+    public function generateResetToken(object $user): ResetPasswordToken
     {
         if ($this->hasUserHisThrottling($user)) {
             throw new TooManyPasswordRequestsException();
@@ -100,7 +100,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
 
         $this->repository->persistResetPasswordRequest($passwordResetRequest);
 
-        return new PasswordResetToken(
+        return new ResetPasswordToken(
             // final "public" token is the selector + non-hashed verifier token
             $selector.$plainVerifierToken,
             $expiresAt
