@@ -13,10 +13,10 @@ class PWResetRequestRepositoryTraitTest extends TestCase
 {
     public function methodDataProvider(): \Generator
     {
-        yield ['persistPasswordResetRequest'];
-        yield ['findPasswordResetRequest'];
+        yield ['persistResetPasswordRequest'];
+        yield ['findResetPasswordRequest'];
         yield ['getMostRecentNonExpiredRequestDate'];
-        yield ['removeResetRequest'];
+        yield ['removeResetPasswordRequest'];
     }
 
     /**

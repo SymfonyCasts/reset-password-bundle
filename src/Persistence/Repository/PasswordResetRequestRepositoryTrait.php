@@ -19,13 +19,13 @@ trait PasswordResetRequestRepositoryTrait
         ;
     }
 
-    public function persistPasswordResetRequest(PasswordResetRequestInterface $passwordResetRequest)
+    public function persistResetPasswordRequest(PasswordResetRequestInterface $passwordResetRequest)
     {
         $this->getEntityManager()->persist($passwordResetRequest);
         $this->getEntityManager()->flush($passwordResetRequest);
     }
 
-    public function findPasswordResetRequest(string $selector): ?PasswordResetRequestInterface
+    public function findResetPasswordRequest(string $selector): ?PasswordResetRequestInterface
     {
         return $this->findOneBy(['selector' => $selector]);
     }
@@ -50,7 +50,7 @@ trait PasswordResetRequestRepositoryTrait
         return null;
     }
 
-    public function removeResetRequest(PasswordResetRequestInterface $resetRequest): void
+    public function removeResetPasswordRequest(PasswordResetRequestInterface $resetRequest): void
     {
         $this->getEntityManager()->remove($resetRequest);
         $this->getEntityManager()->flush();

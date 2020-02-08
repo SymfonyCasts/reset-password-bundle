@@ -91,14 +91,14 @@ class PasswordResetHelper implements PasswordResetHelperInterface
             $this->repository->getUserIdentifier($user)
         );
 
-        $passwordResetRequest = $this->repository->createPasswordResetRequest(
+        $passwordResetRequest = $this->repository->createResetPasswordRequest(
             $user,
             $expiresAt,
             $selector,
             $hashedToken
         );
 
-        $this->repository->persistPasswordResetRequest($passwordResetRequest);
+        $this->repository->persistResetPasswordRequest($passwordResetRequest);
 
         return new PasswordResetToken(
             // final "public" token is the selector + non-hashed verifier token
@@ -153,14 +153,14 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         }
 
         $request = $this->findToken($fullToken);
-        $this->repository->removeResetRequest($request);
+        $this->repository->removeResetPasswordRequest($request);
     }
 
     private function findToken(string $token): PasswordResetRequestInterface
     {
         $selector = substr($token, 0, self::SELECTOR_LENGTH);
 
-        return $this->repository->findPasswordResetRequest($selector);
+        return $this->repository->findResetPasswordRequest($selector);
     }
 
     private function hasUserHisThrottling(object $user): bool

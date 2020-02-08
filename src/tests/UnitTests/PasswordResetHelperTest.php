@@ -132,7 +132,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
         ;
 
         $this->mockRepo
-            ->method('createPasswordResetRequest')
+            ->method('createResetPasswordRequest')
             ->willReturn(new PasswordResetRequestTestFixture())
         ;
 
@@ -166,7 +166,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
         ;
 
         $this->mockRepo
-            ->method('createPasswordResetRequest')
+            ->method('createResetPasswordRequest')
             ->willReturn(new PasswordResetRequestTestFixture())
         ;
 
@@ -216,7 +216,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
     {
         $this->mockRepo
             ->expects($this->once())
-            ->method('findPasswordResetRequest')
+            ->method('findResetPasswordRequest')
             ->with($this->randomToken)
             ->willReturn($this->mockResetRequest)
         ;
@@ -231,13 +231,13 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
     public function removeResetRequestCallsRepositoryToRemoveResetRequestObject(): void
     {
         $this->mockRepo
-            ->method('findPasswordResetRequest')
+            ->method('findResetPasswordRequest')
             ->willReturn($this->mockResetRequest)
         ;
 
         $this->mockRepo
             ->expects($this->once())
-            ->method('removeResetRequest')
+            ->method('removeResetPasswordRequest')
             ->with($this->mockResetRequest)
         ;
 
@@ -258,7 +258,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
         $this->mockRepo
             ->expects($this->once())
-            ->method('findPasswordResetRequest')
+            ->method('findResetPasswordRequest')
             ->with($this->randomToken)
             ->willReturn($this->mockResetRequest)
         ;
@@ -294,7 +294,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
         $this->mockRepo
             ->expects($this->once())
-            ->method('findPasswordResetRequest')
+            ->method('findResetPasswordRequest')
             ->with($this->randomToken)
             ->willReturn($this->mockResetRequest)
         ;
@@ -328,7 +328,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
         $this->mockRepo
             ->expects($this->once())
-            ->method('findPasswordResetRequest')
+            ->method('findResetPasswordRequest')
             ->willReturn($this->mockResetRequest)
         ;
 

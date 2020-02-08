@@ -14,7 +14,7 @@ class PWResetRequestRepositoryTraitTestFixture implements PasswordResetRequestRe
     use PasswordResetRequestRepositoryTrait;
 
     // createPasswordResetRequest() is a userland method.. To be reated by maker?
-    public function createPasswordResetRequest(
+    public function createResetPasswordRequest(
         object $user,
         \DateTimeInterface $expiresAt,
         string $selector,
