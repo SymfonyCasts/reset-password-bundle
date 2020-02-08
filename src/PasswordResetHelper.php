@@ -8,7 +8,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenExcepti
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetToken;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
 
@@ -156,7 +156,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
         $this->repository->removeResetPasswordRequest($request);
     }
 
-    private function findToken(string $token): PasswordResetRequestInterface
+    private function findToken(string $token): ResetPasswordRequestInterface
     {
         $selector = substr($token, 0, self::SELECTOR_LENGTH);
 

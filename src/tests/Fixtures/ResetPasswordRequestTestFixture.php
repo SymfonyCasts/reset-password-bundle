@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\Fixtures;
 
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
-class PasswordResetRequestTestFixture implements PasswordResetRequestInterface
+class ResetPasswordRequestTestFixture implements ResetPasswordRequestInterface
 {
 
     public function getRequestedAt(): \DateTimeInterface

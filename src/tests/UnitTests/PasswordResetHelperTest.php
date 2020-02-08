@@ -7,10 +7,10 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenExcepti
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
-use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
-use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\PasswordResetRequestTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\UserTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model\AbstractModelUnitTest;
 
@@ -52,7 +52,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
     protected $mockRandomGenerator;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|PasswordResetRequestInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRequestInterface
      */
     protected $mockResetRequest;
 
@@ -77,7 +77,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
         $this->requestThrottleTime = 99999999;
         $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
         $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
-        $this->mockResetRequest = $this->createMock(PasswordResetRequestInterface::class);
+        $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
         $this->randomToken = \bin2hex(\random_bytes(10));
         $this->mockUserFixture = $this->createMock(UserTestFixture::class);
     }
@@ -133,7 +133,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
         $this->mockRepo
             ->method('createResetPasswordRequest')
-            ->willReturn(new PasswordResetRequestTestFixture())
+            ->willReturn(new ResetPasswordRequestTestFixture())
         ;
 
         $helper = $this->getPasswordResetHelper();
@@ -167,7 +167,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
         $this->mockRepo
             ->method('createResetPasswordRequest')
-            ->willReturn(new PasswordResetRequestTestFixture())
+            ->willReturn(new ResetPasswordRequestTestFixture())
         ;
 
         $helper = $this->getPasswordResetHelper();

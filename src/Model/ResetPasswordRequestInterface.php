@@ -6,7 +6,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-interface PasswordResetRequestInterface
+interface ResetPasswordRequestInterface
 {
     public function getRequestedAt(): \DateTimeInterface;
 
