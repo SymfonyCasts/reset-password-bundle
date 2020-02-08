@@ -125,6 +125,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
     /**
      * @test
+     * @covers \SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper::hasUserHisThrottling
      */
     public function hasUserThrottlingReturnsFalseWithNoLastRequestDate(): void
     {
@@ -151,6 +152,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
     /**
      * @test
+     * @covers \SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper::hasUserHisThrottling
      */
     public function hasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
     {
@@ -282,10 +284,10 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
      */
     public function validateTokenFetchesUserIfTokenNotExpired(): void
     {
-        $this->mockUserFixture
+        $this->mockResetRequest
             ->expects($this->once())
-            ->method('getId')
-            ->willReturn('1234')
+            ->method('isExpired')
+            ->willReturn(false)
         ;
 
         $this->mockResetRequest
@@ -294,7 +296,14 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
             ->willReturn($this->mockUserFixture)
         ;
 
+        $this->mockResetRequest
+            ->expects($this->once())
+            ->method('getExpiresAt')
+            ->willReturn(new \DateTimeImmutable())
+        ;
+
         $this->mockRepo
+            ->expects($this->once())
             ->method('findPasswordResetRequest')
             ->with($this->randomToken)
             ->willReturn($this->mockResetRequest)
@@ -309,12 +318,14 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
      */
     public function validateTokenThrowsExceptionIfTokenAndVerifierDoNotMatch(): void
     {
-        $this->mockUserFixture
-            ->method('getId')
-            ->willReturn('1234')
+        $this->mockResetRequest
+            ->expects($this->once())
+            ->method('getExpiresAt')
+            ->willReturn(new \DateTimeImmutable())
         ;
 
         $this->mockResetRequest
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn($this->mockUserFixture)
         ;
@@ -326,6 +337,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
         ;
 
         $this->mockRepo
+            ->expects($this->once())
             ->method('findPasswordResetRequest')
             ->willReturn($this->mockResetRequest)
         ;
