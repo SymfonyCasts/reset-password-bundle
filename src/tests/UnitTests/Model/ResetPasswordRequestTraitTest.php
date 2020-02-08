@@ -2,14 +2,14 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model;
 
-use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\PasswordResetRequestTraitTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTraitTestFixture;
 
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
  */
-class PasswordResetRequestTraitTest extends AbstractModelUnitTest
+class ResetPasswordRequestTraitTest extends AbstractModelUnitTest
 {
-    protected $sut = PasswordResetRequestTraitTestFixture::class;
+    protected $sut = ResetPasswordRequestTraitTestFixture::class;
 
     /**
      * @var \DateTimeImmutable
@@ -36,7 +36,7 @@ class PasswordResetRequestTraitTest extends AbstractModelUnitTest
         $this->hashedToken = 'hashed';
     }
 
-    protected function getFixture(): PasswordResetRequestTraitTestFixture
+    protected function getFixture(): ResetPasswordRequestTraitTestFixture
     {
         return new $this->sut(
             $this->expiresAt,

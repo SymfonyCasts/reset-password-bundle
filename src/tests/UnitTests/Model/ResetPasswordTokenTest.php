@@ -7,7 +7,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 /**
  * @author  Jesse Rushlow <jr@geeshoe.com>
  */
-class PasswordResetTokenTest extends AbstractModelUnitTest
+class ResetPasswordTokenTest extends AbstractModelUnitTest
 {
     protected $sut = ResetPasswordToken::class;
 

@@ -17,7 +17,7 @@ use SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model\AbstractModelUnitTes
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
  */
-class PasswordResetHelperTest extends AbstractModelUnitTest
+class ResetPasswordHelperTest extends AbstractModelUnitTest
 {
     protected $sut = ResetPasswordHelper::class;
 

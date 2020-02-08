@@ -7,7 +7,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
  */
-class PasswordResetRequestTraitTestFixture
+class ResetPasswordRequestTraitTestFixture
 {
     use ResetPasswordRequestTrait;
 }
