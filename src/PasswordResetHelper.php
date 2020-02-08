@@ -108,17 +108,14 @@ class PasswordResetHelper implements PasswordResetHelperInterface
     }
 
     /**
-     * Validate a PasswordResetRequest and fetch user from database
+     * Validate a PasswordResetRequest and fetch user from persistence
      *
      * @param string $fullToken selector + non-hashed verifier token
-     * @return object
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
-     * @throws \Throwable @TODO Refactor ResetPasswordTokenGenerator and change exception signature
      */
     public function validateTokenAndFetchUser(string $fullToken): object
     {
-        /** @var PasswordResetRequestInterface $resetToken */
         $resetRequest = $this->findToken($fullToken);
 
         if ($resetRequest->isExpired()) {
