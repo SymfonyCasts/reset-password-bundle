@@ -128,9 +128,9 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
      */
     public function hasUserThrottlingReturnsFalseWithNoLastRequestDate(): void
     {
-        $this->mockUserFixture
+        $this->mockRepo
             ->expects($this->once())
-            ->method('getId')
+            ->method('getUserIdentifier')
             ->willReturn('1234')
         ;
 
@@ -154,9 +154,9 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
      */
     public function hasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
     {
-        $this->mockUserFixture
+        $this->mockRepo
             ->expects($this->once())
-            ->method('getId')
+            ->method('getUserIdentifier')
             ->willReturn('1234')
         ;
 

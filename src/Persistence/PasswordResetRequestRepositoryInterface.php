@@ -22,6 +22,8 @@ interface PasswordResetRequestRepositoryInterface
 {
     public function createPasswordResetRequest(UserInterface $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): PasswordResetRequestInterface;
 
+    public function getUserIdentifier(object $user): string;
+
     public function persistPasswordResetRequest(PasswordResetRequestInterface $passwordResetRequest);
 
     public function findPasswordResetRequest(string $selector): ?PasswordResetRequestInterface;

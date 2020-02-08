@@ -97,7 +97,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
             $this->tokenSigningKey,
             $expiresAt,
             $plainVerifierToken,
-            $user->getId()
+            $this->repository->getUserIdentifier($user)
         );
 
         $passwordResetRequest = $this->repository->createPasswordResetRequest(
@@ -143,7 +143,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
             $this->tokenSigningKey,
             $resetRequest->getExpiresAt(),
             $verifierToken,
-            $user->getId()
+            $this->repository->getUserIdentifier($user)
         );
 
         if (false === hash_equals($resetRequest->getHashedToken(), $hashedVerifierToken)) {

@@ -20,12 +20,12 @@ use SymfonyCasts\Bundle\ResetPassword\Model\PasswordResetRequestInterface;
  */
 trait PasswordResetRequestRepositoryTrait
 {
-    //@todo implement method or remove it
-    public function getUserIdentifier(UserInterface $user): string
+    public function getUserIdentifier(object $user): string
     {
-        $this->getEntityManager()
+        return $this->getEntityManager()
             ->getUnitOfWork()
-            ->getSingleIdentifierValue($user);
+            ->getSingleIdentifierValue($user)
+        ;
     }
 
     public function persistPasswordResetRequest(PasswordResetRequestInterface $passwordResetRequest)
