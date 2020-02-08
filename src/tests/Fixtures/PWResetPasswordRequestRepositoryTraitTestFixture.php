@@ -6,10 +6,10 @@ namespace SymfonyCasts\Bundle\ResetPassword\tests\Fixtures;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
-use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\PasswordResetRequestRepositoryTrait;
 
-class PWResetRequestRepositoryTraitTestFixture implements PasswordResetRequestRepositoryInterface
+class PWResetPasswordRequestRepositoryTraitTestFixture implements ResetPasswordRequestRepositoryInterface
 {
     use PasswordResetRequestRepositoryTrait;
 

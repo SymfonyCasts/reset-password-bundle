@@ -10,7 +10,7 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
-use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -29,7 +29,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
     private const SELECTOR_LENGTH = 20;
 
     /**
-     * @var PasswordResetRequestRepositoryInterface
+     * @var ResetPasswordRequestRepositoryInterface
      */
     private $repository;
 
@@ -58,7 +58,7 @@ class PasswordResetHelper implements PasswordResetHelperInterface
      */
     private $randomGenerator;
 
-    public function __construct(PasswordResetRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, ResetPasswordTokenGenerator $generator, ResetPasswordRandomGenerator $randomGenerator)
+    public function __construct(ResetPasswordRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, ResetPasswordTokenGenerator $generator, ResetPasswordRandomGenerator $randomGenerator)
     {
         $this->repository = $repository;
         $this->tokenSigningKey = $tokenSigningKey;

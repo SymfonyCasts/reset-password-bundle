@@ -9,7 +9,7 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper;
-use SymfonyCasts\Bundle\ResetPassword\Persistence\PasswordResetRequestRepositoryInterface;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\UserTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model\AbstractModelUnitTest;
@@ -22,7 +22,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
     protected $sut = PasswordResetHelper::class;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|PasswordResetRequestRepositoryInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRequestRepositoryInterface
      */
     protected $mockRepo;
 
@@ -71,7 +71,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
      */
     protected function setUp()
     {
-        $this->mockRepo = $this->createMock(PasswordResetRequestRepositoryInterface::class);
+        $this->mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
         $this->tokenSigningKey = 'unit-test';
         $this->resetRequestLifetime = 99999999;
         $this->requestThrottleTime = 99999999;
