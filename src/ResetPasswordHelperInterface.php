@@ -9,7 +9,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-interface PasswordResetHelperInterface
+interface ResetPasswordHelperInterface
 {
     public function generateResetToken(object $user): ResetPasswordToken;
 

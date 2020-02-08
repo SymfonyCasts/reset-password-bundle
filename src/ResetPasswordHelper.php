@@ -16,7 +16,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-class PasswordResetHelper implements PasswordResetHelperInterface
+class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
     /**
      * Length of time a reset request is valid for

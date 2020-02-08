@@ -8,7 +8,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
-use SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\UserTestFixture;
@@ -19,7 +19,7 @@ use SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model\AbstractModelUnitTes
  */
 class PasswordResetHelperTest extends AbstractModelUnitTest
 {
-    protected $sut = PasswordResetHelper::class;
+    protected $sut = ResetPasswordHelper::class;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRequestRepositoryInterface
@@ -82,9 +82,9 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
         $this->mockUserFixture = $this->createMock(UserTestFixture::class);
     }
 
-    protected function getPasswordResetHelper(): PasswordResetHelper
+    protected function getPasswordResetHelper(): ResetPasswordHelper
     {
-        return new PasswordResetHelper(
+        return new ResetPasswordHelper(
             $this->mockRepo,
             $this->tokenSigningKey,
             $this->resetRequestLifetime,
@@ -115,7 +115,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
     /**
      * @test
-     * @covers \SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper::hasUserHisThrottling
+     * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHisThrottling
      */
     public function hasUserThrottlingReturnsFalseWithNoLastRequestDate(): void
     {
@@ -142,7 +142,7 @@ class PasswordResetHelperTest extends AbstractModelUnitTest
 
     /**
      * @test
-     * @covers \SymfonyCasts\Bundle\ResetPassword\PasswordResetHelper::hasUserHisThrottling
+     * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHisThrottling
      */
     public function hasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
     {
