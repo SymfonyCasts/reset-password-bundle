@@ -44,9 +44,6 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue(3600)
                     ->info('How long a reset password token should be valid before expiring.')
                 ->end()
-                ->scalarNode('token_generator')
-                    ->info('Generator used to create tokens')
-                ->end()
             ->end();
 
         return $treeBuilder;
