@@ -19,10 +19,10 @@ trait PasswordResetRequestRepositoryTrait
         ;
     }
 
-    public function persistResetPasswordRequest(PasswordResetRequestInterface $passwordResetRequest)
+    public function persistResetPasswordRequest(PasswordResetRequestInterface $resetPasswordRequest)
     {
-        $this->getEntityManager()->persist($passwordResetRequest);
-        $this->getEntityManager()->flush($passwordResetRequest);
+        $this->getEntityManager()->persist($resetPasswordRequest);
+        $this->getEntityManager()->flush($resetPasswordRequest);
     }
 
     public function findResetPasswordRequest(string $selector): ?PasswordResetRequestInterface
@@ -33,8 +33,8 @@ trait PasswordResetRequestRepositoryTrait
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
     {
         // Normally there is only 1 max request per use, but written to be flexible
-        /** @var PasswordResetRequestInterface $resetRequest */
-        $resetRequest = $this->createQueryBuilder('t')
+        /** @var PasswordResetRequestInterface $resetPasswordRequest */
+        $resetPasswordRequest = $this->createQueryBuilder('t')
             ->where('t.user = :user')
             ->setParameter('user', $user)
             ->orderBy('t.requestedAt', 'DESC')
@@ -43,16 +43,16 @@ trait PasswordResetRequestRepositoryTrait
             ->getOneorNullResult()
         ;
 
-        if (null !== $resetRequest && !$resetRequest->isExpired()) {
-            return $resetRequest->getRequestedAt();
+        if (null !== $resetPasswordRequest && !$resetPasswordRequest->isExpired()) {
+            return $resetPasswordRequest->getRequestedAt();
         }
 
         return null;
     }
 
-    public function removeResetPasswordRequest(PasswordResetRequestInterface $resetRequest): void
+    public function removeResetPasswordRequest(PasswordResetRequestInterface $resetPasswordRequest): void
     {
-        $this->getEntityManager()->remove($resetRequest);
+        $this->getEntityManager()->remove($resetPasswordRequest);
         $this->getEntityManager()->flush();
     }
 }

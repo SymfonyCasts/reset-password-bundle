@@ -15,11 +15,11 @@ interface PasswordResetRequestRepositoryInterface
 
     public function getUserIdentifier(object $user): string;
 
-    public function persistResetPasswordRequest(PasswordResetRequestInterface $passwordResetRequest);
+    public function persistResetPasswordRequest(PasswordResetRequestInterface $resetPasswordRequest);
 
     public function findResetPasswordRequest(string $selector): ?PasswordResetRequestInterface;
 
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface;
 
-    public function removeResetPasswordRequest(PasswordResetRequestInterface $password): void;
+    public function removeResetPasswordRequest(PasswordResetRequestInterface $resetPasswordRequest): void;
 }
