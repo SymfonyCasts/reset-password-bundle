@@ -9,13 +9,10 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
  */
 final class ResetPasswordTokenGenerator
 {
-    //@TODO who was supposed to use me
-    public const HMAC_HASH_ALGO = 'sha256';
-
     public function getToken(string $signingKey, \DateTimeInterface $expiresAt, string $verifier, string $userId): string
     {
         return \hash_hmac(
-            self::HMAC_HASH_ALGO,
+            'sha256',
             $this->encodeHashData($expiresAt, $verifier, $userId),
             $signingKey,
             false
