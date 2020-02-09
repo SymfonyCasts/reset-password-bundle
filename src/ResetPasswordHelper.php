@@ -80,7 +80,10 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
             throw new TooManyPasswordRequestsException();
         }
 
-        $expiresAt = $this->getNewExpiresAt();
+        $expiresAt = (new \DateTimeImmutable('now'))
+            ->modify(sprintf('+%d seconds', $this->resetRequestLifetime))
+        ;
+
         $selector = $this->randomGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
         $plainVerifierToken = $this->randomGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
 
@@ -176,11 +179,5 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         }
 
         return false;
-    }
-
-    private function getNewExpiresAt(): \DateTimeImmutable
-    {
-        return (new \DateTimeImmutable('now'))
-            ->modify(sprintf('+%d seconds', $this->resetRequestLifetime));
     }
 }
