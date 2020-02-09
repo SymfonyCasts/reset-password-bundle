@@ -2,7 +2,6 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
@@ -18,11 +17,6 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  */
 class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
-    /**
-     * Length of time a reset request is valid for
-     */
-    public const LIFETIME_HOURS = 1;
-
     /**
      * The first 20 characters of the token are a "selector"
      */
