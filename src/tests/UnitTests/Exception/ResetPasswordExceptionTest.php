@@ -30,20 +30,18 @@ class ResetPasswordExceptionTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider exceptionDataProvider
      */
-    public function isReason(string $exception, string $message): void
+    public function testIsReason(string $exception, string $message): void
     {
         $result = new $exception();
         self::assertSame($message, $result->getReason());
     }
 
     /**
-     * @test
      * @dataProvider exceptionDataProvider
      */
-    public function implementsResetPasswordExceptionInterface(string $exception): void
+    public function testImplementsResetPasswordExceptionInterface(string $exception): void
     {
         $interfaces = class_implements($exception);
         self::assertArrayHasKey(ResetPasswordExceptionInterface::class, $interfaces);
