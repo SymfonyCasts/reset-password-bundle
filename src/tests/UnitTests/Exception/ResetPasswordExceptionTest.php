@@ -11,7 +11,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException
 /**
  * @author  Jesse Rushlow <jr@geeshoe.com>
  */
-class ExceptionTest extends TestCase
+class ResetPasswordExceptionTest extends TestCase
 {
     public function exceptionDataProvider(): \Generator
     {
