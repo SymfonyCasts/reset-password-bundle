@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ResetPasswordRandomGeneratorTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function isProvidedLength(): void
+    public function testIsProvidedLength(): void
     {
         $generator = new ResetPasswordRandomGenerator();
         $result = $generator->getRandomAlphaNumStr(100);
@@ -22,10 +19,7 @@ class ResetPasswordRandomGeneratorTest extends TestCase
         self::assertSame(100, strlen($result));
     }
 
-    /**
-     * @test
-     */
-    public function isRandom(): void
+    public function testIsRandom(): void
     {
         $generator = new ResetPasswordRandomGenerator();
 
