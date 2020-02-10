@@ -6,8 +6,9 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @internal
+ * @final
  */
-final class ResetPasswordRandomGenerator
+class ResetPasswordRandomGenerator
 {
     /**
      * Original credit to Laravel's Str::random() method.

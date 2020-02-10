@@ -6,8 +6,9 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @internal
+ * @final
  */
-final class ResetPasswordTokenGenerator
+class ResetPasswordTokenGenerator
 {
     public function getToken(string $signingKey, \DateTimeInterface $expiresAt, string $verifier, string $userId): string
     {
