@@ -12,7 +12,6 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTestFixture;
-use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\UserTestFixture;
 
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
@@ -55,9 +54,9 @@ class ResetPasswordHelperTest extends TestCase
     private $randomToken;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UserTestFixture
+     * @var object
      */
-    private $mockUserFixture;
+    private $mockUser;
 
     /**
      * @inheritDoc
@@ -71,7 +70,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
         $this->randomToken = \bin2hex(\random_bytes(10));
-        $this->mockUserFixture = $this->createMock(UserTestFixture::class);
+        $this->mockUser = new class {};
     }
 
     private function getPasswordResetHelper(): ResetPasswordHelper
@@ -109,7 +108,7 @@ class ResetPasswordHelperTest extends TestCase
         ;
 
         $helper = $this->getPasswordResetHelper();
-        $helper->generateResetToken($this->mockUserFixture);
+        $helper->generateResetToken($this->mockUser);
     }
 
     /**
@@ -142,7 +141,7 @@ class ResetPasswordHelperTest extends TestCase
         ;
 
         $helper = $this->getPasswordResetHelper();
-        $helper->generateResetToken($this->mockUserFixture);
+        $helper->generateResetToken($this->mockUser);
     }
 
     public function testExceptionThrownIfRequestBeforeThrottleLimit(): void
@@ -163,7 +162,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->expectException(TooManyPasswordRequestsException::class);
 
         $helper = $this->getPasswordResetHelper();
-        $helper->generateResetToken($this->mockUserFixture);
+        $helper->generateResetToken($this->mockUser);
     }
 
     public function testRemoveResetRequestThrowsExceptionWithEmptyToken(): void
@@ -236,7 +235,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockResetRequest
             ->expects($this->once())
             ->method('getUser')
-            ->willReturn($this->mockUserFixture)
+            ->willReturn($this->mockUser)
         ;
 
         $this->mockResetRequest
@@ -267,7 +266,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockResetRequest
             ->expects($this->once())
             ->method('getUser')
-            ->willReturn($this->mockUserFixture)
+            ->willReturn($this->mockUser)
         ;
 
         $this->mockResetRequest
