@@ -2,6 +2,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests;
 
+use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
@@ -12,67 +13,58 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\UserTestFixture;
-use SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Model\AbstractModelUnitTest;
 
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
  */
-class ResetPasswordHelperTest extends AbstractModelUnitTest
+class ResetPasswordHelperTest extends TestCase
 {
-    protected $sut = ResetPasswordHelper::class;
-
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRequestRepositoryInterface
      */
-    protected $mockRepo;
-
-    /**
-     * @var string
-     */
-    protected $tokenSigningKey;
+    private $mockRepo;
 
     /**
      * @var int
      */
-    protected $resetRequestLifetime;
+    private $resetRequestLifetime;
 
     /**
      * @var int
      */
-    protected $requestThrottleTime;
+    private $requestThrottleTime;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordTokenGenerator
      */
-    protected $mockTokenGenerator;
+    private $mockTokenGenerator;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRandomGenerator
      */
-    protected $mockRandomGenerator;
+    private $mockRandomGenerator;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRequestInterface
      */
-    protected $mockResetRequest;
+    private $mockResetRequest;
 
     /**
      * @var string
      */
-    protected $randomToken;
+    private $randomToken;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|UserTestFixture
      */
-    protected $mockUserFixture;
+    private $mockUserFixture;
 
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
-        $this->tokenSigningKey = 'unit-test';
         $this->resetRequestLifetime = 99999999;
         $this->requestThrottleTime = 99999999;
         $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
@@ -82,11 +74,11 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $this->mockUserFixture = $this->createMock(UserTestFixture::class);
     }
 
-    protected function getPasswordResetHelper(): ResetPasswordHelper
+    private function getPasswordResetHelper(): ResetPasswordHelper
     {
         return new ResetPasswordHelper(
             $this->mockRepo,
-            $this->tokenSigningKey,
+            'key',
             $this->resetRequestLifetime,
             $this->requestThrottleTime,
             $this->mockTokenGenerator,
@@ -94,30 +86,10 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         );
     }
 
-    public function propertyDataProvider(): \Generator
-    {
-        yield ['repository', 'private', ''];
-        yield ['tokenSigningKey', 'private', ''];
-        yield ['resetRequestLifetime', 'private', ''];
-        yield ['requestThrottleTime', 'private', ''];
-        yield ['tokenGenerator', 'private', ''];
-    }
-
-    public function methodDataProvider(): \Generator
-    {
-        yield ['generateResetToken', 'public'];
-        yield ['validateTokenAndFetchUser', 'public'];
-        yield ['removeResetRequest', 'public'];
-        yield ['findToken', 'private'];
-        yield ['hasUserHisThrottling', 'private'];
-
-    }
-
     /**
-     * @test
      * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHisThrottling
      */
-    public function hasUserThrottlingReturnsFalseWithNoLastRequestDate(): void
+    public function testHasUserThrottlingReturnsFalseWithNoLastRequestDate(): void
     {
         $this->mockRepo
             ->expects($this->once())
@@ -141,10 +113,9 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
     }
 
     /**
-     * @test
      * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHisThrottling
      */
-    public function hasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
+    public function testHasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
     {
         $this->mockRepo
             ->expects($this->once())
@@ -174,10 +145,7 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $helper->generateResetToken($this->mockUserFixture);
     }
 
-    /**
-     * @test
-     */
-    public function exceptionThrownIfRequestBeforeThrottleLimit(): void
+    public function testExceptionThrownIfRequestBeforeThrottleLimit(): void
     {
         $mockLastRequestTime = $this->createMock(\DateTimeImmutable::class);
         $mockLastRequestTime
@@ -198,10 +166,7 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $helper->generateResetToken($this->mockUserFixture);
     }
 
-    /**
-     * @test
-     */
-    public function removeResetRequestThrowsExceptionWithEmptyToken(): void
+    public function testRemoveResetRequestThrowsExceptionWithEmptyToken(): void
     {
         $this->expectException(InvalidResetPasswordTokenException::class);
 
@@ -209,10 +174,7 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $helper->removeResetRequest('');
     }
 
-    /**
-     * @test
-     */
-    public function removeResetRequestRetrievesTokenFromRepository(): void
+    public function testRemoveResetRequestRetrievesTokenFromRepository(): void
     {
         $this->mockRepo
             ->expects($this->once())
@@ -225,10 +187,7 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $helper->removeResetRequest($this->randomToken);
     }
 
-    /**
-     * @test
-     */
-    public function removeResetRequestCallsRepositoryToRemoveResetRequestObject(): void
+    public function testRemoveResetRequestCallsRepositoryToRemoveResetRequestObject(): void
     {
         $this->mockRepo
             ->method('findResetPasswordRequest')
@@ -245,10 +204,7 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $helper->removeResetRequest('1234');
     }
 
-    /**
-     * @test
-     */
-    public function validateTokenThrowsExceptionOnExpiredResetRequest(): void
+    public function testValidateTokenThrowsExceptionOnExpiredResetRequest(): void
     {
         $this->mockResetRequest
             ->expects($this->once())
@@ -269,10 +225,7 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $helper->validateTokenAndFetchUser($this->randomToken);
     }
 
-    /**
-     * @test
-     */
-    public function validateTokenFetchesUserIfTokenNotExpired(): void
+    public function testValidateTokenFetchesUserIfTokenNotExpired(): void
     {
         $this->mockResetRequest
             ->expects($this->once())
@@ -303,10 +256,7 @@ class ResetPasswordHelperTest extends AbstractModelUnitTest
         $helper->validateTokenAndFetchUser($this->randomToken);
     }
 
-    /**
-     * @test
-     */
-    public function validateTokenThrowsExceptionIfTokenAndVerifierDoNotMatch(): void
+    public function testValidateTokenThrowsExceptionIfTokenAndVerifierDoNotMatch(): void
     {
         $this->mockResetRequest
             ->expects($this->once())
