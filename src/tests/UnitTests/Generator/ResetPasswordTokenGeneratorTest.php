@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ResetPasswordTokenGeneratorTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function hashDataEncodesToJson(): void
+    public function testHashDataEncodesToJson(): void
     {
         //@todo refactor or remove
         $this->markTestSkipped('encodeHashData is private.');
@@ -29,10 +26,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         self::assertJson($result);
     }
 
-    /**
-     * @test
-     */
-    public function hashDataEncodesWithProvidedParams(): void
+    public function testHashDataEncodesWithProvidedParams(): void
     {
         //@todo refactor or remove
         $this->markTestSkipped('encodeHashData is private.');
@@ -49,10 +43,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function returnsHmacHashedToken(): void
+    public function testReturnsHmacHashedToken(): void
     {
         $mockExpiresAt = $this->createMock(\DateTimeImmutable::class);
         $mockExpiresAt
