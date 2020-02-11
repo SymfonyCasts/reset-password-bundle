@@ -24,16 +24,6 @@ class ResetPasswordHelperTest extends TestCase
     private $mockRepo;
 
     /**
-     * @var int
-     */
-    private $resetRequestLifetime;
-
-    /**
-     * @var int
-     */
-    private $requestThrottleTime;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordTokenGenerator
      */
     private $mockTokenGenerator;
@@ -64,8 +54,6 @@ class ResetPasswordHelperTest extends TestCase
     protected function setUp(): void
     {
         $this->mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
-        $this->resetRequestLifetime = 99999999;
-        $this->requestThrottleTime = 99999999;
         $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
         $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
@@ -78,8 +66,8 @@ class ResetPasswordHelperTest extends TestCase
         return new ResetPasswordHelper(
             $this->mockRepo,
             'key',
-            $this->resetRequestLifetime,
-            $this->requestThrottleTime,
+            99999999,
+            99999999,
             $this->mockTokenGenerator,
             $this->mockRandomGenerator
         );
