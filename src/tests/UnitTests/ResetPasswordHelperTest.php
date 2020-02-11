@@ -65,7 +65,6 @@ class ResetPasswordHelperTest extends TestCase
     {
         return new ResetPasswordHelper(
             $this->mockRepo,
-            'key',
             99999999,
             99999999,
             $this->mockTokenGenerator,

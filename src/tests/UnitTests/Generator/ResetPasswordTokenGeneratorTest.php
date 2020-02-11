@@ -53,12 +53,12 @@ class ResetPasswordTokenGeneratorTest extends TestCase
             ->willReturn('2020')
         ;
 
-        $signingKey = 'abcd';
+        $signingKey = 'unit-test';
         $verifier = 'verify';
         $userId = '1234';
 
-        $generator = new ResetPasswordTokenGenerator();
-        $result = $generator->getToken($signingKey, $mockExpiresAt, $verifier, $userId);
+        $generator = new ResetPasswordTokenGenerator($signingKey);
+        $result = $generator->getToken($mockExpiresAt, $verifier, $userId);
 
         $expected = \hash_hmac(
             'sha256',

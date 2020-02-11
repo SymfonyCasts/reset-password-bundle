@@ -10,17 +10,26 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
  */
 class ResetPasswordTokenGenerator
 {
-    public function getToken(string $signingKey, \DateTimeInterface $expiresAt, string $verifier, string $userId): string
+    /**
+     * @var string Unique, random, cryptographically secure string
+     */
+    private $signingKey;
+
+    public function __construct(string $signingKey)
+    {
+        $this->signingKey = $signingKey;
+    }
+
+    public function getToken(\DateTimeInterface $expiresAt, string $verifier, string $userId): string
     {
         return \hash_hmac(
             'sha256',
             $this->encodeHashData($expiresAt, $verifier, $userId),
-            $signingKey,
+            $this->signingKey,
             false
         );
     }
 
-    //@todo make me private | fix tests for private
     private function encodeHashData(\DateTimeInterface $expiresAt, string $verifier, string $userId): string
     {
         return \json_encode([

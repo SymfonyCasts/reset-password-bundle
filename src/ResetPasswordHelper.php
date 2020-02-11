@@ -28,11 +28,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     private $repository;
 
     /**
-     * @var string Unique, random, cryptographically secure string
-     */
-    private $tokenSigningKey;
-
-    /**
      * @var int How long a token is valid in seconds
      */
     private $resetRequestLifetime;
@@ -52,10 +47,9 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private $randomGenerator;
 
-    public function __construct(ResetPasswordRequestRepositoryInterface $repository, string $tokenSigningKey, int $resetRequestLifetime, int $requestThrottleTime, ResetPasswordTokenGenerator $generator, ResetPasswordRandomGenerator $randomGenerator)
+    public function __construct(ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime, ResetPasswordTokenGenerator $generator, ResetPasswordRandomGenerator $randomGenerator)
     {
         $this->repository = $repository;
-        $this->tokenSigningKey = $tokenSigningKey;
         $this->resetRequestLifetime = $resetRequestLifetime;
         $this->requestThrottleTime = $requestThrottleTime;
         $this->tokenGenerator = $generator;
@@ -82,7 +76,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         $plainVerifierToken = $this->randomGenerator->getRandomAlphaNumStr(self::SELECTOR_LENGTH);
 
         $hashedToken = $this->tokenGenerator->getToken(
-            $this->tokenSigningKey,
             $expiresAt,
             $plainVerifierToken,
             $this->repository->getUserIdentifier($user)
@@ -124,7 +117,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         $verifierToken = substr($fullToken, self::SELECTOR_LENGTH);
 
         $hashedVerifierToken = $this->tokenGenerator->getToken(
-            $this->tokenSigningKey,
             $resetRequest->getExpiresAt(),
             $verifierToken,
             $this->repository->getUserIdentifier($user)
