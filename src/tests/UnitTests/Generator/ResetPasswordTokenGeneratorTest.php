@@ -91,4 +91,34 @@ class ResetPasswordTokenGeneratorTest extends TestCase
 
         self::assertSame($expected, $result->getHashedToken());
     }
+
+    public function testHashedTokenIsCreatedUsingOptionVerifierParam(): void
+    {
+        $date = '2020';
+        $userId = 'user1234';
+        $knownVerifier = 'verified';
+
+        $this->mockRandomGenerator
+            ->expects($this->exactly(2))
+            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
+            ->willReturnOnConsecutiveCalls('un-used-verifier', 'selector')
+        ;
+
+        $this->mockExpiresAt
+            ->expects($this->once())
+            ->method('format')
+            ->willReturn($date)
+        ;
+
+        $knownToken = \hash_hmac(
+            'sha256',
+            \json_encode([$knownVerifier, $userId, $date]),
+            'key'
+        );
+
+        $generator = $this->getTokenGenerator();
+        $result = $generator->getToken($this->mockExpiresAt, $userId, $knownVerifier);
+
+        self::assertSame($knownToken, $result->getHashedToken());
+    }
 }

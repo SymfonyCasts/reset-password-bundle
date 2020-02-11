@@ -39,17 +39,22 @@ class ResetPasswordTokenGenerator
     /**
      * Get a cryptographically secure token with it's non-hashed components.
      *
-     * @param mixed $userId Unique user identifier
+     * @param mixed  $userId   Unique user identifier
+     * @param string $verifier Only required for token comparison
      */
-    public function getToken(\DateTimeInterface $expiresAt, $userId): ResetPasswordTokenComponents
+    public function getToken(\DateTimeInterface $expiresAt, $userId, string $verifier = null): ResetPasswordTokenComponents
     {
+        if (empty($verifier)) {
+            $verifier = $this->verifier;
+        }
+
         $selector = $this->randomGenerator->getRandomAlphaNumStr(self::RANDOM_STR_LENGTH);
 
-        $encodedData = \json_encode([$this->verifier, $userId, $expiresAt->format('Y-m-d\TH:i:s')]);
+        $encodedData = \json_encode([$verifier, $userId, $expiresAt->format('Y-m-d\TH:i:s')]);
 
         return new ResetPasswordTokenComponents(
             $selector,
-            $this->verifier,
+            $verifier,
             $this->getHashedToken($encodedData)
         );
     }
