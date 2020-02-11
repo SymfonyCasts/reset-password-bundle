@@ -8,7 +8,14 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
  */
 final class ResetPasswordToken
 {
+    /**
+     * @var string selector + non-hashed verifier token
+     */
     private $token;
+
+    /**
+     * @var \DateTimeInterface
+     */
     private $expiresAt;
 
     public function __construct(string $token, \DateTimeImmutable $expiresAt)
