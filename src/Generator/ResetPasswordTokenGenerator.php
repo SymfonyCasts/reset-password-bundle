@@ -23,46 +23,39 @@ class ResetPasswordTokenGenerator
      * @var ResetPasswordRandomGenerator
      */
     private $randomGenerator;
-    private $expiresAt;
-    private $userId;
+
+    /**
+     * @var string Non-hashed token verification string
+     */
     private $verifier;
 
-    public function __construct(string $signingKey, ResetPasswordRandomGenerator $generator, \DateTimeInterface $expiresAt, string $userID)
+    public function __construct(string $signingKey, ResetPasswordRandomGenerator $generator)
     {
         $this->signingKey = $signingKey;
         $this->randomGenerator = $generator;
-        $this->expiresAt = $expiresAt;
-        $this->userId = $userID;
         $this->verifier = $this->randomGenerator->getRandomAlphaNumStr(self::RANDOM_STR_LENGTH);
     }
 
-    public function getToken(): ResetPasswordTokenComponents
+    /**
+     * Get a cryptographically secure token with it's non-hashed components.
+     *
+     * @param mixed $userId Unique user identifier
+     */
+    public function getToken(\DateTimeInterface $expiresAt, $userId): ResetPasswordTokenComponents
     {
         $selector = $this->randomGenerator->getRandomAlphaNumStr(self::RANDOM_STR_LENGTH);
+
+        $encodedData = \json_encode([$this->verifier, $userId, $expiresAt->format('Y-m-d\TH:i:s')]);
 
         return new ResetPasswordTokenComponents(
             $selector,
             $this->verifier,
-            $this->getHashedToken()
+            $this->getHashedToken($encodedData)
         );
     }
 
-    private function getHashedToken(): string
+    private function getHashedToken(string $data): string
     {
-        return \hash_hmac(
-            'sha256',
-            $this->encodeHashData($this->expiresAt, $this->verifier, $this->userId),
-            $this->signingKey,
-            false
-        );
-    }
-
-    private function encodeHashData(\DateTimeInterface $expiresAt, string $verifier, string $userId): string
-    {
-        return \json_encode([
-            $verifier,
-            $userId,
-            $expiresAt->format('Y-m-d\TH:i:s')
-        ]);
+        return \hash_hmac('sha256', $data, $this->signingKey, false);
     }
 }
