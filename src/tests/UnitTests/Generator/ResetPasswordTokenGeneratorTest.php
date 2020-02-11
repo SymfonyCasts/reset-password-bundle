@@ -2,6 +2,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Generator;
 
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use PHPUnit\Framework\TestCase;
 
@@ -11,61 +12,85 @@ use PHPUnit\Framework\TestCase;
  */
 class ResetPasswordTokenGeneratorTest extends TestCase
 {
-    public function testHashDataEncodesToJson(): void
-    {
-        //@todo refactor or remove
-        $this->markTestSkipped('encodeHashData is private.');
-        $mockDateTime = $this->createMock(\DateTimeImmutable::class);
-        $mockDateTime
-            ->expects($this->once())
-            ->method('format')
-            ->willReturn('2020')
-        ;
+    private const RANDOM_STR_LENGTH = 20;
+    private const RANDOM_GENERATOR_METHOD_NAME = 'getRandomAlphaNumStr';
 
-        $result = $this->fixture->getEncodeHashedDataProtected($mockDateTime, 'verify', '1234');
-        self::assertJson($result);
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRandomGenerator
+     */
+    private $mockRandomGenerator;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\DateTimeImmutable
+     */
+    private $mockExpiresAt;
+
+    /**
+     * @inheritDoc
+     */
+    protected function setUp()
+    {
+        $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
+        $this->mockExpiresAt = $this->createMock(\DateTimeImmutable::class);
     }
 
-    public function testHashDataEncodesWithProvidedParams(): void
+    private function getTokenGenerator(): ResetPasswordTokenGenerator
     {
-        //@todo refactor or remove
-        $this->markTestSkipped('encodeHashData is private.');
-        $mockDateTime = $this->createMock(\DateTimeImmutable::class);
-        $mockDateTime
-            ->method('format')
-            ->willReturn('2020')
-        ;
-
-        $result = $this->fixture->getEncodeHashedDataProtected($mockDateTime, 'verify', '1234');
-        self::assertJsonStringEqualsJsonString(
-        '["verify", "1234", "2020"]',
-            $result
+        return new ResetPasswordTokenGenerator(
+            'key',
+            $this->mockRandomGenerator,
+            $this->mockExpiresAt,
+            'user1234'
         );
     }
 
-    public function testReturnsHmacHashedToken(): void
+    public function testConstructorGetsVerifierFromRandomGenerator(): void
     {
-        $mockExpiresAt = $this->createMock(\DateTimeImmutable::class);
-        $mockExpiresAt
+        $this->mockRandomGenerator
             ->expects($this->once())
-            ->method('format')
-            ->with('Y-m-d\TH:i:s')
-            ->willReturn('2020')
+            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
+            ->with(self::RANDOM_STR_LENGTH)
+            ->willReturn('rando-str')
         ;
 
-        $signingKey = 'unit-test';
-        $verifier = 'verify';
-        $userId = '1234';
+        $this->getTokenGenerator();
+    }
 
-        $generator = new ResetPasswordTokenGenerator($signingKey);
-        $result = $generator->getToken($mockExpiresAt, $verifier, $userId);
+    public function testSelectorGeneratedByRandomGenerator(): void
+    {
+        $this->mockRandomGenerator
+            ->expects($this->exactly(2))
+            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
+            ->with(self::RANDOM_STR_LENGTH)
+        ;
+
+        $generator = $this->getTokenGenerator();
+        $generator->getToken();
+    }
+
+    public function testHashedTokenIsCreatedWithExpectedParams(): void
+    {
+        $this->mockRandomGenerator
+            ->expects($this->exactly(2))
+            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
+            ->willReturnOnConsecutiveCalls('verifier', 'selector')
+        ;
+
+        $this->mockExpiresAt
+            ->expects($this->once())
+            ->method('format')
+            ->willReturn('2020')
+        ;
 
         $expected = \hash_hmac(
             'sha256',
-            \json_encode([$verifier, $userId, '2020']),
-            $signingKey
+            \json_encode(['verifier', 'user1234', '2020']),
+            'key'
         );
 
-        self::assertSame($expected, $result);
+        $generator = $this->getTokenGenerator();
+        $result = $generator->getToken();
+
+        self::assertSame($expected, $result->getHashedToken());
     }
 }
