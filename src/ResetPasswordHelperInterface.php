@@ -2,7 +2,6 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 /**

@@ -13,22 +13,22 @@ trait ResetPasswordRequestTrait
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $selector;
+    private $selector;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $hashedToken;
+    private $hashedToken;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    protected $requestedAt;
+    private $requestedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    protected $expiresAt;
+    private $expiresAt;
 
     public function __construct(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
     {

@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-class SymfonyCastsResetPasswordExtension extends Extension
+final class SymfonyCastsResetPasswordExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {

@@ -5,7 +5,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Exception;
 /**
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-class TooManyPasswordRequestsException extends \Exception implements ResetPasswordExceptionInterface
+final class TooManyPasswordRequestsException extends \Exception implements ResetPasswordExceptionInterface
 {
     public function getReason(): string
     {
