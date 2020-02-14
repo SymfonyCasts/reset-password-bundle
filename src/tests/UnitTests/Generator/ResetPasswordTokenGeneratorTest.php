@@ -42,18 +42,6 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         );
     }
 
-    public function testConstructorGetsVerifierFromRandomGenerator(): void
-    {
-        $this->mockRandomGenerator
-            ->expects($this->once())
-            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
-            ->with(self::RANDOM_STR_LENGTH)
-            ->willReturn('rando-str')
-        ;
-
-        $this->getTokenGenerator();
-    }
-
     public function testSelectorGeneratedByRandomGenerator(): void
     {
         $this->mockRandomGenerator
@@ -99,7 +87,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         $knownVerifier = 'verified';
 
         $this->mockRandomGenerator
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(1))
             ->method(self::RANDOM_GENERATOR_METHOD_NAME)
             ->willReturnOnConsecutiveCalls('un-used-verifier', 'selector')
         ;
