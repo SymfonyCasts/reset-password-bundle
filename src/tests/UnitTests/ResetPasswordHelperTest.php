@@ -29,11 +29,6 @@ class ResetPasswordHelperTest extends TestCase
     private $mockTokenGenerator;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRandomGenerator
-     */
-    private $mockRandomGenerator;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRequestInterface
      */
     private $mockResetRequest;
@@ -55,7 +50,6 @@ class ResetPasswordHelperTest extends TestCase
     {
         $this->mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
         $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
-        $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
         $this->randomToken = \bin2hex(\random_bytes(10));
         $this->mockUser = new class {};
@@ -67,8 +61,7 @@ class ResetPasswordHelperTest extends TestCase
             $this->mockRepo,
             99999999,
             99999999,
-            $this->mockTokenGenerator,
-            $this->mockRandomGenerator
+            $this->mockTokenGenerator
         );
     }
 
