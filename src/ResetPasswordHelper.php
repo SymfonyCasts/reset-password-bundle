@@ -65,7 +65,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
             ->modify(sprintf('+%d seconds', $this->resetRequestLifetime))
         ;
 
-        $tokenData = $this->tokenGenerator->getToken($expiresAt, $this->repository->getUserIdentifier($user));
+        $tokenData = $this->tokenGenerator->createToken($expiresAt, $this->repository->getUserIdentifier($user));
 
         $passwordResetRequest = $this->repository->createResetPasswordRequest(
             $user,
@@ -100,7 +100,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $user = $resetRequest->getUser();
 
-        $hashedVerifierToken = $this->tokenGenerator->getToken(
+        $hashedVerifierToken = $this->tokenGenerator->createToken(
             $resetRequest->getExpiresAt(),
             $this->repository->getUserIdentifier($user),
             substr($fullToken, self::SELECTOR_LENGTH)

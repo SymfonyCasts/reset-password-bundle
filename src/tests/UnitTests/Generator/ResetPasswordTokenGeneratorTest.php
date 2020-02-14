@@ -51,7 +51,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         ;
 
         $generator = $this->getTokenGenerator();
-        $generator->getToken($this->mockExpiresAt, 'userId');
+        $generator->createToken($this->mockExpiresAt, 'userId');
     }
 
     public function testHashedTokenIsCreatedWithExpectedParams(): void
@@ -75,7 +75,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         );
 
         $generator = $this->getTokenGenerator();
-        $result = $generator->getToken($this->mockExpiresAt, 'user1234');
+        $result = $generator->createToken($this->mockExpiresAt, 'user1234');
 
         self::assertSame($expected, $result->getHashedToken());
     }
@@ -105,7 +105,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         );
 
         $generator = $this->getTokenGenerator();
-        $result = $generator->getToken($this->mockExpiresAt, $userId, $knownVerifier);
+        $result = $generator->createToken($this->mockExpiresAt, $userId, $knownVerifier);
 
         self::assertSame($knownToken, $result->getHashedToken());
     }
