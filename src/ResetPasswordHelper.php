@@ -140,7 +140,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     {
         $lastRequestDate = $this->repository->getMostRecentNonExpiredRequestDate($user);
 
-        if (!$lastRequestDate) {
+        if (null === $lastRequestDate) {
             return false;
         }
 
