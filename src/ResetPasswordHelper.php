@@ -32,7 +32,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     private $resetRequestLifetime;
 
     /**
-     * @var int Another password reset cannot be made faster than this throttle time.
+     * @var int Another password reset cannot be made faster than this throttle time in seconds.
      */
     private $requestThrottleTime;
 
