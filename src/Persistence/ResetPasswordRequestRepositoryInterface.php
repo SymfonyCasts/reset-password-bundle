@@ -12,12 +12,24 @@ interface ResetPasswordRequestRepositoryInterface
 {
     public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface;
 
+    /**
+     * Get the unique user identifier from persistence.
+     */
     public function getUserIdentifier(object $user): string;
 
+    /**
+     * Save a reset password request entity to persistence.
+     */
     public function persistResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void;
 
+    /**
+     * Get a reset password request entity from persistence using the request's selector.
+     */
     public function findResetPasswordRequest(string $selector): ?ResetPasswordRequestInterface;
 
+    /**
+     * Get a users most recent reset password request that is not expired.
+     */
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface;
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void;
