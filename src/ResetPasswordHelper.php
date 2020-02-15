@@ -12,7 +12,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
@@ -50,7 +50,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Creates a ResetPasswordToken object
+     * Generates a new password reset token, persists it & returns the token that can be emailed to the user.
      *
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
@@ -114,7 +114,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Remove a single PasswordResetRequest object from the database
+     * Remove a single PasswordResetRequest object from persistence
      *
      * @param string $fullToken selector + non-hashed verifier token
      * @throws InvalidResetPasswordTokenException

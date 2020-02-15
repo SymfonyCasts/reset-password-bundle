@@ -15,6 +15,7 @@ use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTestFix
 
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
+ * @authot  Ryan Weaver   <ryan@symfonycasts.com>
  */
 class ResetPasswordHelperTest extends TestCase
 {
