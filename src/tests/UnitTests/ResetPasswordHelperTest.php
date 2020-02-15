@@ -58,10 +58,10 @@ class ResetPasswordHelperTest extends TestCase
     private function getPasswordResetHelper(): ResetPasswordHelper
     {
         return new ResetPasswordHelper(
+            $this->mockTokenGenerator,
             $this->mockRepo,
             99999999,
-            99999999,
-            $this->mockTokenGenerator
+            99999999
         );
     }
 
