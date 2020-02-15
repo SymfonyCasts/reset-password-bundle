@@ -18,7 +18,7 @@ trait ResetPasswordRequestRepositoryTrait
         ;
     }
 
-    public function persistResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest)
+    public function persistResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
         $this->getEntityManager()->persist($resetPasswordRequest);
         $this->getEntityManager()->flush();
