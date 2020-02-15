@@ -92,7 +92,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function validateTokenAndFetchUser(string $fullToken): object
     {
-        $resetRequest = $this->findToken($fullToken);
+        $resetRequest = $this->findResetPasswordRequest($fullToken);
 
         if (null === $resetRequest) {
             throw new InvalidResetPasswordTokenException();
@@ -125,7 +125,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function removeResetRequest(string $fullToken): void
     {
-        $request = $this->findToken($fullToken);
+        $request = $this->findResetPasswordRequest($fullToken);
 
         if (null === $request) {
             throw new InvalidResetPasswordTokenException();
@@ -134,7 +134,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         $this->repository->removeResetPasswordRequest($request);
     }
 
-    private function findToken(string $token): ?ResetPasswordRequestInterface
+    private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
     {
         $selector = substr($token, 0, self::SELECTOR_LENGTH);
 
