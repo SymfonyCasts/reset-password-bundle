@@ -184,6 +184,20 @@ class ResetPasswordHelperTest extends TestCase
         $helper->removeResetRequest('1234');
     }
 
+    public function testExceptionIsThrownIfTokenNotFoundDuringValidation(): void
+    {
+        $this->mockRepo
+            ->expects($this->once())
+            ->method('findResetPasswordRequest')
+            ->willReturn(null)
+        ;
+
+        $this->expectException(InvalidResetPasswordTokenException::class);
+
+        $helper = $this->getPasswordResetHelper();
+        $helper->validateTokenAndFetchUser('1234');
+    }
+
     public function testValidateTokenThrowsExceptionOnExpiredResetRequest(): void
     {
         $this->mockResetRequest
