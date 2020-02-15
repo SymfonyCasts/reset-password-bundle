@@ -76,7 +76,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         $knownVerifier = 'verified';
 
         $this->mockRandomGenerator
-            ->expects($this->exactly(1))
+            ->expects($this->once())
             ->method('getRandomAlphaNumStr')
             ->willReturnOnConsecutiveCalls('un-used-verifier', 'selector')
         ;
