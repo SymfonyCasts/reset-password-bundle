@@ -6,7 +6,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 interface ResetPasswordRequestRepositoryInterface
 {
@@ -32,6 +32,9 @@ interface ResetPasswordRequestRepositoryInterface
      */
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface;
 
+    /**
+     * Remove a single password reset request from persistence.
+     */
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void;
 
     /**
