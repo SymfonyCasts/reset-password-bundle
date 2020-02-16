@@ -4,6 +4,7 @@ namespace SymfonyCasts\Bundle\ResetPassword;
 
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
@@ -54,6 +55,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      *
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
+     *
+     * @throws TooManyPasswordRequestsException
      */
     public function generateResetToken(object $user): ResetPasswordToken
     {
