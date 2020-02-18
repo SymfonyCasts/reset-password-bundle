@@ -23,6 +23,11 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     private const SELECTOR_LENGTH = 20;
 
     /**
+     * @var ResetPasswordTokenGenerator
+     */
+    private $tokenGenerator;
+
+    /**
      * @var ResetPasswordRequestRepositoryInterface
      */
     private $repository;
@@ -36,11 +41,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      * @var int Another password reset cannot be made faster than this throttle time in seconds.
      */
     private $requestThrottleTime;
-
-    /**
-     * @var ResetPasswordTokenGenerator
-     */
-    private $tokenGenerator;
 
     public function __construct(ResetPasswordTokenGenerator $generator, ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime)
     {
