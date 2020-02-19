@@ -8,8 +8,7 @@
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.0",
-        "vimeo/psalm": "^3.8",
-        "psalm/plugin-phpunit": "^0.9.0"
+        "vimeo/psalm": "^3.8"
     },
     "autoload": {
         "psr-4": {
@@ -22,9 +21,6 @@
     "autoload-dev": {
         "psr-4": {
             "SymfonyCasts\\Bundle\\tests\\": "src/tests/"
-        },
-        "exclude-from-classmap": [
-            "/vendor/phpunit/"
-        ]
+        }
     }
 }

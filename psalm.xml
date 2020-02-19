@@ -5,11 +5,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    autoloader="vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php"
 >
     <projectFiles>
         <directory name="src"/>
         <ignoreFiles>
+            <directory name="src/tests" />
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
@@ -52,13 +52,5 @@
         <RawObjectIteration errorLevel="info"/>
 
         <InvalidStringClass errorLevel="info"/>
-        <PossiblyUndefinedMethod>
-            <errorLevel type="suppress">
-                <directory name="src/tests/"/>
-            </errorLevel>
-        </PossiblyUndefinedMethod>
     </issueHandlers>
-    <plugins>
-        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
-    </plugins>
 </psalm>
