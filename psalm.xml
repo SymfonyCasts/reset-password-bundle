@@ -52,6 +52,11 @@
         <RawObjectIteration errorLevel="info"/>
 
         <InvalidStringClass errorLevel="info"/>
+        <PossiblyUndefinedMethod>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/Configuration.php"/>
+            </errorLevel>
+        </PossiblyUndefinedMethod>
         <PossiblyNullReference>
             <errorLevel type="suppress">
                 <file name="src/DependencyInjection/Configuration.php"/>
