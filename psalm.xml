@@ -52,5 +52,15 @@
         <RawObjectIteration errorLevel="info"/>
 
         <InvalidStringClass errorLevel="info"/>
+        <PossiblyNullReference>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/Configuration.php"/>
+            </errorLevel>
+        </PossiblyNullReference>
+        <PossiblyNullArgument>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/SymfonyCastsResetPasswordExtension.php"/>
+            </errorLevel>
+        </PossiblyNullArgument>
     </issueHandlers>
 </psalm>
