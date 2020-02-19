@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 final class Configuration implements ConfigurationInterface
 {
@@ -26,11 +26,11 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->integerNode('lifetime')
                     ->defaultValue(3600)
-                    ->info('How long a reset password token should be valid before expiring.')
+                    ->info('The length of time in seconds that a password reset request is valid for after it is created.')
                 ->end()
                 ->integerNode('throttle_limit')
                     ->defaultValue(3600)
-                    ->info('Length of time between non-expired reset password requests.')
+                    ->info('Another password reset cannot be made faster than this throttle time in seconds.')
                 ->end()
             ->end();
 
