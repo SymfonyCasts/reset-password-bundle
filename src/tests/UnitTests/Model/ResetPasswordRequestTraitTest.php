@@ -32,6 +32,11 @@ class ResetPasswordRequestTraitTest extends TestCase
         {
             use ResetPasswordRequestTrait;
 
+            public function __construct($expiresAt, $selector, $token)
+            {
+                $this->initialize($expiresAt, $selector, $token);
+            }
+
             /**
              * getUser() is intentionally left out of the trait.
              * it is created via maker under App\Entity\PasswordResetRequest
