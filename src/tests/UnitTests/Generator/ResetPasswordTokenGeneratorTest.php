@@ -76,13 +76,13 @@ class ResetPasswordTokenGeneratorTest extends TestCase
 
         $this->mockExpiresAt
             ->expects($this->once())
-            ->method('format')
-            ->willReturn('2020')
+            ->method('getTimestamp')
+            ->willReturn(2020)
         ;
 
         $expected = \hash_hmac(
             'sha256',
-            \json_encode(['verifier', 'user1234', '2020']),
+            \json_encode(['verifier', 'user1234', 2020]),
             'key'
         );
 
@@ -94,7 +94,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
 
     public function testHashedTokenIsCreatedUsingOptionVerifierParam(): void
     {
-        $date = '2020';
+        $date = 2020;
         $userId = 'user1234';
         $knownVerifier = 'verified';
 
@@ -106,7 +106,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
 
         $this->mockExpiresAt
             ->expects($this->once())
-            ->method('format')
+            ->method('getTimestamp')
             ->willReturn($date)
         ;
 
