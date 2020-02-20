@@ -47,24 +47,6 @@ class ResetPasswordControllerTraitTest extends TestCase
         ;
     }
 
-    private function getFixture(): object
-    {
-        return new class
-        {
-            use ResetPasswordControllerTrait;
-
-            public function store(Request $request, ResetPasswordHelper $helper, string $token): void
-            {
-                $this->storeTokenInSession($request, $helper, $token);
-            }
-
-            public function get(Request $request, ResetPasswordHelper $helper): string
-            {
-                return $this->getTokenFromSession($request, $helper);
-            }
-        };
-    }
-
     public function testStoresTokenInSession(): void
     {
         $this->mockSession
@@ -100,5 +82,23 @@ class ResetPasswordControllerTraitTest extends TestCase
 
         $fixture = $this->getFixture();
         $fixture->get($this->mockRequest, $this->mockHelper);
+    }
+
+    private function getFixture(): object
+    {
+        return new class
+        {
+            use ResetPasswordControllerTrait;
+
+            public function store(Request $request, ResetPasswordHelper $helper, string $token): void
+            {
+                $this->storeTokenInSession($request, $helper, $token);
+            }
+
+            public function get(Request $request, ResetPasswordHelper $helper): string
+            {
+                return $this->getTokenFromSession($request, $helper);
+            }
+        };
     }
 }
