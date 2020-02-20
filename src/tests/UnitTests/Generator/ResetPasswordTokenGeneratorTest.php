@@ -8,13 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 class ResetPasswordTokenGeneratorTest extends TestCase
 {
-    private const RANDOM_STR_LENGTH = 20;
-    private const RANDOM_GENERATOR_METHOD_NAME = 'getRandomAlphaNumStr';
-
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRandomGenerator
      */
@@ -34,43 +31,23 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         $this->mockExpiresAt = $this->createMock(\DateTimeImmutable::class);
     }
 
-    private function getTokenGenerator(): ResetPasswordTokenGenerator
-    {
-        return new ResetPasswordTokenGenerator(
-            'key',
-            $this->mockRandomGenerator
-        );
-    }
-
-    public function testConstructorGetsVerifierFromRandomGenerator(): void
-    {
-        $this->mockRandomGenerator
-            ->expects($this->once())
-            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
-            ->with(self::RANDOM_STR_LENGTH)
-            ->willReturn('rando-str')
-        ;
-
-        $this->getTokenGenerator();
-    }
-
     public function testSelectorGeneratedByRandomGenerator(): void
     {
         $this->mockRandomGenerator
             ->expects($this->exactly(2))
-            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
-            ->with(self::RANDOM_STR_LENGTH)
+            ->method('getRandomAlphaNumStr')
+            ->with(20)
         ;
 
         $generator = $this->getTokenGenerator();
-        $generator->getToken($this->mockExpiresAt, 'userId');
+        $generator->createToken($this->mockExpiresAt, 'userId');
     }
 
     public function testHashedTokenIsCreatedWithExpectedParams(): void
     {
         $this->mockRandomGenerator
             ->expects($this->exactly(2))
-            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
+            ->method('getRandomAlphaNumStr')
             ->willReturnOnConsecutiveCalls('verifier', 'selector')
         ;
 
@@ -87,7 +64,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         );
 
         $generator = $this->getTokenGenerator();
-        $result = $generator->getToken($this->mockExpiresAt, 'user1234');
+        $result = $generator->createToken($this->mockExpiresAt, 'user1234');
 
         self::assertSame($expected, $result->getHashedToken());
     }
@@ -99,8 +76,8 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         $knownVerifier = 'verified';
 
         $this->mockRandomGenerator
-            ->expects($this->exactly(2))
-            ->method(self::RANDOM_GENERATOR_METHOD_NAME)
+            ->expects($this->once())
+            ->method('getRandomAlphaNumStr')
             ->willReturnOnConsecutiveCalls('un-used-verifier', 'selector')
         ;
 
@@ -117,8 +94,16 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         );
 
         $generator = $this->getTokenGenerator();
-        $result = $generator->getToken($this->mockExpiresAt, $userId, $knownVerifier);
+        $result = $generator->createToken($this->mockExpiresAt, $userId, $knownVerifier);
 
         self::assertSame($knownToken, $result->getHashedToken());
+    }
+
+    private function getTokenGenerator(): ResetPasswordTokenGenerator
+    {
+        return new ResetPasswordTokenGenerator(
+            'key',
+            $this->mockRandomGenerator
+        );
     }
 }

@@ -24,16 +24,10 @@ class ResetPasswordTokenGenerator
      */
     private $randomGenerator;
 
-    /**
-     * @var string Non-hashed token verification string
-     */
-    private $verifier;
-
     public function __construct(string $signingKey, ResetPasswordRandomGenerator $generator)
     {
         $this->signingKey = $signingKey;
         $this->randomGenerator = $generator;
-        $this->verifier = $this->randomGenerator->getRandomAlphaNumStr(self::RANDOM_STR_LENGTH);
     }
 
     /**
@@ -42,10 +36,10 @@ class ResetPasswordTokenGenerator
      * @param mixed  $userId   Unique user identifier
      * @param string $verifier Only required for token comparison
      */
-    public function getToken(\DateTimeInterface $expiresAt, $userId, string $verifier = null): ResetPasswordTokenComponents
+    public function createToken(\DateTimeInterface $expiresAt, $userId, string $verifier = null): ResetPasswordTokenComponents
     {
-        if (empty($verifier)) {
-            $verifier = $this->verifier;
+        if (null === $verifier) {
+            $verifier = $this->randomGenerator->getRandomAlphaNumStr(self::RANDOM_STR_LENGTH);
         }
 
         $selector = $this->randomGenerator->getRandomAlphaNumStr(self::RANDOM_STR_LENGTH);
