@@ -14,7 +14,7 @@ interface ResetPasswordRequestRepositoryInterface
 
     public function getUserIdentifier(object $user): string;
 
-    public function persistResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest);
+    public function persistResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void;
 
     public function findResetPasswordRequest(string $selector): ?ResetPasswordRequestInterface;
 
