@@ -25,11 +25,18 @@ Requires a secure string used to sign tokens & a random string
  generator (`ResetPasswordRandomGenerator`). Provides one method, `getToken
  ()`, that returns a `ResetPasswordTokenComponents` object.
  
-Tokens are generated via PHP's `hash_hmac()` method. Using the `sha256
-` algorithm & a secure signing key, a JSON encoded string is encrypted one-way
- for use as a token to validate password reset requests. The JSON encoded
- data string is comprised of:
+Tokens are generated via PHP's `hash_hmac()` method using the `sha256
+` algorithm & a secure signing key. A JSON encoded string is passed as the
+ data argument and ultimately encrypted. The JSON encoded data string is comprised of:
  
  - a verifier string
  - user identifier
  - timestamp
+ 
+ The hashed string returned by `hash_hmac()` is the token which is used to
+ validate password reset requests.
+  
+ As the token is encrypted one-way, to verify that a token is valid, another
+ token must be generated and then compared against the original token. To
+ facilitate validation, `getToken()` accepts an optional 3rd argument, `(string) $verifier`,
+ which allows a token to be re-created. 
