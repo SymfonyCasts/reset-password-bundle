@@ -44,7 +44,7 @@ class ResetPasswordTokenGenerator
 
         $selector = $this->randomGenerator->getRandomAlphaNumStr(self::RANDOM_STR_LENGTH);
 
-        $encodedData = \json_encode([$verifier, $userId, $expiresAt->format('Y-m-d\TH:i:s')]);
+        $encodedData = \json_encode([$verifier, $userId, $expiresAt->getTimestamp()]);
 
         return new ResetPasswordTokenComponents(
             $selector,
