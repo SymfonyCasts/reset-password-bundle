@@ -10,19 +10,23 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 /**
  * Provides useful methods to a "reset password controller"
  *
+ * Use of this trait requires a controller to extend
+ * Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+ *
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 trait ResetPasswordControllerTrait
 {
-    private function setCanCheckEmailInSession(Request $request): void
+    private function setCanCheckEmailInSession(): void
     {
-        $request->getSession()->set('ResetPasswordCheckEmail', true);
+        $this->getSession()->set('ResetPasswordCheckEmail', true);
     }
 
-    private function isAbleToCheckEmail(SessionInterface $session): bool
+    private function isAbleToCheckEmail(): bool
     {
         $sessionKey = 'ResetPasswordCheckEmail';
+        $session = $this->getSession();
 
         if ($session->get($sessionKey)) {
             $session->remove($sessionKey);
@@ -33,13 +37,21 @@ trait ResetPasswordControllerTrait
         return false;
     }
 
-    private function storeTokenInSession(Request $request, string $token): void
+    private function storeTokenInSession(string $token): void
     {
-        $request->getSession()->set('ResetPasswordPublicToken', $token);
+        $this->getSession()->set('ResetPasswordPublicToken', $token);
     }
 
-    private function getTokenFromSession(Request $request): string
+    private function getTokenFromSession(): string
     {
-        return $request->getSession()->get('ResetPasswordPublicToken');
+        return $this->getSession()->get('ResetPasswordPublicToken');
+    }
+
+    private function getSession(): SessionInterface
+    {
+        /** @var Request $request */
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+
+        return $request->getSession();
     }
 }

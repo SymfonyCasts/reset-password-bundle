@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace SymfonyCasts\Bundle\tests\UnitTests\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 
@@ -24,17 +27,11 @@ class ResetPasswordControllerTraitTest extends TestCase
     private $mockSession;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|Request
-     */
-    private $mockRequest;
-
-    /**
      * @inheritDoc
      */
     protected function setUp(): void
     {
         $this->mockSession = $this->createMock(SessionInterface::class);
-        $this->mockRequest = $this->createMock(Request::class);
     }
 
     public function testStoresTokenInSession(): void
@@ -45,9 +42,8 @@ class ResetPasswordControllerTraitTest extends TestCase
             ->with(self::TOKEN_KEY, 'token')
         ;
 
-        $this->configureMockRequest();
         $fixture = $this->getFixture();
-        $fixture->storeToken($this->mockRequest, 'token');
+        $fixture->storeToken('token');
     }
 
     public function testGetsTokenFromSession(): void
@@ -59,9 +55,8 @@ class ResetPasswordControllerTraitTest extends TestCase
             ->willReturn('')
         ;
 
-        $this->configureMockRequest();
         $fixture = $this->getFixture();
-        $fixture->getToken($this->mockRequest);
+        $fixture->getToken();
     }
 
     public function testSetsEmailInSession(): void
@@ -72,9 +67,8 @@ class ResetPasswordControllerTraitTest extends TestCase
             ->with(self::EMAIL_KEY)
         ;
 
-        $this->configureMockRequest();
         $fixture = $this->getFixture();
-        $fixture->setEmail($this->mockRequest);
+        $fixture->setEmail();
     }
 
     public function testIsAbleToCheckEmailRemovesKeyFromSessionOnTrue(): void
@@ -93,7 +87,7 @@ class ResetPasswordControllerTraitTest extends TestCase
         ;
 
         $fixture = $this->getFixture();
-        $result = $fixture->getEmail($this->mockSession);
+        $result = $fixture->getEmail();
 
         self::assertTrue($result);
     }
@@ -112,39 +106,69 @@ class ResetPasswordControllerTraitTest extends TestCase
         self::assertFalse($result);
     }
 
-    private function configureMockRequest(): void
+    /**
+     * @return MockObject|ContainerInterface
+     */
+    private function getConfiguredMockContainer()
     {
-        $this->mockRequest
+        $mockRequest = $this->createMock(Request::class);
+        $mockRequest
             ->expects($this->once())
             ->method('getSession')
             ->willReturn($this->mockSession)
         ;
+
+        $mockRequestStack = $this->createMock(RequestStack::class);
+        $mockRequestStack
+            ->expects($this->once())
+            ->method('getCurrentRequest')
+            ->willReturn($mockRequest)
+        ;
+
+        $mockContainer = $this->createMock(ContainerInterface::class);
+        $mockContainer
+            ->expects($this->once())
+            ->method('get')
+            ->with('request_stack')
+            ->willReturn($mockRequestStack)
+        ;
+
+        return $mockContainer;
     }
 
     private function getFixture(): object
     {
-        return new class
+        $container = $this->getConfiguredMockContainer();
+
+        return new class ($container)
         {
             use ResetPasswordControllerTrait;
 
-            public function setEmail(Request $request): void
+            private $container;
+
+            public function __construct(ContainerInterface $container)
             {
-                $this->setCanCheckEmailInSession($request);
+                $this->container = $container;
             }
 
-            public function getEmail(SessionInterface $session): bool
+            public function setEmail(): void
             {
-                return $this->isAbleToCheckEmail($session);
+                $this->setCanCheckEmailInSession();
             }
 
-            public function storeToken(Request $request, string $token): void
+            public function getEmail(): bool
             {
-                $this->storeTokenInSession($request, $token);
+                return $this->isAbleToCheckEmail();
             }
 
-            public function getToken(Request $request): string
+            public function storeToken(string $token): void
             {
-                return $this->getTokenFromSession($request);
+                $this->storeTokenInSession($token);
+            }
+
+            public function getToken(): string
+            {
+                return $this->getTokenFromSession();
             }
         };
     }
