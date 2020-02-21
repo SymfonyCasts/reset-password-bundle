@@ -13,14 +13,11 @@
     "autoload": {
         "psr-4": {
             "SymfonyCasts\\Bundle\\ResetPassword\\": "src/"
-        },
-        "exclude-from-classmap": [
-            "/src/tests/"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "SymfonyCasts\\Bundle\\tests\\": "src/tests/"
+            "SymfonyCasts\\Bundle\\tests\\": "tests/"
         }
     }
 }
