@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 /**
+ * Provides useful methods to a "reset password controller"
+ *
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <ryan@symfonycasts.com>
  */
