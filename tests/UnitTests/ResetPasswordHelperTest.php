@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyCasts\Bundle\ResetPasswordTests\UnitTests;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests;
 
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
@@ -10,7 +10,7 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
-use SymfonyCasts\Bundle\ResetPasswordTests\Fixtures\ResetPasswordRequestTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordRequestTestFixture;
 
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>

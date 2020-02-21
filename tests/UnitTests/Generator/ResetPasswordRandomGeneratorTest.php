@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyCasts\Bundle\ResetPasswordTests\UnitTests\Generator;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Generator;
 
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use PHPUnit\Framework\TestCase;

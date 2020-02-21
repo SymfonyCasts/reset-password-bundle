@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SymfonyCasts\Bundle\ResetPasswordTests\Fixtures;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
