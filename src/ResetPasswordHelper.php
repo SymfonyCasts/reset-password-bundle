@@ -21,6 +21,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private const SELECTOR_LENGTH = 20;
     private const SESSION_TOKEN_KEY = 'ResetPasswordPublicToken';
+    private const SESSION_EMAIL_KEY = 'ResetPasswordCheckEmail';
 
     /**
      * @var ResetPasswordTokenGenerator
@@ -143,6 +144,14 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     public function getSessionTokenKey(): string
     {
         return self::SESSION_TOKEN_KEY;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSessionEmailKey(): string
+    {
+        return self::SESSION_EMAIL_KEY;
     }
 
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
