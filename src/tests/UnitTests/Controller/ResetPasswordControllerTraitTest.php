@@ -59,7 +59,7 @@ class ResetPasswordControllerTraitTest extends TestCase
         $fixture->getToken();
     }
 
-    public function testSetsEmailInSession(): void
+    public function testSetsEmailFlagInSession(): void
     {
         $this->mockSession
             ->expects($this->once())
@@ -71,39 +71,29 @@ class ResetPasswordControllerTraitTest extends TestCase
         $fixture->setEmail();
     }
 
-    public function testIsAbleToCheckEmailRemovesKeyFromSessionOnTrue(): void
+    public function testCanCheckEmailUsesCorrectKey(): void
     {
         $this->mockSession
             ->expects($this->once())
-            ->method('get')
+            ->method('has')
             ->with(self::EMAIL_KEY)
             ->willReturn(true)
         ;
 
-        $this->mockSession
-            ->expects($this->once())
-            ->method('remove')
-            ->with(self::EMAIL_KEY)
-        ;
-
         $fixture = $this->getFixture();
-        $result = $fixture->getEmail();
-
-        self::assertTrue($result);
+        $fixture->getEmail();
     }
 
-    public function testIsAbleToCheckEmailReturnsFalseIfKeyNotFoundInSession(): void
+    public function testCleanSessionAfterServiceRemovesByTokenAndEmailKeys(): void
     {
         $this->mockSession
-            ->expects($this->once())
-            ->method('get')
-            ->willReturn(false)
+            ->expects($this->exactly(2))
+            ->method('remove')
+            ->withConsecutive([self::TOKEN_KEY], [self::EMAIL_KEY])
         ;
 
         $fixture = $this->getFixture();
-        $result = $fixture->getEmail($this->mockSession);
-
-        self::assertFalse($result);
+        $fixture->clearSession();
     }
 
     /**
@@ -158,7 +148,7 @@ class ResetPasswordControllerTraitTest extends TestCase
 
             public function getEmail(): bool
             {
-                return $this->isAbleToCheckEmail();
+                return $this->canCheckEmail();
             }
 
             public function storeToken(string $token): void
@@ -169,6 +159,11 @@ class ResetPasswordControllerTraitTest extends TestCase
             public function getToken(): string
             {
                 return $this->getTokenFromSession();
+            }
+
+            public function clearSession(): void
+            {
+                $this->cleanSessionAfterReset();
             }
         };
     }
