@@ -16,14 +16,14 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
  */
 trait ResetPasswordControllerTrait
 {
-    private function setCanCheckEmailInSession(Request $request, ResetPasswordHelperInterface $helper, bool $value = true): void
+    private function setCanCheckEmailInSession(Request $request, bool $value = true): void
     {
-        $request->getSession()->set($helper->getSessionEmailKey(), $value);
+        $request->getSession()->set('ResetPasswordCheckEmail', $value);
     }
 
-    private function isAbleToCheckEmail(SessionInterface $session, ResetPasswordHelperInterface $helper): bool
+    private function isAbleToCheckEmail(SessionInterface $session): bool
     {
-        $sessionKey = $helper->getSessionEmailKey();
+        $sessionKey = 'ResetPasswordCheckEmail';
 
         if ($session->get($sessionKey)) {
             $session->remove($sessionKey);
@@ -34,13 +34,13 @@ trait ResetPasswordControllerTrait
         return false;
     }
 
-    private function storeTokenInSession(Request $request, ResetPasswordHelperInterface $helper, string $token): void
+    private function storeTokenInSession(Request $request, string $token): void
     {
-        $request->getSession()->set($helper->getSessionTokenKey(), $token);
+        $request->getSession()->set('ResetPasswordPublicToken', $token);
     }
 
-    private function getTokenFromSession(Request $request, ResetPasswordHelperInterface $helper): string
+    private function getTokenFromSession(Request $request): string
     {
-        return $request->getSession()->get($helper->getSessionTokenKey());
+        return $request->getSession()->get('ResetPasswordPublicToken');
     }
 }
