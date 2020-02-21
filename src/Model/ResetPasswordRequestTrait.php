@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 trait ResetPasswordRequestTrait
 {
@@ -30,7 +30,7 @@ trait ResetPasswordRequestTrait
      */
     private $expiresAt;
 
-    public function __construct(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    private function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
     {
         $this->requestedAt = new \DateTimeImmutable('now');
         $this->expiresAt = $expiresAt;
