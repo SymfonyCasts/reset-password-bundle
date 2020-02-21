@@ -15,6 +15,7 @@ jobs:
 #          - 3306
 #        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
     strategy:
+      fail-fast: false
       matrix:
         php-versions: ['7.2', '7.3', '7.4']
     steps:
@@ -63,7 +64,11 @@ jobs:
 #        env:
 #          DATABASE_URL: mysql://root:password@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/reset_password_bundle_ci?serverVersion=5.7
 
+      - name: Psalm Static Analysis
+        run: vendor/bin/psalm -c psalm.xml
+
       - name: Unit Tests
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist
+        if: always()
 #        env:
 #          DATABASE_URL: mysql://root:password@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/reset_password_bundle_ci?serverVersion=5.7
