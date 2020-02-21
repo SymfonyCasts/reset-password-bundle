@@ -69,7 +69,7 @@ class ResetPasswordControllerTraitTest extends TestCase
         $this->mockSession
             ->expects($this->once())
             ->method('set')
-            ->with(self::EMAIL_KEY, true)
+            ->with(self::EMAIL_KEY)
         ;
 
         $this->configureMockRequest();
@@ -127,9 +127,9 @@ class ResetPasswordControllerTraitTest extends TestCase
         {
             use ResetPasswordControllerTrait;
 
-            public function setEmail(Request $request, bool $value = true): void
+            public function setEmail(Request $request): void
             {
-                $this->setCanCheckEmailInSession($request, $value);
+                $this->setCanCheckEmailInSession($request);
             }
 
             public function getEmail(SessionInterface $session): bool

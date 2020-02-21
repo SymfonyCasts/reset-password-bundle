@@ -15,9 +15,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 trait ResetPasswordControllerTrait
 {
-    private function setCanCheckEmailInSession(Request $request, bool $value = true): void
+    private function setCanCheckEmailInSession(Request $request): void
     {
-        $request->getSession()->set('ResetPasswordCheckEmail', $value);
+        $request->getSession()->set('ResetPasswordCheckEmail', true);
     }
 
     private function isAbleToCheckEmail(SessionInterface $session): bool
