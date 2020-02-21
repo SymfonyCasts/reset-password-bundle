@@ -6,7 +6,6 @@ namespace SymfonyCasts\Bundle\ResetPassword\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 /**
  * Provides useful methods to a "reset password controller"
