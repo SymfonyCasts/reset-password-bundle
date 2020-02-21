@@ -58,7 +58,7 @@ class ResetPasswordControllerTraitTest extends TestCase
 
         $this->configureMockRequest();
         $fixture = $this->getFixture();
-        $fixture->store($this->mockRequest, $this->mockHelper, 'token');
+        $fixture->storeToken($this->mockRequest, $this->mockHelper, 'token');
     }
 
     public function testGetsTokenFromSession(): void
@@ -78,7 +78,7 @@ class ResetPasswordControllerTraitTest extends TestCase
 
         $this->configureMockRequest();
         $fixture = $this->getFixture();
-        $fixture->get($this->mockRequest, $this->mockHelper);
+        $fixture->getToken($this->mockRequest, $this->mockHelper);
     }
 
     public function testSetsEmailInSession(): void
@@ -172,12 +172,12 @@ class ResetPasswordControllerTraitTest extends TestCase
                 return $this->isAbleToCheckEmail($session, $helper);
             }
 
-            public function store(Request $request, ResetPasswordHelper $helper, string $token): void
+            public function storeToken(Request $request, ResetPasswordHelper $helper, string $token): void
             {
                 $this->storeTokenInSession($request, $helper, $token);
             }
 
-            public function get(Request $request, ResetPasswordHelper $helper): string
+            public function getToken(Request $request, ResetPasswordHelper $helper): string
             {
                 return $this->getTokenFromSession($request, $helper);
             }
