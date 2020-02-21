@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
-use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
@@ -15,6 +14,7 @@ use SymfonyCasts\Bundle\ResetPassword\tests\Fixtures\ResetPasswordRequestTestFix
 
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
+ * @authot  Ryan Weaver   <ryan@symfonycasts.com>
  */
 class ResetPasswordHelperTest extends TestCase
 {
@@ -58,10 +58,10 @@ class ResetPasswordHelperTest extends TestCase
     private function getPasswordResetHelper(): ResetPasswordHelper
     {
         return new ResetPasswordHelper(
+            $this->mockTokenGenerator,
             $this->mockRepo,
             99999999,
-            99999999,
-            $this->mockTokenGenerator
+            99999999
         );
     }
 
@@ -181,6 +181,20 @@ class ResetPasswordHelperTest extends TestCase
 
         $helper = $this->getPasswordResetHelper();
         $helper->removeResetRequest('1234');
+    }
+
+    public function testExceptionIsThrownIfTokenNotFoundDuringValidation(): void
+    {
+        $this->mockRepo
+            ->expects($this->once())
+            ->method('findResetPasswordRequest')
+            ->willReturn(null)
+        ;
+
+        $this->expectException(InvalidResetPasswordTokenException::class);
+
+        $helper = $this->getPasswordResetHelper();
+        $helper->validateTokenAndFetchUser('1234');
     }
 
     public function testValidateTokenThrowsExceptionOnExpiredResetRequest(): void

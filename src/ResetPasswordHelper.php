@@ -12,7 +12,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
@@ -20,6 +20,11 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      * The first 20 characters of the token are a "selector"
      */
     private const SELECTOR_LENGTH = 20;
+
+    /**
+     * @var ResetPasswordTokenGenerator
+     */
+    private $tokenGenerator;
 
     /**
      * @var ResetPasswordRequestRepositoryInterface
@@ -32,28 +37,25 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     private $resetRequestLifetime;
 
     /**
-     * @var int Another password reset cannot be made faster than this throttle time.
+     * @var int Another password reset cannot be made faster than this throttle time in seconds.
      */
     private $requestThrottleTime;
 
-    /**
-     * @var ResetPasswordTokenGenerator
-     */
-    private $tokenGenerator;
-
-    public function __construct(ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime, ResetPasswordTokenGenerator $generator)
+    public function __construct(ResetPasswordTokenGenerator $generator, ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime)
     {
+        $this->tokenGenerator = $generator;
         $this->repository = $repository;
         $this->resetRequestLifetime = $resetRequestLifetime;
         $this->requestThrottleTime = $requestThrottleTime;
-        $this->tokenGenerator = $generator;
     }
 
     /**
-     * Creates a ResetPasswordToken object
+     * Generates a new password reset token, persists it & returns the token that can be emailed to the user.
      *
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
+     *
+     * @throws TooManyPasswordRequestsException
      */
     public function generateResetToken(object $user): ResetPasswordToken
     {
@@ -65,20 +67,20 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
             ->modify(sprintf('+%d seconds', $this->resetRequestLifetime))
         ;
 
-        $tokenData = $this->tokenGenerator->createToken($expiresAt, $this->repository->getUserIdentifier($user));
+        $tokenComponents = $this->tokenGenerator->createToken($expiresAt, $this->repository->getUserIdentifier($user));
 
         $passwordResetRequest = $this->repository->createResetPasswordRequest(
             $user,
             $expiresAt,
-            $tokenData->getSelector(),
-            $tokenData->getHashedToken()
+            $tokenComponents->getSelector(),
+            $tokenComponents->getHashedToken()
         );
 
         $this->repository->persistResetPasswordRequest($passwordResetRequest);
 
         // final "public" token is the selector + non-hashed verifier token
         return new ResetPasswordToken(
-            $tokenData->getPublicToken(),
+            $tokenComponents->getPublicToken(),
             $expiresAt
         );
     }
@@ -92,7 +94,11 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function validateTokenAndFetchUser(string $fullToken): object
     {
-        $resetRequest = $this->findToken($fullToken);
+        $resetRequest = $this->findResetPasswordRequest($fullToken);
+
+        if (null === $resetRequest) {
+            throw new InvalidResetPasswordTokenException();
+        }
 
         if ($resetRequest->isExpired()) {
             throw new ExpiredResetPasswordTokenException();
@@ -114,22 +120,23 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Remove a single PasswordResetRequest object from the database
+     * Remove a single PasswordResetRequest object from persistence
      *
      * @param string $fullToken selector + non-hashed verifier token
      * @throws InvalidResetPasswordTokenException
      */
     public function removeResetRequest(string $fullToken): void
     {
-        if (empty($fullToken)) {
+        $request = $this->findResetPasswordRequest($fullToken);
+
+        if (null === $request) {
             throw new InvalidResetPasswordTokenException();
         }
 
-        $request = $this->findToken($fullToken);
         $this->repository->removeResetPasswordRequest($request);
     }
 
-    private function findToken(string $token): ResetPasswordRequestInterface
+    private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
     {
         $selector = substr($token, 0, self::SELECTOR_LENGTH);
 
@@ -140,7 +147,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     {
         $lastRequestDate = $this->repository->getMostRecentNonExpiredRequestDate($user);
 
-        if (!$lastRequestDate) {
+        if (null === $lastRequestDate) {
             return false;
         }
 
