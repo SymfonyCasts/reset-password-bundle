@@ -17,7 +17,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SymfonyCasts\\Bundle\\tests\\": "tests/"
+            "SymfonyCasts\\Bundle\\ResetPasswordTests\\": "tests/"
         }
     }
 }
