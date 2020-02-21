@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -39,12 +40,6 @@ class ResetPasswordControllerTraitTest extends TestCase
         $this->mockSession = $this->createMock(SessionInterface::class);
         $this->mockRequest = $this->createMock(Request::class);
         $this->mockHelper = $this->createMock(ResetPasswordHelper::class);
-
-        $this->mockRequest
-            ->expects($this->once())
-            ->method('getSession')
-            ->willReturn($this->mockSession)
-        ;
     }
 
     public function testStoresTokenInSession(): void
@@ -61,6 +56,7 @@ class ResetPasswordControllerTraitTest extends TestCase
             ->willReturn('key')
         ;
 
+        $this->configureMockRequest();
         $fixture = $this->getFixture();
         $fixture->store($this->mockRequest, $this->mockHelper, 'token');
     }
@@ -80,8 +76,84 @@ class ResetPasswordControllerTraitTest extends TestCase
             ->willReturn('key')
         ;
 
+        $this->configureMockRequest();
         $fixture = $this->getFixture();
         $fixture->get($this->mockRequest, $this->mockHelper);
+    }
+
+    public function testSetsEmailInSession(): void
+    {
+        $this->mockSession
+            ->expects($this->once())
+            ->method('set')
+            ->with('key', true)
+        ;
+
+        $this->mockHelper
+            ->expects($this->once())
+            ->method('getSessionEmailKey')
+            ->willReturn('key')
+        ;
+
+        $this->configureMockRequest();
+        $fixture = $this->getFixture();
+        $fixture->setEmail($this->mockRequest, $this->mockHelper);
+    }
+
+    public function testIsAbleToCheckEmailRemovesKeyFromSessionOnTrue(): void
+    {
+        $this->mockHelper
+            ->expects($this->once())
+            ->method('getSessionEmailKey')
+            ->willReturn('key')
+        ;
+
+        $this->mockSession
+            ->expects($this->once())
+            ->method('get')
+            ->with('key')
+            ->willReturn(true)
+        ;
+
+        $this->mockSession
+            ->expects($this->once())
+            ->method('remove')
+            ->with('key')
+        ;
+
+        $fixture = $this->getFixture();
+        $result = $fixture->getEmail($this->mockSession, $this->mockHelper);
+
+        self::assertTrue($result);
+    }
+
+    public function testIsAbleToCheckEmailReturnsFalseIfKeyNotFoundInSession(): void
+    {
+        $this->mockHelper
+            ->expects($this->once())
+            ->method('getSessionEmailKey')
+            ->willReturn('key')
+        ;
+
+        $this->mockSession
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn(false)
+        ;
+
+        $fixture = $this->getFixture();
+        $result = $fixture->getEmail($this->mockSession, $this->mockHelper);
+
+        self::assertFalse($result);
+    }
+
+    private function configureMockRequest(): void
+    {
+        $this->mockRequest
+            ->expects($this->once())
+            ->method('getSession')
+            ->willReturn($this->mockSession)
+        ;
     }
 
     private function getFixture(): object
@@ -89,6 +161,16 @@ class ResetPasswordControllerTraitTest extends TestCase
         return new class
         {
             use ResetPasswordControllerTrait;
+
+            public function setEmail(Request $request, ResetPasswordHelper $helper, bool $value = true): void
+            {
+                $this->setCanCheckEmailInSession($request, $helper, $value);
+            }
+
+            public function getEmail(SessionInterface $session, ResetPasswordHelperInterface $helper): bool
+            {
+                return $this->isAbleToCheckEmail($session, $helper);
+            }
 
             public function store(Request $request, ResetPasswordHelper $helper, string $token): void
             {
