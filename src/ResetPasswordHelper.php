@@ -20,8 +20,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      * The first 20 characters of the token are a "selector"
      */
     private const SELECTOR_LENGTH = 20;
-    private const SESSION_TOKEN_KEY = 'ResetPasswordPublicToken';
-    private const SESSION_EMAIL_KEY = 'ResetPasswordCheckEmail';
 
     /**
      * @var ResetPasswordTokenGenerator
@@ -136,22 +134,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         }
 
         $this->repository->removeResetPasswordRequest($request);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSessionTokenKey(): string
-    {
-        return self::SESSION_TOKEN_KEY;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSessionEmailKey(): string
-    {
-        return self::SESSION_EMAIL_KEY;
     }
 
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface

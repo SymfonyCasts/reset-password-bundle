@@ -280,16 +280,4 @@ class ResetPasswordHelperTest extends TestCase
         $helper = $this->getPasswordResetHelper();
         $helper->validateTokenAndFetchUser($this->randomToken);
     }
-
-    public function testGetSessionTokenKeyReturnsKey(): void
-    {
-        $helper = $this->getPasswordResetHelper();
-        self::assertSame('ResetPasswordPublicToken', $helper->getSessionTokenKey());
-    }
-
-    public function testGetSessionEmailKeyReturnsKey(): void
-    {
-        $helper = $this->getPasswordResetHelper();
-        self::assertSame('ResetPasswordCheckEmail', $helper->getSessionEmailKey());
-    }
 }
