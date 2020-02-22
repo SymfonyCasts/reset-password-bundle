@@ -18,9 +18,9 @@ class ResetPasswordCleaner
         $this->enabled = $enabled;
     }
 
-    public function handleGarbageCollection(): int
+    public function handleGarbageCollection(bool $force = false): int
     {
-        if ($this->enabled) {
+        if ($this->enabled || (!$this->enabled && $force)) {
             return $this->removeExpiredRequests();
         }
 
