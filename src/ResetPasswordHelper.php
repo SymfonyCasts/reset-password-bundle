@@ -9,6 +9,7 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
+use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -26,6 +27,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private $tokenGenerator;
 
+    private $resetPasswordCleaner;
+
     /**
      * @var ResetPasswordRequestRepositoryInterface
      */
@@ -41,9 +44,10 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private $requestThrottleTime;
 
-    public function __construct(ResetPasswordTokenGenerator $generator, ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime)
+    public function __construct(ResetPasswordTokenGenerator $generator, ResetPasswordCleaner $cleaner, ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime)
     {
         $this->tokenGenerator = $generator;
+        $this->resetPasswordCleaner = $cleaner;
         $this->repository = $repository;
         $this->resetRequestLifetime = $resetRequestLifetime;
         $this->requestThrottleTime = $requestThrottleTime;
@@ -59,6 +63,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function generateResetToken(object $user): ResetPasswordToken
     {
+        $this->resetPasswordCleaner->handleGarbageCollection();
+
         if ($this->hasUserHisThrottling($user)) {
             throw new TooManyPasswordRequestsException();
         }
@@ -94,6 +100,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function validateTokenAndFetchUser(string $fullToken): object
     {
+        $this->resetPasswordCleaner->handleGarbageCollection();
+
         $resetRequest = $this->findResetPasswordRequest($fullToken);
 
         if (null === $resetRequest) {
