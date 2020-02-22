@@ -28,5 +28,9 @@ final class SymfonyCastsResetPasswordExtension extends Extension
         $helperDefinition->replaceArgument(1, new Reference($config['request_password_repository']));
         $helperDefinition->replaceArgument(2, $config['lifetime']);
         $helperDefinition->replaceArgument(3, $config['throttle_limit']);
+
+        $cleanerDefinition = $container->getDefinition('symfonycasts.reset_password.cleaner');
+        $cleanerDefinition->replaceArgument(1, new Reference($config['request_password_repository']));
+        $cleanerDefinition->replaceArgument(2, $config['enable_garbage_collection']);
     }
 }

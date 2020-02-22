@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SymfonyCasts\Bundle\tests\tests\UnitTests\Util;
+namespace SymfonyCasts\Bundle\tests\UnitTests\Util;
 
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
@@ -20,7 +20,7 @@ class ResetPasswordCleanerTest extends TestCase
         ;
 
         $cleaner = new ResetPasswordCleaner($mockRepo);
-        $result = $cleaner->removeExpiredRequests();
+        $result = $cleaner->handleGarbageCollection();
 
         self::assertSame(1, $result);
     }
