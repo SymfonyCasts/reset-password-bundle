@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace SymfonyCasts\Bundle\tests\UnitTests\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,6 +8,10 @@ use SymfonyCasts\Bundle\ResetPassword\Command\CleanerCommand;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
+/**
+ * @author  Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
+ */
 class CleanerCommandTest extends TestCase
 {
     public function testCommandCallsForcedGarbageCollection(): void

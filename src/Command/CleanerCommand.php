@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace SymfonyCasts\Bundle\ResetPassword\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -9,6 +7,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
+/**
+ * @author  Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
+ *
+ * @final
+ */
 class CleanerCommand extends Command
 {
     protected static $defaultName = 'reset-password:remove-expired';
@@ -22,12 +26,16 @@ class CleanerCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function configure(): void
     {
         $this->setDescription('Remove expired reset password requests from persistence.');
     }
 
     /**
+     * @inheritDoc
      * @psalm-suppress InvalidReturnType
      */
     protected function execute(InputInterface $input, OutputInterface $output)

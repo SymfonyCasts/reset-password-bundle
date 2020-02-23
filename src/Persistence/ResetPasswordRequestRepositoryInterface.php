@@ -22,5 +22,8 @@ interface ResetPasswordRequestRepositoryInterface
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void;
 
+    /**
+     * Remove all expired reset password request objects from persistence
+     */
     public function removeExpiredResetPasswordRequests(): int;
 }
