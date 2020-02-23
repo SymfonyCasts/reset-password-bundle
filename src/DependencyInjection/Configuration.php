@@ -34,7 +34,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->booleanNode('enable_garbage_collection')
                     ->defaultValue(true)
-                    ->info('') //@TODO Something goes here
+                    ->info('Enable/Disable automatic garbage collection.')
             ->end();
 
         return $treeBuilder;
