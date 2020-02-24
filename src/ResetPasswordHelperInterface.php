@@ -33,7 +33,7 @@ interface ResetPasswordHelperInterface
     /**
      * Remove a password reset request token from persistence.
      *
-     * Intended to be used after validation. - this will typically remove
+     * Intended to be used after validation - this will typically remove
      * the token from storage so that it can't be used again.
      *
      * @param string $fullToken selector string + verifier string provided by the user.
