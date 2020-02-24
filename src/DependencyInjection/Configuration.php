@@ -32,6 +32,9 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue(3600)
                     ->info('Another password reset cannot be made faster than this throttle time in seconds.')
                 ->end()
+                ->booleanNode('enable_garbage_collection')
+                    ->defaultValue(true)
+                    ->info('Enable/Disable automatic garbage collection.')
             ->end();
 
         return $treeBuilder;

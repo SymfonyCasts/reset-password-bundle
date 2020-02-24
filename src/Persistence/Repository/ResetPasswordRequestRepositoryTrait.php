@@ -57,4 +57,17 @@ trait ResetPasswordRequestRepositoryTrait
         $this->getEntityManager()->remove($resetPasswordRequest);
         $this->getEntityManager()->flush();
     }
+
+    public function removeExpiredResetPasswordRequests(): int
+    {
+        $time = new \DateTimeImmutable('now');
+        $query = $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.expiresAt <= :time')
+            ->setParameter('time', $time)
+            ->getQuery()
+        ;
+
+        return $query->execute();
+    }
 }

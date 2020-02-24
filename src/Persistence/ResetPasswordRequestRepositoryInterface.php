@@ -21,4 +21,11 @@ interface ResetPasswordRequestRepositoryInterface
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface;
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void;
+
+    /**
+     * Remove all expired reset password request objects from persistence
+     *
+     * @return int Number of request objects removed from persistence
+     */
+    public function removeExpiredResetPasswordRequests(): int;
 }
