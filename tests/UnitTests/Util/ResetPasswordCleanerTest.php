@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyCasts\Bundle\tests\UnitTests\Util;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Util;
 
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;

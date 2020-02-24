@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyCasts\Bundle\tests\UnitTests\Command;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

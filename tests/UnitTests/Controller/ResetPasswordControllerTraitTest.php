@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SymfonyCasts\Bundle\tests\UnitTests\Controller;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
