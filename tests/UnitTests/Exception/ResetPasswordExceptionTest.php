@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyCasts\Bundle\ResetPassword\tests\UnitTests\Exception;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Exception;
 
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
