@@ -4,7 +4,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use SymfonyCasts\Bundle\ResetPassword\Command\CleanerCommand;
+use SymfonyCasts\Bundle\ResetPassword\Command\ResetPasswordRemoveExpiredCommand;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
@@ -12,7 +12,7 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
-class CleanerCommandTest extends TestCase
+class ResetPasswordRemoveExpiredCommandTest extends TestCase
 {
     public function testCommandCallsForcedGarbageCollection(): void
     {
@@ -32,7 +32,7 @@ class CleanerCommandTest extends TestCase
 
     private function getCommandFixture($mockCleaner)
     {
-        return new class ($mockCleaner) extends CleanerCommand
+        return new class ($mockCleaner) extends ResetPasswordRemoveExpiredCommand
         {
             public function callExecute(InputInterface $input, OutputInterface $output): void
             {

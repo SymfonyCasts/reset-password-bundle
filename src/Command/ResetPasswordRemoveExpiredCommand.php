@@ -10,10 +10,8 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver <ryan@symfonycasts.com>
- *
- * @final
  */
-class CleanerCommand extends Command
+class ResetPasswordRemoveExpiredCommand extends Command
 {
     protected static $defaultName = 'reset-password:remove-expired';
 
@@ -44,6 +42,6 @@ class CleanerCommand extends Command
 
         $intRemoved = $this->cleaner->handleGarbageCollection(true);
 
-        $output->writeln('Garbage collection successful. Removed '.$intRemoved.' reset password request objects.');
+        $output->writeln(sprintf('Garbage collection successful. Removed %s reset password request objects.', $intRemoved));
     }
 }
