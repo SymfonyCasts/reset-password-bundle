@@ -35,7 +35,7 @@ class ResetPasswordCleaner
      */
     public function handleGarbageCollection(bool $force = false): int
     {
-        if ($this->enabled || (!$this->enabled && $force)) {
+        if ($this->enabled || $force) {
             return $this->repository->removeExpiredResetPasswordRequests();
         }
 
