@@ -1,13 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
 namespace SymfonyCasts\Bundle\tests\UnitTests\Util;
 
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
+ */
 class ResetPasswordCleanerTest extends TestCase
 {
     public function testRemoveExpiredRequestCallsRepositoryTrait(): void

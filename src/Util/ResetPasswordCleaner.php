@@ -5,8 +5,8 @@ namespace SymfonyCasts\Bundle\ResetPassword\Util;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
 /**
- * @author  Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <ryan@symfonycasts.com>
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
  * @final
@@ -36,14 +36,9 @@ class ResetPasswordCleaner
     public function handleGarbageCollection(bool $force = false): int
     {
         if ($this->enabled || (!$this->enabled && $force)) {
-            return $this->removeExpiredRequests();
+            return $this->repository->removeExpiredResetPasswordRequests();
         }
 
         return 0;
-    }
-
-    private function removeExpiredRequests(): int
-    {
-        return $this->repository->removeExpiredResetPasswordRequests();
     }
 }

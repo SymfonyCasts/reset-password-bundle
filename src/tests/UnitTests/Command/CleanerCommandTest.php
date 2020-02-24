@@ -9,8 +9,8 @@ use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
 /**
- * @author  Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <ryan@symfonycasts.com>
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 class CleanerCommandTest extends TestCase
 {

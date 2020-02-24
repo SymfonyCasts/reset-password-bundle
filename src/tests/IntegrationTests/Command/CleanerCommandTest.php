@@ -7,8 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @author  Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <ryan@symfonycasts.com>
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 class CleanerCommandTest extends KernelTestCase
 {

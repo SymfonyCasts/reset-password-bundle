@@ -34,6 +34,9 @@ class ResetPasswordHelperTest extends TestCase
      */
     private $mockResetRequest;
 
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordCleaner
+     */
     private $mockCleaner;
 
     /**
