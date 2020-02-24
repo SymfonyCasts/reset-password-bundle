@@ -11,7 +11,12 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 interface ResetPasswordHelperInterface
 {
     /**
-     * Generates & persists a new password reset token that can be provided to the user
+     * Generate & persist a new password reset token that can be provided to the user
+     *
+     * ResetPasswordHelper persists a ResetPasswordRequest object which contains
+     * the hashed token. The ResetPasswordToken object returned by this method
+     * contains the user token which is used to select and verify a persisted
+     * request object.
      */
     public function generateResetToken(object $user): ResetPasswordToken;
 
@@ -21,7 +26,7 @@ interface ResetPasswordHelperInterface
      * The token provided to the user from generateResetToken() is validated
      * against a ResetPasswordRequest object stored in persistence.
      *
-     * @param string $fullToken selector + verifier token
+     * @param string $fullToken selector string + verifier string provided by the user
      */
     public function validateTokenAndFetchUser(string $fullToken): object;
 
@@ -31,6 +36,8 @@ interface ResetPasswordHelperInterface
      * Intended to be used after validation. Not appropriate for clearing
      * expired ResetPasswordRequest objects. Use the built in garbage collector
      * instead.
+     *
+     * @param string $fullToken selector string + verifier string provided by the user
      */
     public function removeResetRequest(string $fullToken): void;
 }
