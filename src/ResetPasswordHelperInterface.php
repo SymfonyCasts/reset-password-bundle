@@ -26,17 +26,17 @@ interface ResetPasswordHelperInterface
      * The token provided to the user from generateResetToken() is validated
      * against a token stored in persistence.
      *
-     * @param string $fullToken selector string + verifier string provided by the user
+     * @param string $fullToken selector string + verifier string provided by the user.
      */
     public function validateTokenAndFetchUser(string $fullToken): object;
 
     /**
-     * Remove a password reset request token from persistence
+     * Remove a password reset request token from persistence.
      *
      * Intended to be used after validation. - this will typically remove
      * the token from storage so that it can't be used again.
      *
-     * @param string $fullToken selector string + verifier string provided by the user
+     * @param string $fullToken selector string + verifier string provided by the user.
      */
     public function removeResetRequest(string $fullToken): void;
 }
