@@ -9,10 +9,11 @@
         "symfony/http-kernel": "^4.4 | ^5.0"
     },
     "require-dev": {
+        "doctrine/orm": "^3.0@dev",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "symfony/http-foundation": "^5.0",
         "symfony/phpunit-bridge": "^5.0",
-        "vimeo/psalm": "^3.8",
-        "doctrine/orm": "^3.0@dev"
+        "vimeo/psalm": "^3.8"
     },
     "conflict": {
         "doctrine/orm": "<2.7",
