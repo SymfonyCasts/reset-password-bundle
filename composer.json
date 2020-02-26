@@ -1,14 +1,21 @@
 {
     "type": "symfony-bundle",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.2",
-        "symfony/framework-bundle": "^4.4 | ^5.0"
+        "symfony/config": "^4.4 | ^5.0",
+        "symfony/dependency-injection": "^4.4 | ^5.0",
+        "symfony/http-kernel": "^4.4 | ^5.0"
     },
     "require-dev": {
+        "symfony/http-foundation": "^5.0",
         "symfony/phpunit-bridge": "^5.0",
         "vimeo/psalm": "^3.8"
+    },
+    "conflict": {
+        "symfony/http-foundation": "<4.4",
+        "symfony/framework-bundle": "<4.4"
     },
     "autoload": {
         "psr-4": {
