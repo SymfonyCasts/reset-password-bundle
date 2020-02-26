@@ -8,13 +8,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * Provides useful methods to a "reset password controller"
+ * Provides useful methods to a "reset password controller".
  *
  * Use of this trait requires a controller to extend
  * Symfony\Bundle\FrameworkBundle\Controller\AbstractController
  *
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <ryan@symfonycasts.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 trait ResetPasswordControllerTrait
 {
