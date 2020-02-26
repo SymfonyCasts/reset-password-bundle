@@ -6,7 +6,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 interface ResetPasswordRequestRepositoryInterface
 {
@@ -23,7 +23,7 @@ interface ResetPasswordRequestRepositoryInterface
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void;
 
     /**
-     * Remove all expired reset password request objects from persistence
+     * Remove all expired reset password request objects from persistence.
      *
      * @return int Number of request objects removed from persistence
      */
