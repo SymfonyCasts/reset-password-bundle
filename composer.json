@@ -11,9 +11,11 @@
     "require-dev": {
         "symfony/http-foundation": "^5.0",
         "symfony/phpunit-bridge": "^5.0",
-        "vimeo/psalm": "^3.8"
+        "vimeo/psalm": "^3.8",
+        "doctrine/orm": "^3.0@dev"
     },
     "conflict": {
+        "doctrine/orm": "<2.7",
         "symfony/http-foundation": "<4.4",
         "symfony/framework-bundle": "<4.4"
     },
