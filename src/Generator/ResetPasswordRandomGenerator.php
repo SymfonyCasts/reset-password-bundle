@@ -4,7 +4,8 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
  * @internal
  * @final
  */
