@@ -6,7 +6,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
  * Trait can be added to a Doctrine repository to help implement
- * ResetPasswordRequestRepositoryInterface
+ * ResetPasswordRequestRepositoryInterface.
  *
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
