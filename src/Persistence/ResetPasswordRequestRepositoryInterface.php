@@ -20,7 +20,7 @@ interface ResetPasswordRequestRepositoryInterface
     public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface;
 
     /**
-     * Get the unique user identifier from persistence.
+     * Get the unique user entity identifier from persistence.
      *
      * @param object $user User entity - typically implements Symfony\Component\Security\Core\User\UserInterface
      */
