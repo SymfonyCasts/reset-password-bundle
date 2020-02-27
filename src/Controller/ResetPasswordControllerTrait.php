@@ -33,7 +33,7 @@ trait ResetPasswordControllerTrait
         $this->getSessionService()->set('ResetPasswordPublicToken', $token);
     }
 
-    private function getTokenFromSession(): string
+    private function getTokenFromSession(): ?string
     {
         return $this->getSessionService()->get('ResetPasswordPublicToken');
     }
