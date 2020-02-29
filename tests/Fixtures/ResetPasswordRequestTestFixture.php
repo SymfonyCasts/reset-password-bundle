@@ -25,7 +25,7 @@ class ResetPasswordRequestTestFixture implements ResetPasswordRequestInterface
     {
     }
 
-    public function getUser()
+    public function getUser(): object
     {
     }
 }
