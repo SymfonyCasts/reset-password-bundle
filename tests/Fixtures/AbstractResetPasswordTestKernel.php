@@ -4,10 +4,10 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Bundle\FrameworkBundle\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
 
 /**
@@ -33,7 +33,7 @@ class AbstractResetPasswordTestKernel extends Kernel
         ];
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RoutingConfigurator $routes)
     {
     }
 
