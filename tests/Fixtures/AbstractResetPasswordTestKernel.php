@@ -40,7 +40,10 @@ class AbstractResetPasswordTestKernel extends Kernel
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
         $container->loadFromExtension('framework', [
-            'secret' => 'foo'
+            'secret' => 'foo',
+            'router' => [
+                'utf8' => true
+            ]
         ]);
 
         $container->register(ResetPasswordRepositoryTestFixture::class);
