@@ -39,7 +39,7 @@ interface ResetPasswordRequestRepositoryInterface
     public function findResetPasswordRequest(string $selector): ?ResetPasswordRequestInterface;
 
     /**
-     * Get the most recent non-expired reset password request date of the user, if one exists.
+     * Get the most recent non-expired reset password request date for the user, if one exists.
      *
      * @param object $user User entity - typically implements Symfony\Component\Security\Core\User\UserInterface
      */
