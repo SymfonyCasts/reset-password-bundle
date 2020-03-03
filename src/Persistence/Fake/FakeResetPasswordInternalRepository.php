@@ -6,9 +6,9 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\FakeRepositoryException;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
-@trigger_error('Please set a value for reset_request_repository in config/packages/reset_password.yaml', E_USER_WARNING);
-
 /**
+ * Class is only used as a placeholder and it's signature should be replaced in reset_password.yaml.
+ *
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
