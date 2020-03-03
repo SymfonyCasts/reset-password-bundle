@@ -6,7 +6,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\FakeRepositoryException;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
-@trigger_error('FakeResetPasswordInternalRepository is only a placeholder. It\'s signature should be replaced in config/packages/reset_password.yaml', E_USER_WARNING);
+@trigger_error('Please set a value for reset_request_repository in config/packages/reset_password.yaml', E_USER_WARNING);
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
