@@ -4,12 +4,14 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Exception;
 
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
+use SymfonyCasts\Bundle\ResetPassword\Exception\FakeRepositoryException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 
 /**
- * @author  Jesse Rushlow <jr@geeshoe.com>
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 class ResetPasswordExceptionTest extends TestCase
 {
@@ -26,6 +28,10 @@ class ResetPasswordExceptionTest extends TestCase
         yield [
             TooManyPasswordRequestsException::class,
             'You have already requested a reset password email. Please check your email or try again soon.'
+        ];
+        yield [
+            FakeRepositoryException::class,
+            'Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository` service.'
         ];
     }
 

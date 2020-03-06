@@ -67,5 +67,10 @@
                 <file name="src/DependencyInjection/SymfonyCastsResetPasswordExtension.php"/>
             </errorLevel>
         </PossiblyNullArgument>
+        <InvalidReturnType>
+            <errorLevel type="suppress">
+                <file name="src/Persistence/Fake/FakeResetPasswordInternalRepository.php"/>
+            </errorLevel>
+        </InvalidReturnType>
     </issueHandlers>
 </psalm>
