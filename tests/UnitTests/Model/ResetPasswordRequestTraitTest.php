@@ -46,7 +46,7 @@ class ResetPasswordRequestTraitTest extends TestCase
              * sake, the maker creates the method.
              **/
 
-            public function getUser()
+            public function getUser(): object
             {
             }
         };

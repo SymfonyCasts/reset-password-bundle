@@ -4,17 +4,32 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 interface ResetPasswordRequestInterface
 {
+    /**
+     * Get the time the reset password request was created.
+     */
     public function getRequestedAt(): \DateTimeInterface;
 
+    /**
+     * Check if the reset password request is expired.
+     */
     public function isExpired(): bool;
 
+    /**
+     * Get the time the reset password request expires.
+     */
     public function getExpiresAt(): \DateTimeInterface;
 
+    /**
+     * Get the non-public hashed token used to verify a request password request.
+     */
     public function getHashedToken(): string;
 
-    public function getUser();
+    /**
+     * Get the user whom requested a password reset.
+     */
+    public function getUser(): object;
 }
