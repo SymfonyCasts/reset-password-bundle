@@ -7,7 +7,10 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
 /**
- * Class is only used as a placeholder and it's signature should be replaced in reset_password.yaml.
+ * Class is only used as a placeholder for the bundle configuration on new installs.
+ *
+ * The value of reset_request_repository should be changed to your
+ * request password repository service in reset_password.yaml.
  *
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
@@ -18,40 +21,35 @@ final class FakeResetPasswordInternalRepository implements ResetPasswordRequestR
 {
     public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
     {
-        $this->throwException();
+        throw new FakeRepositoryException();
     }
 
     public function getUserIdentifier(object $user): string
     {
-        $this->throwException();
+        throw new FakeRepositoryException();
     }
 
     public function persistResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
-        $this->throwException();
+        throw new FakeRepositoryException();
     }
 
     public function findResetPasswordRequest(string $selector): ?ResetPasswordRequestInterface
     {
-        $this->throwException();
+        throw new FakeRepositoryException();
     }
 
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
     {
-        $this->throwException();
+        throw new FakeRepositoryException();
     }
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
-        $this->throwException();
+        throw new FakeRepositoryException();
     }
 
     public function removeExpiredResetPasswordRequests(): int
-    {
-        $this->throwException();
-    }
-
-    private function throwException(): void
     {
         throw new FakeRepositoryException();
     }
