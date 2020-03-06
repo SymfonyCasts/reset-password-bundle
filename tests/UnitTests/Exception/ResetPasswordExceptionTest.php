@@ -31,7 +31,7 @@ class ResetPasswordExceptionTest extends TestCase
         ];
         yield [
             FakeRepositoryException::class,
-            'Change repository signature for request_password_repository in config/packages/reset_password.yaml.'
+            'Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository` service.'
         ];
     }
 
