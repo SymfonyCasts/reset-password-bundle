@@ -12,12 +12,12 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
 class ResetPasswordTokenComponents
 {
     /**
-     * @var string non-hashed random string used to fetch request from persistence
+     * @var string
      */
     private $selector;
 
     /**
-     * @var string non-hashed string used to verify token
+     * @var string
      */
     private $verifier;
 
@@ -33,16 +33,25 @@ class ResetPasswordTokenComponents
         $this->hashedToken = $hashedToken;
     }
 
+    /**
+     * @return string Non-hashed random string used to fetch request objects from persistence
+     */
     public function getSelector(): string
     {
         return $this->selector;
     }
 
+    /**
+     * @return string The hashed non-public token used to validate reset password requests
+     */
     public function getHashedToken(): string
     {
         return $this->hashedToken;
     }
 
+    /**
+     * The public token consists of a concatenated random non-hashed selector string and random non-hashed verifier string.
+     */
     public function getPublicToken(): string
     {
         return $this->selector.$this->verifier;
