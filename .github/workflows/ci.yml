@@ -69,6 +69,7 @@ jobs:
 
       - name: Psalm Static Analysis
         run: vendor/bin/psalm -c psalm.xml
+        if: always()
 
       - name: Unit Tests
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist
