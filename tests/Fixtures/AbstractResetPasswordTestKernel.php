@@ -52,9 +52,4 @@ class AbstractResetPasswordTestKernel extends Kernel
             'request_password_repository' => ResetPasswordRepositoryTestFixture::class
         ]);
     }
-
-    public function getProjectDir(): string
-    {
-        return \dirname( __DIR__, 2);
-    }
 }
