@@ -60,13 +60,14 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         $expected = \hash_hmac(
             'sha256',
             \json_encode(['verifier', 'user1234', 2020]),
-            'key'
+            'key',
+            true
         );
 
         $generator = $this->getTokenGenerator();
         $result = $generator->createToken($this->mockExpiresAt, 'user1234');
 
-        self::assertSame($expected, $result->getHashedToken());
+        self::assertSame(\base64_encode($expected), $result->getHashedToken());
     }
 
     public function testHashedTokenIsCreatedUsingOptionVerifierParam(): void
@@ -90,13 +91,14 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         $knownToken = \hash_hmac(
             'sha256',
             \json_encode([$knownVerifier, $userId, $date]),
-            'key'
+            'key',
+            true
         );
 
         $generator = $this->getTokenGenerator();
         $result = $generator->createToken($this->mockExpiresAt, $userId, $knownVerifier);
 
-        self::assertSame($knownToken, $result->getHashedToken());
+        self::assertSame(\base64_encode($knownToken), $result->getHashedToken());
     }
 
     private function getTokenGenerator(): ResetPasswordTokenGenerator

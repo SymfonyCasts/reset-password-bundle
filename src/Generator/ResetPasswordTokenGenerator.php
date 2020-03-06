@@ -55,6 +55,6 @@ class ResetPasswordTokenGenerator
 
     private function getHashedToken(string $data): string
     {
-        return \hash_hmac('sha256', $data, $this->signingKey, false);
+        return \base64_encode(\hash_hmac('sha256', $data, $this->signingKey, true));
     }
 }
