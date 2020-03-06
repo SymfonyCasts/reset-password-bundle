@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the SymfonyCasts ResetPasswordBundle package.
+ * Copyright (c) SymfonyCasts <https://symfonycasts.com/>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace SymfonyCasts\Bundle\ResetPassword\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -25,7 +32,7 @@ class ResetPasswordRemoveExpiredCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function configure(): void
     {
@@ -33,7 +40,8 @@ class ResetPasswordRemoveExpiredCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
+     *
      * @psalm-suppress InvalidReturnType
      */
     protected function execute(InputInterface $input, OutputInterface $output)

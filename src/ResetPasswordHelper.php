@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the SymfonyCasts ResetPasswordBundle package.
+ * Copyright (c) SymfonyCasts <https://symfonycasts.com/>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace SymfonyCasts\Bundle\ResetPassword;
 
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
@@ -18,7 +25,7 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
     /**
-     * The first 20 characters of the token are a "selector"
+     * The first 20 characters of the token are a "selector".
      */
     private const SELECTOR_LENGTH = 20;
 
@@ -95,6 +102,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      * Validate a PasswordResetRequest and fetch user from persistence.
      *
      * @param string $fullToken selector + non-hashed verifier token
+     *
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
      */
@@ -131,6 +139,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      * Remove a single PasswordResetRequest object from persistence.
      *
      * @param string $fullToken selector + non-hashed verifier token
+     *
      * @throws InvalidResetPasswordTokenException
      */
     public function removeResetRequest(string $fullToken): void
@@ -145,7 +154,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getTokenLifetime(): int
     {
