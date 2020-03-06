@@ -6,7 +6,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <ryan@symfonycasts.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 interface ResetPasswordHelperInterface
 {
@@ -26,7 +26,7 @@ interface ResetPasswordHelperInterface
      * The token provided to the user from generateResetToken() is validated
      * against a token stored in persistence.
      *
-     * @param string $fullToken selector string + verifier string provided by the user.
+     * @param string $fullToken selector string + verifier string provided by the user
      */
     public function validateTokenAndFetchUser(string $fullToken): object;
 
@@ -36,12 +36,12 @@ interface ResetPasswordHelperInterface
      * Intended to be used after validation - this will typically remove
      * the token from storage so that it can't be used again.
      *
-     * @param string $fullToken selector string + verifier string provided by the user.
+     * @param string $fullToken selector string + verifier string provided by the user
      */
     public function removeResetRequest(string $fullToken): void;
 
     /**
-     * Get the length of time in seconds a token is valid
+     * Get the length of time in seconds a token is valid.
      */
     public function getTokenLifetime(): int;
 }

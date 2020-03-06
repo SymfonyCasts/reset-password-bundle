@@ -13,7 +13,7 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <ryan@symfonycasts.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
@@ -40,7 +40,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     private $resetRequestLifetime;
 
     /**
-     * @var int Another password reset cannot be made faster than this throttle time in seconds.
+     * @var int Another password reset cannot be made faster than this throttle time in seconds
      */
     private $requestThrottleTime;
 
@@ -92,7 +92,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Validate a PasswordResetRequest and fetch user from persistence
+     * Validate a PasswordResetRequest and fetch user from persistence.
      *
      * @param string $fullToken selector + non-hashed verifier token
      * @throws ExpiredResetPasswordTokenException
@@ -128,7 +128,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Remove a single PasswordResetRequest object from persistence
+     * Remove a single PasswordResetRequest object from persistence.
      *
      * @param string $fullToken selector + non-hashed verifier token
      * @throws InvalidResetPasswordTokenException

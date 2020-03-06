@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 final class SymfonyCastsResetPasswordExtension extends Extension
 {
@@ -18,7 +18,6 @@ final class SymfonyCastsResetPasswordExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
         $loader->load('reset_password_services.xml');
-
 
         $configuration = $this->getConfiguration($configs, $container);
 

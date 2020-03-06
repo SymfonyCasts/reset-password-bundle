@@ -4,7 +4,8 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
  * @internal
  * @final
  */
@@ -44,6 +45,6 @@ class ResetPasswordTokenComponents
 
     public function getPublicToken(): string
     {
-        return $this->selector . $this->verifier;
+        return $this->selector.$this->verifier;
     }
 }
