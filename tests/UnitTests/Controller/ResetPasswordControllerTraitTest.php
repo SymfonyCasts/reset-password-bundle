@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
