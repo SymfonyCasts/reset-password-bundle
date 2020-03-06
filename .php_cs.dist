@@ -16,7 +16,7 @@ return PhpCsFixer\Config::create()
         'array_syntax' => ['syntax' => 'short'],
         'protected_to_private' => false,
         'semicolon_after_instruction' => false,
-        'native_function_invocation' => true
+        'native_function_invocation' => true,
         'header_comment' => [
             'header' => <<<EOF
 This file is part of the SymfonyCasts ResetPasswordBundle package.
