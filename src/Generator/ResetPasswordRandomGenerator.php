@@ -18,13 +18,13 @@ class ResetPasswordRandomGenerator
     {
         $string = '';
 
-        while (($len = strlen($string)) < $length) {
+        while (($len = \strlen($string)) < $length) {
             $size = $length - $len;
 
             $bytes = \random_bytes($size);
 
-            $string .= substr(
-                str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
+            $string .= \substr(
+                \str_replace(['/', '+', '='], '', \base64_encode($bytes)), 0, $size);
         }
 
         return $string;
