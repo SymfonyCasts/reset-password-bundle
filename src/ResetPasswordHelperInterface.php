@@ -2,6 +2,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword;
 
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 /**
@@ -17,6 +18,8 @@ interface ResetPasswordHelperInterface
      * the validateTokenAndFetchUser() method can verify the token validity
      * and removeResetRequest() can eventually invalidate it by removing it
      * from storage.
+     *
+     * @throws ResetPasswordExceptionInterface
      */
     public function generateResetToken(object $user): ResetPasswordToken;
 
