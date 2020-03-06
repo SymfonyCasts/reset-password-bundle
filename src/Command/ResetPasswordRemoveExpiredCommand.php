@@ -32,7 +32,7 @@ class ResetPasswordRemoveExpiredCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function configure(): void
     {
@@ -40,7 +40,8 @@ class ResetPasswordRemoveExpiredCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
+     *
      * @psalm-suppress InvalidReturnType
      */
     protected function execute(InputInterface $input, OutputInterface $output)
