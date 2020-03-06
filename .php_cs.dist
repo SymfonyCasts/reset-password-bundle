@@ -1,0 +1,31 @@
+<?php
+
+if (!file_exists(__DIR__.'/src')) {
+    exit(0);
+}
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__.'/src')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules(array(
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        '@PHPUnit75Migration:risky' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'protected_to_private' => false,
+        'semicolon_after_instruction' => false,
+        'native_function_invocation' => true
+        'header_comment' => [
+            'header' => <<<EOF
+This file is part of the SymfonyCasts ResetPasswordBundle package.
+Copyright (c) SymfonyCasts <https://symfonycasts.com/>
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+EOF
+        ]
+    ))
+    ->setRiskyAllowed(true)
+    ->setFinder($finder)
+;
