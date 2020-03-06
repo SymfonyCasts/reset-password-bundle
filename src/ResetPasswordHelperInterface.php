@@ -27,9 +27,12 @@ interface ResetPasswordHelperInterface
      * Validate a reset request and fetch the user from persistence.
      *
      * The token provided to the user from generateResetToken() is validated
-     * against a token stored in persistence.
+     * against a token stored in persistence. If the token cannot be validated,
+     * a ResetPasswordExceptionInterface instance should be thrown.
      *
      * @param string $fullToken selector string + verifier string provided by the user
+     *
+     * @throws ResetPasswordExceptionInterface
      */
     public function validateTokenAndFetchUser(string $fullToken): object;
 
