@@ -64,6 +64,9 @@ jobs:
 #        env:
 #          DATABASE_URL: mysql://root:password@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/reset_password_bundle_ci?serverVersion=5.7
 
+      - name: Check src with php-cs-Fixer
+        run: vendor/bin/php-cs-fixer fix --config ./.php_cs.dist --diff --diff-format udiff --dry-run
+
       - name: Psalm Static Analysis
         run: vendor/bin/psalm -c psalm.xml
 
