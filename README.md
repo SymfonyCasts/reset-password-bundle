@@ -14,13 +14,11 @@ If your application isn't a traditional Symfony web application, see the [detail
 
 ## Configuration
 
-We highly recommend using `bin/console make:reset-password` to generate and configure the required application files that the bundle needs to function as intended. 
+We highly recommend using `bin/console make:reset-password` from [MakerBundle](https://github.com/symfony/maker-bundle) to generate and configure the required application files that the bundle needs to function as intended. 
 
 Symfony's Flex creates the bundle's `config/packages/reset_password.yaml` config file. The `reset_request_repository` param is populated with a fake request repository value which must be changed before use. `bin/console make:reset-password` has you covered there too.
 
 Checkout the [configuration reference](https://github.com/SymfonyCasts/reset-password-bundle/wiki/Confguration-Reference) in the wiki for more detailed configuration information.
-
-Symfony's [Mailer DSN](https://symfony.com/doc/current/mailer.html) must be properly configured to send emails after a reset request has been made.
 
 ## Usage
 
