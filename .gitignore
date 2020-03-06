@@ -1,4 +1,3 @@
 .*.cache
 composer.lock
 vendor/*
-var/*
