@@ -10,7 +10,7 @@
 namespace SymfonyCasts\Bundle\ResetPassword\Exception;
 
 /**
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver <ryan@symfonycasts.com>
  */
 final class InvalidResetPasswordTokenException extends \Exception implements ResetPasswordExceptionInterface
 {
