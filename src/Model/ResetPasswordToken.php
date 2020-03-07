@@ -11,7 +11,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 final class ResetPasswordToken
 {

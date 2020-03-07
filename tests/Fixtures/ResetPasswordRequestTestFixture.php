@@ -11,6 +11,10 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
+/**
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
+ */
 class ResetPasswordRequestTestFixture implements ResetPasswordRequestInterface
 {
 

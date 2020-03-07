@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver <ryan@symfonycasts.com>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 class ResetPasswordTokenGeneratorTest extends TestCase
 {

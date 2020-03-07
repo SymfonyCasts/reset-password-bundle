@@ -13,7 +13,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use SymfonyCasts\Bundle\ResetPassword\DependencyInjection\SymfonyCastsResetPasswordExtension;
 
 /**
- * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 class SymfonyCastsResetPasswordBundle extends Bundle
 {
