@@ -70,6 +70,7 @@
         <InvalidReturnType>
             <errorLevel type="suppress">
                 <file name="src/Persistence/Fake/FakeResetPasswordInternalRepository.php"/>
+                <file name="src/Command/ResetPasswordRemoveExpiredCommand.php" />
             </errorLevel>
         </InvalidReturnType>
     </issueHandlers>
