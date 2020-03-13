@@ -38,7 +38,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
     private $repository;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

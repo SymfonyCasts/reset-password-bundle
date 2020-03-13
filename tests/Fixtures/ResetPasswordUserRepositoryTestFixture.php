@@ -30,6 +30,7 @@ final class ResetPasswordUserRepositoryTestFixture
     public function findAll(): array
     {
         $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordUserTestFixture::class);
+
         return $persister->loadAll();
     }
 }

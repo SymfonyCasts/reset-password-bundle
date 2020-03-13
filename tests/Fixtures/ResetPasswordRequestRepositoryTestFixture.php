@@ -33,22 +33,18 @@ final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRe
         $this->manager = $manager;
     }
 
-    private function getEntityManager(): EntityManagerInterface
-    {
-        return $this->manager;
-    }
-
-    private function createQueryBuilder($alias, $indexBy = null): QueryBuilder
-    {
-        return $this->manager->createQueryBuilder()
-            ->select($alias)
-            ->from(self::ENTITY, $alias, $indexBy)
-        ;
+    public function createResetPasswordRequest(
+        object $user,
+        \DateTimeInterface $expiresAt,
+        string $selector,
+        string $hashedToken
+    ): ResetPasswordRequestInterface {
     }
 
     public function findOneBy(array $criteria)
     {
         $persister = $this->manager->getUnitOfWork()->getEntityPersister(self::ENTITY);
+
         return $persister->load($criteria);
     }
 
@@ -59,11 +55,16 @@ final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRe
         return $persister->loadAll();
     }
 
-    public function createResetPasswordRequest(
-        object $user,
-        \DateTimeInterface $expiresAt,
-        string $selector,
-        string $hashedToken
-    ): ResetPasswordRequestInterface {
+    private function getEntityManager(): EntityManagerInterface
+    {
+        return $this->manager;
+    }
+
+    private function createQueryBuilder($alias, $indexBy = null): QueryBuilder
+    {
+        return $this->manager->createQueryBuilder()
+            ->select($alias)
+            ->from(self::ENTITY, $alias, $indexBy)
+            ;
     }
 }
