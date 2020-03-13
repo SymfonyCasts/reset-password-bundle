@@ -32,6 +32,14 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
      */
     private $manager;
 
+    /**
+     * @var ResetPasswordRequestRepositoryTestFixture
+     */
+    private $repository;
+
+    /**
+     * {@inheritDoc}
+     */
     protected function setUp(): void
     {
         $kernel = new ResetPasswordFunctionalKernel();
@@ -43,16 +51,17 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $this->manager = $registry->getManager();
 
         $this->configureDatabase();
+
+        $this->repository = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
     }
 
     public function testPersistResetPasswordRequestPersistsRequestObject(): void
     {
         $fixture = new ResetPasswordRequestTestFixture();
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $repo->persistResetPasswordRequest($fixture);
+        $this->repository->persistResetPasswordRequest($fixture);
 
-        $result = $repo->findAll();
+        $result = $this->repository->findAll();
+
         self::assertSame($fixture, $result[0]);
     }
 
@@ -63,9 +72,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $result = $repo->getUserIdentifier($fixture);
+        $result = $this->repository->getUserIdentifier($fixture);
 
         self::assertSame('1', $result);
     }
@@ -78,9 +85,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $result = $repo->findResetPasswordRequest('1234');
+        $result = $this->repository->findResetPasswordRequest('1234');
 
         self::assertSame($fixture, $result);
     }
@@ -104,9 +109,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
 
         $this->manager->flush();
 
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $result = $repo->getMostRecentNonExpiredRequestDate($userFixture);
+        $result = $this->repository->getMostRecentNonExpiredRequestDate($userFixture);
 
         self::assertSame($expectedTime, $result);
     }
@@ -124,9 +127,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
 
         $this->manager->flush();
 
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $result = $repo->getMostRecentNonExpiredRequestDate($userFixture);
+        $result = $this->repository->getMostRecentNonExpiredRequestDate($userFixture);
 
         self::assertNull($result);
     }
@@ -141,9 +142,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
 
         $this->manager->flush();
 
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $result = $repo->getMostRecentNonExpiredRequestDate($userFixture);
+        $result = $this->repository->getMostRecentNonExpiredRequestDate($userFixture);
 
         self::assertNull($result);
     }
@@ -155,19 +154,15 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $repo->removeResetPasswordRequest($fixture);
+        $this->repository->removeResetPasswordRequest($fixture);
 
-        $this->assertCount(0, $repo->findAll());
+        $this->assertCount(0, $this->repository->findAll());
     }
 
     public function testRemovedExpiredResetPasswordRequestsOnlyRemovedExpiredRequestsFromPersistence(): void
     {
         $expiredFixture = new ResetPasswordRequestTestFixture();
-        $expiredFixture->expiresAt = (new \DateTimeImmutable())
-            ->modify('-9999999 seconds')
-        ;
+        $expiredFixture->expiresAt = new \DateTimeImmutable('-2 hours');
         $this->manager->persist($expiredFixture);
 
         $futureFixture = new ResetPasswordRequestTestFixture();
@@ -175,11 +170,8 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
 
         $this->manager->flush();
 
-        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
-        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
-        $repo->removeExpiredResetPasswordRequests();
-
-        $result = $repo->findAll();
+        $this->repository->removeExpiredResetPasswordRequests();
+        $result = $this->repository->findAll();
 
         self::assertCount(1, $result);
         self::assertSame($futureFixture, $result[0]);
@@ -203,22 +195,22 @@ class ResetPasswordFunctionalKernel extends AbstractResetPasswordTestKernel
         $container->loadFromExtension('doctrine', [
             'dbal' => [
                 'driver' => 'pdo_sqlite',
-                'url' => 'sqlite:///fake'
+                'url' => 'sqlite:///fake',
             ],
             'orm' => [
                 'auto_generate_proxy_classes' => true,
                 'naming_strategy' => 'doctrine.orm.naming_strategy.underscore_number_aware',
                 'auto_mapping' => true,
                 'mappings' => [
-                    'App' =>[
+                    'App' => [
                         'is_bundle' => false,
                         'type' => 'annotation',
                         'dir' => '%kernel.project_dir%/tests/Fixtures/Entity/',
                         'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
-                        'alias' => 'App'
-                    ]
-                ]
-            ]
+                        'alias' => 'App',
+                    ],
+                ],
+            ],
         ]);
     }
 }
