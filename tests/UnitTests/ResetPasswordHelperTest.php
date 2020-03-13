@@ -15,8 +15,8 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenExcepti
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
-use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordRequestTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
@@ -57,7 +57,7 @@ class ResetPasswordHelperTest extends TestCase
     private $mockUser;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
@@ -66,7 +66,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockCleaner = $this->createMock(ResetPasswordCleaner::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
         $this->randomToken = \bin2hex(\random_bytes(10));
-        $this->mockUser = new class {};
+        $this->mockUser = new class() {};
     }
 
     private function getPasswordResetHelper(): ResetPasswordHelper

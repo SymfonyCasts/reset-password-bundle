@@ -9,9 +9,9 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Util;
 
+use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>

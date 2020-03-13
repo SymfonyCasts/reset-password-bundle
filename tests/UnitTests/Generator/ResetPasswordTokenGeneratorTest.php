@@ -9,9 +9,9 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Generator;
 
+use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -30,7 +30,7 @@ class ResetPasswordTokenGeneratorTest extends TestCase
     private $mockExpiresAt;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

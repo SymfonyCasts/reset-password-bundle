@@ -19,15 +19,13 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
  */
 class ResetPasswordRequestTraitTest extends TestCase
 {
-    private const SUT = ResetPasswordRequestTrait::class;
-
     /**
      * @var \DateTimeImmutable
      */
     private $expiresAt;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
@@ -36,8 +34,7 @@ class ResetPasswordRequestTraitTest extends TestCase
 
     private function getFixture(): ResetPasswordRequestInterface
     {
-        return new class ($this->expiresAt, '', '') implements ResetPasswordRequestInterface
-        {
+        return new class($this->expiresAt, '', '') implements ResetPasswordRequestInterface {
             use ResetPasswordRequestTrait;
 
             public function __construct($expiresAt, $selector, $token)
@@ -45,15 +42,14 @@ class ResetPasswordRequestTraitTest extends TestCase
                 $this->initialize($expiresAt, $selector, $token);
             }
 
-            /**
+            /*
              * getUser() is intentionally left out of the trait.
              * it is created via maker under App\Entity\PasswordResetRequest
              * as the user property, specifically its target entity,
              * is unknown to the ResetPassword bundle. Although getUser()
              * could be added to the trait within the bundle, for clarity
              * sake, the maker creates the method.
-             **/
-
+             */
             public function getUser(): object
             {
             }
@@ -80,10 +76,10 @@ class ResetPasswordRequestTraitTest extends TestCase
      */
     public function testORMAnnotationSetOnProperty(string $propertyName, string $expectedAnnotation): void
     {
-        $property = new \ReflectionProperty(self::SUT, $propertyName);
+        $property = new \ReflectionProperty(ResetPasswordRequestTrait::class, $propertyName);
         $result = $property->getDocComment();
 
-        self::assertStringContainsString($expectedAnnotation, $result, sprintf('%s::%s does not contain "%s" in the docBlock.', self::SUT, $propertyName, $expectedAnnotation));
+        self::assertStringContainsString($expectedAnnotation, $result, \sprintf('%s::%s does not contain "%s" in the docBlock.', ResetPasswordRequestTrait::class, $propertyName, $expectedAnnotation));
     }
 
     public function testIsExpiredReturnsFalseWithTimeInFuture(): void
@@ -91,7 +87,7 @@ class ResetPasswordRequestTraitTest extends TestCase
         $this->expiresAt
             ->expects($this->once())
             ->method('getTimestamp')
-            ->willReturn(time() + (360))
+            ->willReturn(\time() + (360))
         ;
 
         $trait = $this->getFixture();
@@ -103,7 +99,7 @@ class ResetPasswordRequestTraitTest extends TestCase
         $this->expiresAt
             ->expects($this->once())
             ->method('getTimestamp')
-            ->willReturn(time() - (360))
+            ->willReturn(\time() - (360))
         ;
 
         $trait = $this->getFixture();
