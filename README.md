@@ -36,4 +36,4 @@ The above assumes you have already setup [authentication](https://symfony.com/do
 
 ## Configuration
 
-You can change the default configuration parameters for the bundle in the `config/packages/reset_password.yaml` config file created by Maker. For details on what can be configured, checkout the [configuration reference](https://github.com/SymfonyCasts/reset-password-bundle/wiki/Confguration-Reference) in the wiki.
+You can change the default configuration parameters for the bundle in the `config/packages/reset_password.yaml` config file created by Maker. For details on what can be configured, checkout the [configuration reference](https://github.com/SymfonyCasts/reset-password-bundle/blob/master/docs/configuration-reference.md).
