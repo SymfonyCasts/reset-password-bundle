@@ -7,16 +7,32 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
+ * @internal
+ * @ORM\Entity(repositoryClass="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordRequestRepositoryTestFixture")
  */
-class ResetPasswordRequestTestFixture implements ResetPasswordRequestInterface
+final class ResetPasswordRequestTestFixture implements ResetPasswordRequestInterface
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    public $selector;
+
     public function getRequestedAt(): \DateTimeInterface
     {
     }

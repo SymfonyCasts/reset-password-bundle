@@ -17,7 +17,7 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordRequestTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
 /**

@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
@@ -19,9 +20,34 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  *
  * @internal
  */
-class ResetPasswordRepositoryTestFixture implements ResetPasswordRequestRepositoryInterface
+final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRequestRepositoryInterface
 {
     use ResetPasswordRequestRepositoryTrait;
+
+    private $manager;
+
+    public function __construct(EntityManagerInterface $manager = null)
+    {
+        $this->manager = $manager;
+    }
+
+    private function getEntityManager(): EntityManagerInterface
+    {
+        return $this->manager;
+    }
+
+    public function findOneBy(array $criteria)
+    {
+        $persister = $this->manager->getUnitOfWork()->getEntityPersister(\SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture::class);
+        return $persister->load($criteria);
+    }
+
+    public function findAll()
+    {
+        $persister = $this->manager->getUnitOfWork()->getEntityPersister(\SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture::class);
+
+        return $persister->loadAll();
+    }
 
     public function createResetPasswordRequest(
         object $user,

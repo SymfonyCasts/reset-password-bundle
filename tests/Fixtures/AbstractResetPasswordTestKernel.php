@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -39,6 +40,7 @@ class AbstractResetPasswordTestKernel extends Kernel
         return [
             new FrameworkBundle(),
             new SymfonyCastsResetPasswordBundle(),
+            new DoctrineBundle()
         ];
     }
 
@@ -65,10 +67,10 @@ class AbstractResetPasswordTestKernel extends Kernel
             ],
         ]);
 
-        $container->register(ResetPasswordRepositoryTestFixture::class);
+        $container->register(ResetPasswordRequestRepositoryTestFixture::class);
 
         $container->loadFromExtension('symfonycasts_reset_password', [
-            'request_password_repository' => ResetPasswordRepositoryTestFixture::class,
+            'request_password_repository' => ResetPasswordRequestRepositoryTestFixture::class
         ]);
 
         // avoid logging request logs
