@@ -98,6 +98,29 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $this->assertCount(0, $repo->findAll());
     }
 
+    public function testRemovedExpiredResetPasswordRequestsOnlyRemovedExpiredRequestsFromPersistence(): void
+    {
+        $expiredFixture = new ResetPasswordRequestTestFixture();
+        $expiredFixture->expiresAt = (new \DateTimeImmutable())
+            ->modify('-9999999 seconds')
+        ;
+        $this->manager->persist($expiredFixture);
+
+        $futureFixture = new ResetPasswordRequestTestFixture();
+        $this->manager->persist($futureFixture);
+
+        $this->manager->flush();
+
+        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
+        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
+        $repo->removeExpiredResetPasswordRequests();
+
+        $result = $repo->findAll();
+
+        self::assertCount(1, $result);
+        self::assertSame($futureFixture, $result[0]);
+    }
+
     private function configureDatabase(): void
     {
         $metaData = $this->manager->getMetadataFactory();

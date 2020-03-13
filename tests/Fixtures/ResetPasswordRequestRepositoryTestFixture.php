@@ -10,6 +10,7 @@
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
@@ -24,6 +25,7 @@ final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRe
 {
     use ResetPasswordRequestRepositoryTrait;
 
+    private const ENTITY = \SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture::class;
     private $manager;
 
     public function __construct(EntityManagerInterface $manager = null)
@@ -36,15 +38,23 @@ final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRe
         return $this->manager;
     }
 
+    private function createQueryBuilder($alias, $indexBy = null): QueryBuilder
+    {
+        return $this->manager->createQueryBuilder()
+            ->select($alias)
+            ->from(self::ENTITY, $alias, $indexBy)
+        ;
+    }
+
     public function findOneBy(array $criteria)
     {
-        $persister = $this->manager->getUnitOfWork()->getEntityPersister(\SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture::class);
+        $persister = $this->manager->getUnitOfWork()->getEntityPersister(self::ENTITY);
         return $persister->load($criteria);
     }
 
     public function findAll()
     {
-        $persister = $this->manager->getUnitOfWork()->getEntityPersister(\SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture::class);
+        $persister = $this->manager->getUnitOfWork()->getEntityPersister(self::ENTITY);
 
         return $persister->loadAll();
     }

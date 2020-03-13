@@ -33,6 +33,11 @@ final class ResetPasswordRequestTestFixture implements ResetPasswordRequestInter
      */
     public $selector;
 
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    public $expiresAt;
+
     public function getRequestedAt(): \DateTimeInterface
     {
     }
