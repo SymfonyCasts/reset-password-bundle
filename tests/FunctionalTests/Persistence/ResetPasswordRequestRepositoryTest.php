@@ -16,6 +16,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\AbstractResetPasswordTestKernel;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordUserTestFixture;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordRequestRepositoryTestFixture;
 
 /**
@@ -82,6 +83,69 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $result = $repo->findResetPasswordRequest('1234');
 
         self::assertSame($fixture, $result);
+    }
+
+    public function testGetMostRecentNonExpiredRequestDateReturnsExpected(): void
+    {
+        $userFixture = new ResetPasswordUserTestFixture();
+        $this->manager->persist($userFixture);
+
+        $fixtureOld = new ResetPasswordRequestTestFixture();
+        $fixtureOld->requestedAt = new \DateTimeImmutable('-5 minutes');
+        $fixtureOld->user = $userFixture;
+        $this->manager->persist($fixtureOld);
+
+        $expectedTime = new \DateTimeImmutable();
+        $fixtureNewest = new ResetPasswordRequestTestFixture();
+        $fixtureNewest->expiresAt = new \DateTimeImmutable('+1 hours');
+        $fixtureNewest->requestedAt = $expectedTime;
+        $fixtureNewest->user = $userFixture;
+        $this->manager->persist($fixtureNewest);
+
+        $this->manager->flush();
+
+        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
+        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
+        $result = $repo->getMostRecentNonExpiredRequestDate($userFixture);
+
+        self::assertSame($expectedTime, $result);
+    }
+
+    public function testGetMostRecentNonExpiredRequestDateReturnsNullOnExpiredRequest(): void
+    {
+        $userFixture = new ResetPasswordUserTestFixture();
+        $this->manager->persist($userFixture);
+
+        $expiredFixture = new ResetPasswordRequestTestFixture();
+        $expiredFixture->user = $userFixture;
+        $expiredFixture->expiresAt = new \DateTimeImmutable('-1 hours');
+        $expiredFixture->requestedAt = new\DateTimeImmutable('-2 hours');
+        $this->manager->persist($expiredFixture);
+
+        $this->manager->flush();
+
+        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
+        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
+        $result = $repo->getMostRecentNonExpiredRequestDate($userFixture);
+
+        self::assertNull($result);
+    }
+
+    public function testGetMostRecentNonExpiredRequestDateReturnsNullIfRequestNotFound(): void
+    {
+        $userFixture = new ResetPasswordUserTestFixture();
+        $this->manager->persist($userFixture);
+
+        $fixture = new ResetPasswordRequestTestFixture();
+        $this->manager->persist($fixture);
+
+        $this->manager->flush();
+
+        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
+        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
+        $result = $repo->getMostRecentNonExpiredRequestDate($userFixture);
+
+        self::assertNull($result);
     }
 
     public function testRemoveResetPasswordRequestRemovedGivenObjectFromPersistence(): void

@@ -38,12 +38,24 @@ final class ResetPasswordRequestTestFixture implements ResetPasswordRequestInter
      */
     public $expiresAt;
 
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    public $requestedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordUserTestFixture")
+     */
+    public $user;
+
     public function getRequestedAt(): \DateTimeInterface
     {
+        return $this->requestedAt;
     }
 
     public function isExpired(): bool
     {
+        return $this->expiresAt->getTimestamp() <= \time();
     }
 
     public function getExpiresAt(): \DateTimeInterface
