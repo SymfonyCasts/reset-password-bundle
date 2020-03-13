@@ -84,6 +84,20 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         self::assertSame($fixture, $result);
     }
 
+    public function testRemoveResetPasswordRequestRemovedGivenObjectFromPersistence(): void
+    {
+        $fixture = new ResetPasswordRequestTestFixture();
+
+        $this->manager->persist($fixture);
+        $this->manager->flush();
+
+        /** @var ResetPasswordRequestRepositoryTestFixture $repo */
+        $repo = $this->manager->getRepository(ResetPasswordRequestTestFixture::class);
+        $repo->removeResetPasswordRequest($fixture);
+
+        $this->assertCount(0, $repo->findAll());
+    }
+
     private function configureDatabase(): void
     {
         $metaData = $this->manager->getMetadataFactory();
