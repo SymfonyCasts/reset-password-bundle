@@ -26,7 +26,7 @@ There are two ways to get started, the easiest and preferred way is to use Symfo
 
 ### Setting things up manually
 
-If you prefer to take care of the leg work yourself, checkout the _NAME_ guide. We still recommend using the Maker command to get a feel for how we intended the bundle to be used.
+If you prefer to take care of the leg work yourself, checkout the [manual setup](https://github.com/SymfonyCasts/reset-password-bundle/blob/master/docs/manual-setup.md) guide. We still recommend using the Maker command to get a feel for how we intended the bundle to be used.
 
 ---
 
