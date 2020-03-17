@@ -65,8 +65,8 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
         $this->mockCleaner = $this->createMock(ResetPasswordCleaner::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
-        $this->randomToken = \bin2hex(\random_bytes(10));
-        $this->mockUser = new class() {};
+        $this->randomToken = \bin2hex(\random_bytes(20));
+        $this->mockUser = new class {};
     }
 
     private function getPasswordResetHelper(): ResetPasswordHelper
@@ -173,7 +173,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockRepo
             ->expects($this->once())
             ->method('findResetPasswordRequest')
-            ->with($this->randomToken)
+            ->with(\substr($this->randomToken, 0, 20))
             ->willReturn($this->mockResetRequest)
         ;
 
@@ -198,6 +198,14 @@ class ResetPasswordHelperTest extends TestCase
         $helper->removeResetRequest('1234');
     }
 
+    public function testExceptionThrownIfTokenLengthIsNotOfCorrectSize(): void
+    {
+        $this->expectException(InvalidResetPasswordTokenException::class);
+
+        $helper = $this->getPasswordResetHelper();
+        $helper->validateTokenAndFetchUser(\substr($this->randomToken, 0, 39));
+    }
+
     public function testExceptionIsThrownIfTokenNotFoundDuringValidation(): void
     {
         $this->mockRepo
@@ -209,7 +217,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->expectException(InvalidResetPasswordTokenException::class);
 
         $helper = $this->getPasswordResetHelper();
-        $helper->validateTokenAndFetchUser('1234');
+        $helper->validateTokenAndFetchUser($this->randomToken);
     }
 
     public function testValidateTokenThrowsExceptionOnExpiredResetRequest(): void
@@ -223,7 +231,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockRepo
             ->expects($this->once())
             ->method('findResetPasswordRequest')
-            ->with($this->randomToken)
+            ->with(\substr($this->randomToken, 0, 20))
             ->willReturn($this->mockResetRequest)
         ;
 
@@ -256,7 +264,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockRepo
             ->expects($this->once())
             ->method('findResetPasswordRequest')
-            ->with($this->randomToken)
+            ->with(\substr($this->randomToken, 0, 20))
             ->willReturn($this->mockResetRequest)
         ;
 
