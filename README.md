@@ -11,10 +11,6 @@ The bundle can be installed using Composer or the [Symfony binary](https://symfo
 ```
 composer install X/X
 ```
-or 
-```
-symfony composer install x/x
-```
 
 ## Usage
 
@@ -22,7 +18,7 @@ There are two ways to get started, the easiest and preferred way is to use Symfo
 
 ### Using Symfony's Maker Bundle (Recommended)
 
-- Run `bin/console make:reset-password`, answer a couple questions, enjoy our bundle!
+- Run `bin/console make:reset-password`, answer a couple questions, and enjoy our bundle!
 
 ### Setting things up manually
 
