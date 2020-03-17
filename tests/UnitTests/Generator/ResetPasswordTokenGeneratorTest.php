@@ -43,7 +43,6 @@ class ResetPasswordTokenGeneratorTest extends TestCase
         $this->mockRandomGenerator
             ->expects($this->exactly(2))
             ->method('getRandomAlphaNumStr')
-            ->with(20)
         ;
 
         $generator = $this->getTokenGenerator();
