@@ -18,7 +18,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
  */
 class ResetPasswordTokenComponentsTest extends TestCase
 {
-    public function testReturnsSelectAndVerifierAsString(): void
+    public function testGetPublicTokenReturnsConcatenatedSelectorAndVerifier(): void
     {
         $tokenComponents = new ResetPasswordTokenComponents(
             'selector',
