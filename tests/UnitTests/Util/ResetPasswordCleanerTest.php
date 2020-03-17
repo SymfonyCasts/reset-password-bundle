@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Util;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
@@ -19,16 +20,28 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
  */
 class ResetPasswordCleanerTest extends TestCase
 {
-    public function testRemoveExpiredRequestCallsRepositoryTrait(): void
+    /**
+     * @var MockObject|ResetPasswordRequestRepositoryInterface
+     */
+    private $mockRepo;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
     {
-        $mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
-        $mockRepo
+        $this->mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
+    }
+
+    public function testGarbageCollectionEnabledByDefault(): void
+    {
+        $this->mockRepo
             ->expects($this->once())
             ->method('removeExpiredResetPasswordRequests')
             ->willReturn(1)
         ;
 
-        $cleaner = new ResetPasswordCleaner($mockRepo);
+        $cleaner = new ResetPasswordCleaner($this->mockRepo);
         $result = $cleaner->handleGarbageCollection();
 
         self::assertSame(1, $result);
@@ -36,26 +49,24 @@ class ResetPasswordCleanerTest extends TestCase
 
     public function testHandleGarbageCollectionCanBeForced(): void
     {
-        $mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
-        $mockRepo
+        $this->mockRepo
             ->expects($this->once())
             ->method('removeExpiredResetPasswordRequests')
             ->willReturn(1)
         ;
 
-        $cleaner = new ResetPasswordCleaner($mockRepo, false);
+        $cleaner = new ResetPasswordCleaner($this->mockRepo, false);
         $cleaner->handleGarbageCollection(true);
     }
 
-    public function testAreNotRemovedWhenDisabledAndNotForced(): void
+    public function testGarbageCollectionCanBeDisabled(): void
     {
-        $mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
-        $mockRepo
+        $this->mockRepo
             ->expects($this->never())
             ->method('removeExpiredResetPasswordRequests')
         ;
 
-        $cleaner = new ResetPasswordCleaner($mockRepo, false);
+        $cleaner = new ResetPasswordCleaner($this->mockRepo, false);
         $result = $cleaner->handleGarbageCollection();
 
         self::assertSame(0, $result);
