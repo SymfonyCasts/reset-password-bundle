@@ -15,7 +15,7 @@ The reset password bundle handles these 2 responsibilities very well with a litt
 
 ## Creating Tokens
 
-Before a user can create a reset password request, the app must have an entity that implements `ResetPasswordRequestInterface`. This entity will be used by the bundle to a reset request in persistence. The entity must have a repository that implements `ResetPasswordRequestRepositoryInterface`. The repository is responsible for the actual creation of the request entity for the bundle. 
+Before a user can create a reset password request, the app must have an entity that implements `ResetPasswordRequestInterface`. This entity will be used by the bundle to store a reset request in persistence. The entity must have a repository that implements `ResetPasswordRequestRepositoryInterface`. The repository is responsible for the actual creation of the request object and manipulating it  in persistence. 
 
 The bundle provides traits for each of these objects that make it easy to implement the interfaces. Once the above objects have been created in the app, you must set the fully qualified repository class name in the bundle's [configuration](https://github.com/SymfonyCasts/reset-password-bundle/wiki/Confguration-Reference) file.
 
@@ -27,4 +27,4 @@ After a user has received their reset token and is ready to reset their password
 
 ## Failures
 
-When the helper is unable to generate a reset token, validate a reset token, or remove a reset request from persistence, a `ResetPasswordExceptionInterface` object thrown by the helper. This exception should be captured by the app and handled accordingly.
+When the helper is unable to generate or validate a reset token, or remove a reset request from persistence, a `ResetPasswordExceptionInterface` object thrown by the helper. This exception should be captured by the app and handled accordingly.
