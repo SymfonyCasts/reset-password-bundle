@@ -18,20 +18,20 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
  */
 class ResetPasswordRandomGeneratorTest extends TestCase
 {
-    public function testIsProvidedLength(): void
+    public function testLengthIs20(): void
     {
         $generator = new ResetPasswordRandomGenerator();
-        $result = $generator->getRandomAlphaNumStr(100);
+        $result = $generator->getRandomAlphaNumStr();
 
-        self::assertSame(100, \strlen($result));
+        self::assertSame(20, \strlen($result));
     }
 
     public function testIsRandom(): void
     {
         $generator = new ResetPasswordRandomGenerator();
 
-        $resultA = $generator->getRandomAlphaNumStr(20);
-        $resultB = $generator->getRandomAlphaNumStr(20);
+        $resultA = $generator->getRandomAlphaNumStr();
+        $resultB = $generator->getRandomAlphaNumStr();
 
         self::assertNotSame($resultA, $resultB);
     }
