@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait ResetPasswordRequestTrait
 {
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=20)
      */
     private $selector;
 

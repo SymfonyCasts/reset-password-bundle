@@ -26,7 +26,7 @@ class ResetPasswordRequestTraitTest extends TestCase
 
     public function propertyDataProvider(): \Generator
     {
-        yield ['selector', '@ORM\Column(type="string", length=100)'];
+        yield ['selector', '@ORM\Column(type="string", length=20)'];
         yield ['hashedToken', '@ORM\Column(type="string", length=100)'];
         yield ['requestedAt', '@ORM\Column(type="datetime_immutable")'];
         yield ['expiresAt', '@ORM\Column(type="datetime_immutable")'];
