@@ -9,8 +9,8 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Generator;
 
-use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use PHPUnit\Framework\TestCase;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -23,7 +23,7 @@ class ResetPasswordRandomGeneratorTest extends TestCase
         $generator = new ResetPasswordRandomGenerator();
         $result = $generator->getRandomAlphaNumStr(100);
 
-        self::assertSame(100, strlen($result));
+        self::assertSame(100, \strlen($result));
     }
 
     public function testIsRandom(): void

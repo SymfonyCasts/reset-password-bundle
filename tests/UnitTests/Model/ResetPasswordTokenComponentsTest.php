@@ -9,8 +9,8 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Model;
 
-use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
 use PHPUnit\Framework\TestCase;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ResetPasswordTokenComponentsTest extends TestCase
 {
-    public function testReturnsSelectAndVerifierAsString(): void
+    public function testGetPublicTokenReturnsConcatenatedSelectorAndVerifier(): void
     {
         $tokenComponents = new ResetPasswordTokenComponents(
             'selector',

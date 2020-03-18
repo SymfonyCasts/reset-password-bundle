@@ -32,7 +32,7 @@ class ResetPasswordControllerTraitTest extends TestCase
     private $mockSession;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
@@ -135,8 +135,7 @@ class ResetPasswordControllerTraitTest extends TestCase
     {
         $container = $this->getConfiguredMockContainer();
 
-        return new class ($container)
-        {
+        return new class($container) {
             use ResetPasswordControllerTrait;
 
             private $container;
