@@ -22,7 +22,7 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
 /**
  * @author  Jesse Rushlow <jr@rushlow.dev>
- * @authot  Ryan Weaver   <ryan@symfonycasts.com>
+ * @author  Ryan Weaver   <ryan@symfonycasts.com>
  */
 class ResetPasswordHelperTest extends TestCase
 {
