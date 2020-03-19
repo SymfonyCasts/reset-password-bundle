@@ -38,18 +38,18 @@ class AbstractResetPasswordTestKernel extends Kernel
     {
         return [
             new FrameworkBundle(),
-            new SymfonyCastsResetPasswordBundle()
+            new SymfonyCastsResetPasswordBundle(),
         ];
     }
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/cache'.spl_object_hash($this);
+        return \sys_get_temp_dir().'/cache'.\spl_object_hash($this);
     }
 
     public function getLogDir()
     {
-        return sys_get_temp_dir().'/logs'.spl_object_hash($this);
+        return \sys_get_temp_dir().'/logs'.\spl_object_hash($this);
     }
 
     protected function configureRoutes(RoutingConfigurator $routes)
@@ -61,14 +61,14 @@ class AbstractResetPasswordTestKernel extends Kernel
         $container->loadFromExtension('framework', [
             'secret' => 'foo',
             'router' => [
-                'utf8' => true
-            ]
+                'utf8' => true,
+            ],
         ]);
 
         $container->register(ResetPasswordRepositoryTestFixture::class);
 
         $container->loadFromExtension('symfonycasts_reset_password', [
-            'request_password_repository' => ResetPasswordRepositoryTestFixture::class
+            'request_password_repository' => ResetPasswordRepositoryTestFixture::class,
         ]);
 
         // avoid logging request logs

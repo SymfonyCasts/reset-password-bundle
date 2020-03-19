@@ -17,7 +17,6 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  */
 class ResetPasswordRequestTestFixture implements ResetPasswordRequestInterface
 {
-
     public function getRequestedAt(): \DateTimeInterface
     {
     }
