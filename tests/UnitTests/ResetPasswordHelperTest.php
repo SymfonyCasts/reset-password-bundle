@@ -66,7 +66,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockCleaner = $this->createMock(ResetPasswordCleaner::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
         $this->randomToken = \bin2hex(\random_bytes(20));
-        $this->mockUser = new class {};
+        $this->mockUser = new class() {};
     }
 
     private function getPasswordResetHelper(): ResetPasswordHelper
