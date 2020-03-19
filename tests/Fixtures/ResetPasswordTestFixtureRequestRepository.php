@@ -9,8 +9,8 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
@@ -22,15 +22,15 @@ use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFix
  *
  * @internal
  */
-final class ResetPasswordTestFixtureRequestRepository implements ResetPasswordRequestRepositoryInterface
+final class ResetPasswordTestFixtureRequestRepository extends ServiceEntityRepository implements ResetPasswordRequestRepositoryInterface
 {
     use ResetPasswordRequestRepositoryTrait;
 
     private $manager;
 
-    public function __construct(EntityManagerInterface $manager = null)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->manager = $manager;
+        parent::__construct($registry, ResetPasswordTestFixtureRequest::class);
     }
 
     public function createResetPasswordRequest(
@@ -39,32 +39,5 @@ final class ResetPasswordTestFixtureRequestRepository implements ResetPasswordRe
         string $selector,
         string $hashedToken
     ): ResetPasswordRequestInterface {
-    }
-
-    public function findOneBy(array $criteria)
-    {
-        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordTestFixtureRequest::class);
-
-        return $persister->load($criteria);
-    }
-
-    public function findAll()
-    {
-        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordTestFixtureRequest::class);
-
-        return $persister->loadAll();
-    }
-
-    private function getEntityManager(): EntityManagerInterface
-    {
-        return $this->manager;
-    }
-
-    private function createQueryBuilder($alias, $indexBy = null): QueryBuilder
-    {
-        return $this->manager->createQueryBuilder()
-            ->select($alias)
-            ->from(ResetPasswordTestFixtureRequest::class, $alias, $indexBy)
-            ;
     }
 }

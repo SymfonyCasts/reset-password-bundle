@@ -12,8 +12,6 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\FunctionalTests\Persistence;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Tools\SchemaTool;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\AbstractResetPasswordTestKernel;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureRequest;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureUser;
@@ -189,28 +187,4 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
 
 class ResetPasswordFunctionalKernel extends AbstractResetPasswordTestKernel
 {
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
-    {
-        parent::configureContainer($container, $loader);
-        $container->loadFromExtension('doctrine', [
-            'dbal' => [
-                'driver' => 'pdo_sqlite',
-                'url' => 'sqlite:///fake',
-            ],
-            'orm' => [
-                'auto_generate_proxy_classes' => true,
-                'naming_strategy' => 'doctrine.orm.naming_strategy.underscore_number_aware',
-                'auto_mapping' => true,
-                'mappings' => [
-                    'App' => [
-                        'is_bundle' => false,
-                        'type' => 'annotation',
-                        'dir' => '%kernel.project_dir%/tests/Fixtures/Entity/',
-                        'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
-                        'alias' => 'App',
-                    ],
-                ],
-            ],
-        ]);
-    }
 }
