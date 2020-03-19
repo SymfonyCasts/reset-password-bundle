@@ -108,6 +108,10 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     {
         $this->resetPasswordCleaner->handleGarbageCollection();
 
+        if (40 !== \strlen($fullToken)) {
+            throw new InvalidResetPasswordTokenException();
+        }
+
         $resetRequest = $this->findResetPasswordRequest($fullToken);
 
         if (null === $resetRequest) {
