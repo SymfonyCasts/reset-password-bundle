@@ -17,7 +17,7 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureRequest;
 use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 
 /**
@@ -99,7 +99,7 @@ class ResetPasswordHelperTest extends TestCase
 
         $this->mockRepo
             ->method('createResetPasswordRequest')
-            ->willReturn(new ResetPasswordRequestTestFixture())
+            ->willReturn(new ResetPasswordTestFixtureRequest())
         ;
 
         $helper = $this->getPasswordResetHelper();
@@ -132,7 +132,7 @@ class ResetPasswordHelperTest extends TestCase
 
         $this->mockRepo
             ->method('createResetPasswordRequest')
-            ->willReturn(new ResetPasswordRequestTestFixture())
+            ->willReturn(new ResetPasswordTestFixtureRequest())
         ;
 
         $helper = $this->getPasswordResetHelper();

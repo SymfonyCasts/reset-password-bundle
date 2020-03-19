@@ -17,9 +17,9 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
- * @ORM\Entity(repositoryClass="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordRequestRepositoryTestFixture")
+ * @ORM\Entity(repositoryClass="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestRepository")
  */
-final class ResetPasswordRequestTestFixture implements ResetPasswordRequestInterface
+final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInterface
 {
     /**
      * @ORM\Id()
@@ -44,7 +44,7 @@ final class ResetPasswordRequestTestFixture implements ResetPasswordRequestInter
     public $requestedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordUserTestFixture")
+     * @ORM\ManyToOne(targetEntity="ResetPasswordTestFixtureUser")
      */
     public $user;
 

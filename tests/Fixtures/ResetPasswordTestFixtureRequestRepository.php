@@ -14,7 +14,7 @@ use Doctrine\ORM\QueryBuilder;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequestTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureRequest;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -22,7 +22,7 @@ use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordRequest
  *
  * @internal
  */
-final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRequestRepositoryInterface
+final class ResetPasswordTestFixtureRequestRepository implements ResetPasswordRequestRepositoryInterface
 {
     use ResetPasswordRequestRepositoryTrait;
 
@@ -43,14 +43,14 @@ final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRe
 
     public function findOneBy(array $criteria)
     {
-        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordRequestTestFixture::class);
+        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordTestFixtureRequest::class);
 
         return $persister->load($criteria);
     }
 
     public function findAll()
     {
-        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordRequestTestFixture::class);
+        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordTestFixtureRequest::class);
 
         return $persister->loadAll();
     }
@@ -64,7 +64,7 @@ final class ResetPasswordRequestRepositoryTestFixture implements ResetPasswordRe
     {
         return $this->manager->createQueryBuilder()
             ->select($alias)
-            ->from(ResetPasswordRequestTestFixture::class, $alias, $indexBy)
+            ->from(ResetPasswordTestFixtureRequest::class, $alias, $indexBy)
             ;
     }
 }

@@ -67,10 +67,10 @@ class AbstractResetPasswordTestKernel extends Kernel
             ],
         ]);
 
-        $container->register(ResetPasswordRequestRepositoryTestFixture::class);
+        $container->register(ResetPasswordTestFixtureRequestRepository::class);
 
         $container->loadFromExtension('symfonycasts_reset_password', [
-            'request_password_repository' => ResetPasswordRequestRepositoryTestFixture::class,
+            'request_password_repository' => ResetPasswordTestFixtureRequestRepository::class,
         ]);
 
         // avoid logging request logs

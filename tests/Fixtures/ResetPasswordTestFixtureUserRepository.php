@@ -10,7 +10,7 @@
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordUserTestFixture;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureUser;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -18,7 +18,7 @@ use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordUserTes
  *
  * @internal
  */
-final class ResetPasswordUserRepositoryTestFixture
+final class ResetPasswordTestFixtureUserRepository
 {
     private $manager;
 
@@ -29,7 +29,7 @@ final class ResetPasswordUserRepositoryTestFixture
 
     public function findAll(): array
     {
-        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordUserTestFixture::class);
+        $persister = $this->manager->getUnitOfWork()->getEntityPersister(ResetPasswordTestFixtureUser::class);
 
         return $persister->loadAll();
     }
