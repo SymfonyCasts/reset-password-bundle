@@ -13,7 +13,8 @@
         "friendsofphp/php-cs-fixer": "^2.16",
         "symfony/framework-bundle": "^5.0",
         "symfony/phpunit-bridge": "^5.0",
-        "vimeo/psalm": "^3.8"
+        "vimeo/psalm": "^3.8",
+        "doctrine/doctrine-bundle": "^2.0"
     },
     "conflict": {
         "doctrine/orm": "<2.7",

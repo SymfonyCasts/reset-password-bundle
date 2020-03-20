@@ -9,9 +9,12 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureRequest;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -19,9 +22,16 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  *
  * @internal
  */
-class ResetPasswordRepositoryTestFixture implements ResetPasswordRequestRepositoryInterface
+final class ResetPasswordTestFixtureRequestRepository extends ServiceEntityRepository implements ResetPasswordRequestRepositoryInterface
 {
     use ResetPasswordRequestRepositoryTrait;
+
+    private $manager;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ResetPasswordTestFixtureRequest::class);
+    }
 
     public function createResetPasswordRequest(
         object $user,

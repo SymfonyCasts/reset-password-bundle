@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -39,6 +40,7 @@ class AbstractResetPasswordTestKernel extends Kernel
         return [
             new FrameworkBundle(),
             new SymfonyCastsResetPasswordBundle(),
+            new DoctrineBundle(),
         ];
     }
 
@@ -64,11 +66,34 @@ class AbstractResetPasswordTestKernel extends Kernel
                 'utf8' => true,
             ],
         ]);
+        $container->loadFromExtension('doctrine', [
+            'dbal' => [
+                'driver' => 'pdo_sqlite',
+                'url' => 'sqlite:///fake',
+            ],
+            'orm' => [
+                'auto_generate_proxy_classes' => true,
+                'naming_strategy' => 'doctrine.orm.naming_strategy.underscore_number_aware',
+                'auto_mapping' => true,
+                'mappings' => [
+                    'App' => [
+                        'is_bundle' => false,
+                        'type' => 'annotation',
+                        'dir' => '%kernel.project_dir%/tests/Fixtures/Entity/',
+                        'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
+                        'alias' => 'App',
+                    ],
+                ],
+            ],
+        ]);
 
-        $container->register(ResetPasswordRepositoryTestFixture::class);
+        $container->register(ResetPasswordTestFixtureRequestRepository::class)
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+        ;
 
         $container->loadFromExtension('symfonycasts_reset_password', [
-            'request_password_repository' => ResetPasswordRepositoryTestFixture::class,
+            'request_password_repository' => ResetPasswordTestFixtureRequestRepository::class,
         ]);
 
         // avoid logging request logs
