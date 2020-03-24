@@ -64,17 +64,6 @@ class ResetPasswordHelperTest extends TestCase
         $this->randomToken = \bin2hex(\random_bytes(20));
     }
 
-    private function getPasswordResetHelper(): ResetPasswordHelper
-    {
-        return new ResetPasswordHelper(
-            $this->mockTokenGenerator,
-            $this->mockCleaner,
-            $this->mockRepo,
-            99999999,
-            99999999
-        );
-    }
-
     /**
      * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHisThrottling
      */
@@ -304,7 +293,10 @@ class ResetPasswordHelperTest extends TestCase
 
     public function testGenerateResetTokenCallsGarbageCollector(): void
     {
-        $this->setMockCleanerExpectations();
+        $this->mockCleaner
+            ->expects($this->once())
+            ->method('handleGarbageCollection')
+        ;
 
         $helper = $this->getPasswordResetHelper();
         $helper->generateResetToken(new \stdClass());
@@ -312,18 +304,25 @@ class ResetPasswordHelperTest extends TestCase
 
     public function testGarbageCollectorCalledDuringValidation(): void
     {
-        $this->setMockCleanerExpectations();
+        $this->mockCleaner
+            ->expects($this->once())
+            ->method('handleGarbageCollection')
+        ;
+
         $this->expectException(InvalidResetPasswordTokenException::class);
 
         $helper = $this->getPasswordResetHelper();
         $helper->validateTokenAndFetchUser($this->randomToken);
     }
 
-    private function setMockCleanerExpectations(): void
+    private function getPasswordResetHelper(): ResetPasswordHelper
     {
-        $this->mockCleaner
-            ->expects($this->once())
-            ->method('handleGarbageCollection')
-        ;
+        return new ResetPasswordHelper(
+            $this->mockTokenGenerator,
+            $this->mockCleaner,
+            $this->mockRepo,
+            99999999,
+            99999999
+        );
     }
 }
