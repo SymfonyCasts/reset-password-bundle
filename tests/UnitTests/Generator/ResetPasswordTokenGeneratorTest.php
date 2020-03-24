@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Generator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
@@ -20,12 +21,12 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 class ResetPasswordTokenGeneratorTest extends TestCase
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ResetPasswordRandomGenerator
+     * @var MockObject|ResetPasswordRandomGenerator
      */
     private $mockRandomGenerator;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\DateTimeImmutable
+     * @var MockObject|\DateTimeImmutable
      */
     private $mockExpiresAt;
 
@@ -109,9 +110,6 @@ class ResetPasswordTokenGeneratorTest extends TestCase
 
     private function getTokenGenerator(): ResetPasswordTokenGenerator
     {
-        return new ResetPasswordTokenGenerator(
-            'key',
-            $this->mockRandomGenerator
-        );
+        return new ResetPasswordTokenGenerator('key', $this->mockRandomGenerator);
     }
 }
