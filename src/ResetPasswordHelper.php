@@ -29,16 +29,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private const SELECTOR_LENGTH = 20;
 
-    /**
-     * @var ResetPasswordTokenGenerator
-     */
     private $tokenGenerator;
-
     private $resetPasswordCleaner;
-
-    /**
-     * @var ResetPasswordRequestRepositoryInterface
-     */
     private $repository;
 
     /**
