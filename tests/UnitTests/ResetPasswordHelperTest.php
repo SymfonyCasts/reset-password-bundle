@@ -93,6 +93,7 @@ class ResetPasswordHelperTest extends TestCase
         ;
 
         $this->mockRepo
+            ->expects($this->once())
             ->method('createResetPasswordRequest')
             ->willReturn(new ResetPasswordTestFixtureRequest())
         ;
@@ -126,6 +127,7 @@ class ResetPasswordHelperTest extends TestCase
         ;
 
         $this->mockRepo
+            ->expects($this->once())
             ->method('createResetPasswordRequest')
             ->willReturn(new ResetPasswordTestFixtureRequest())
         ;
@@ -179,6 +181,7 @@ class ResetPasswordHelperTest extends TestCase
     public function testRemoveResetRequestCallsRepositoryToRemoveResetRequestObject(): void
     {
         $this->mockRepo
+            ->expects($this->once())
             ->method('findResetPasswordRequest')
             ->willReturn($this->mockResetRequest)
         ;
