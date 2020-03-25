@@ -1,4 +1,6 @@
 {
+    "name": "symfonycasts/reset-password-bundle",
+    "description": "Symfony bundle that adds password reset functionality.",
     "type": "symfony-bundle",
     "license": "MIT",
     "minimum-stability": "dev",
