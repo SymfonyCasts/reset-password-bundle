@@ -25,7 +25,7 @@
             <directory>./tests/FunctionalTests</directory>
         </testsuite>
         <testsuite name="integration">
-            <directory>./tests/IntegratonTests</directory>
+            <directory>./tests/IntegrationTests</directory>
         </testsuite>
     </testsuites>
 

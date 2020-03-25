@@ -18,12 +18,20 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Check src with php-cs-Fixer
-        run: vendor/bin/php-cs-fixer fix --config ./.php_cs.dist --diff --diff-format udiff --dry-run
+        run: vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
 
       - name: Psalm Static Analysis
-        run: vendor/bin/psalm -c psalm.xml
+        run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
         if: always()
 
       - name: Unit Tests
-        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
+        if: always()
+
+      - name: Functional Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite functional
+        if: always()
+
+      - name: Integration Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite integration
         if: always()
