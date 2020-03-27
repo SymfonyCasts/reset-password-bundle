@@ -30,6 +30,10 @@ class AbstractResetPasswordTestKernel extends Kernel
 {
     use MicroKernelTrait;
 
+    private $cacheDir;
+
+    private $logDir;
+
     public function __construct()
     {
         parent::__construct('test', true);
@@ -46,12 +50,20 @@ class AbstractResetPasswordTestKernel extends Kernel
 
     public function getCacheDir()
     {
-        return \sys_get_temp_dir().'/cache'.\spl_object_hash($this);
+        if (null === $this->cacheDir) {
+            return \sys_get_temp_dir().'/cache'.\spl_object_hash($this);
+        }
+
+        return $this->cacheDir;
     }
 
     public function getLogDir()
     {
-        return \sys_get_temp_dir().'/logs'.\spl_object_hash($this);
+        if (null === $this->logDir) {
+            return \sys_get_temp_dir().'/logs'.\spl_object_hash($this);
+        }
+
+        return $this->logDir;
     }
 
     protected function configureRoutes(RoutingConfigurator $routes)
@@ -69,7 +81,7 @@ class AbstractResetPasswordTestKernel extends Kernel
         $container->loadFromExtension('doctrine', [
             'dbal' => [
                 'driver' => 'pdo_sqlite',
-                'url' => 'sqlite:///fake',
+                'url' => 'sqlite:///'.$this->getCacheDir().'/app.db',
             ],
             'orm' => [
                 'auto_generate_proxy_classes' => true,
