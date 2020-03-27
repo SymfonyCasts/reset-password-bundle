@@ -45,6 +45,9 @@ jobs:
 #          restore-keys: |
 #            ${{ runner.os }}-composer-
 
+      - name: Validate Composer
+        run: composer validate --no-check-lock
+
       - name: Install dependencies
 #        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest
