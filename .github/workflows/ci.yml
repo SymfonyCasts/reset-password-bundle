@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
+      - name: Validate Composer
+        run: composer validate --no-check-lock
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 

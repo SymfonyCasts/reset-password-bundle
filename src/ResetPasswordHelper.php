@@ -29,16 +29,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private const SELECTOR_LENGTH = 20;
 
-    /**
-     * @var ResetPasswordTokenGenerator
-     */
     private $tokenGenerator;
-
     private $resetPasswordCleaner;
-
-    /**
-     * @var ResetPasswordRequestRepositoryInterface
-     */
     private $repository;
 
     /**
@@ -61,7 +53,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Generates a new password reset token, persists it & returns the token that can be emailed to the user.
+     * {@inheritdoc}
      *
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
@@ -97,9 +89,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Validate a PasswordResetRequest and fetch user from persistence.
-     *
-     * @param string $fullToken selector + non-hashed verifier token
+     * {@inheritdoc}
      *
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
@@ -138,9 +128,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * Remove a single PasswordResetRequest object from persistence.
-     *
-     * @param string $fullToken selector + non-hashed verifier token
+     * {@inheritdoc}
      *
      * @throws InvalidResetPasswordTokenException
      */
