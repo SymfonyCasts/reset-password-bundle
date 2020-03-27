@@ -16,7 +16,7 @@
         "symfony/framework-bundle": "^5.0",
         "symfony/phpunit-bridge": "^5.0",
         "vimeo/psalm": "^3.8",
-        "doctrine/doctrine-bundle": "^2.0"
+        "doctrine/doctrine-bundle": "^2.0.3"
     },
     "conflict": {
         "doctrine/orm": "<2.7",
