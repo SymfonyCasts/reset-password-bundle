@@ -4,12 +4,10 @@ Worrying about how to deal with users that can't remember their password? We've 
 
 ## Installation
 
-@TODO - To be added upon release
-
 The bundle can be installed using Composer or the [Symfony binary](https://symfony.com/download):
 
 ```
-composer install X/X
+composer require symfonycasts/reset-password-bundle
 ```
 
 ## Usage
