@@ -1,4 +1,4 @@
-# ResetPasswordBundle
+# ResetPasswordBundle: Mind-Blowing (and Secure) Password Resetting for Symfony
 
 Worrying about how to deal with users that can't remember their password? We've got you covered! This bundle provides a secure out of the box solution to allow users to reset their forgotten passwords.
 
