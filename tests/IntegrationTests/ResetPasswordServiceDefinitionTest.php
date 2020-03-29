@@ -16,6 +16,7 @@ use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\AbstractResetPasswordTestKe
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
+ * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
 final class ResetPasswordServiceDefinitionTest extends TestCase
 {
@@ -36,7 +37,8 @@ final class ResetPasswordServiceDefinitionTest extends TestCase
      */
     public function testBundleServiceDefinitions(string $definition): void
     {
-        $pass = new CompilerPassForTest();
+        // Make private reset-password-bundle services public
+        $pass = new DefinitionPublicCompilerPass();
         $pass->definition = $definition;
 
         $kernel = new ResetPasswordDefinitionTestKernel();
@@ -46,11 +48,15 @@ final class ResetPasswordServiceDefinitionTest extends TestCase
         $container = $kernel->getContainer();
         $container->get($definition);
 
+        // If a service is not correctly defined, i.e. wrong class namespace, an exception will be thrown.
         $this->expectNotToPerformAssertions();
     }
 }
 
-class CompilerPassForTest implements CompilerPassInterface
+/**
+ * @internal
+ */
+final class DefinitionPublicCompilerPass implements CompilerPassInterface
 {
     public $definition;
 
@@ -62,7 +68,10 @@ class CompilerPassForTest implements CompilerPassInterface
     }
 }
 
-class ResetPasswordDefinitionTestKernel extends AbstractResetPasswordTestKernel
+/**
+ * @internal
+ */
+final class ResetPasswordDefinitionTestKernel extends AbstractResetPasswordTestKernel
 {
     public $compilerPass;
 
