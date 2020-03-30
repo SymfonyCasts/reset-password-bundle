@@ -93,3 +93,16 @@ _Optional_ - Defaults to `true`
 
 Enable or disable the Reset Password Cleaner which handles expired reset password 
 requests that may have been left in persistence.
+
+## Support
+
+Feel free to open an issue for questions, problems, or suggestions with our bundle.
+Issues pertaining to Symfony's Maker Bundle, specifically `make:reset-password`,
+should be addressed in the [Symfony Maker repository](https://github.com/symfony/maker-bundle).
+
+## Security Issues
+For **security related vulnerabilities**, we ask that you send an email to 
+`xyz [at] symfonycasts.com` instead of creating an issue. 
+
+This will give us the opportunity to address the issue without exposing the
+vulnerability before a fix can be published.
