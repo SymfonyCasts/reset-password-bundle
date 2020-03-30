@@ -38,7 +38,7 @@ implement the interfaces. Once the above objects have been created in the app,
 you must set the fully qualified repository class name in the bundle's 
 [configuration](https://github.com/SymfonyCasts/reset-password-bundle/wiki/Confguration-Reference) file.
 
-[`ResetPasswordHelper::generateResetToken()`](https://github.com/SymfonyCasts/reset-password-bundle/blob/239266e8ba6b513c053c86ac51feee9adc4e075c/src/ResetPasswordHelper.php#L63) 
+[`ResetPasswordHelper::generateResetToken()`](https://github.com/SymfonyCasts/reset-password-bundle/blob/master/src/ResetPasswordHelper.php) 
 requires you to provide a user object that will be used to identify the user 
 requesting a reset. After the helper creates a request object and stores it in 
 persistence, a 
@@ -50,7 +50,7 @@ to the user for validation later on.
 
 After a user has received their reset token and is ready to reset their password,
  the app should call the 
-[`ResetPasswordHelper::validateTokenAndFetchUser()`](https://github.com/SymfonyCasts/reset-password-bundle/blob/239266e8ba6b513c053c86ac51feee9adc4e075c/src/ResetPasswordHelper.php#L97)
+[`ResetPasswordHelper::validateTokenAndFetchUser()`](https://github.com/SymfonyCasts/reset-password-bundle/blob/master/src/ResetPasswordHelper.php)
  method with the token provided by the user. Internally, this method will fetch the 
  [`ResetPasswordRequestInterface`](https://github.com/SymfonyCasts/reset-password-bundle/blob/master/src/Model/ResetPasswordRequestInterface.php) 
  object from persistence, verify that the token provided by the user matches the
