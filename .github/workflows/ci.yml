@@ -14,6 +14,9 @@ jobs:
       - name: Set PHP Version
         run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
+      - name: Disable Xdebug
+        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
+
       - name: Verify PHP Version
         run: php -v
 
