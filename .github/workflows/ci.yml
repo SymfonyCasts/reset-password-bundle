@@ -17,8 +17,18 @@ jobs:
       - name: Disable Xdebug
         run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
 
-      - name: Verify PHP Version
-        run: php -v
+      - name: Get PHP Version
+        run: |
+          ver=$(php -v | grep -oP '(?<=PHP )\d.\d')
+          echo "::set-output name=version::$ver"
+          id: php-ver
+
+      - name: Using PHP Version from matrix
+        run: |
+          echo "Runner is not using PHP Version defined in the php-versions matrix."
+          php -v
+          exit 1
+        if: steps.php-ver.outputs.version != matrix.php-versions
 
       - name: Checkout
         uses: actions/checkout@v2.0.0
