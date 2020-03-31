@@ -53,6 +53,7 @@ jobs:
       fail-fast: false
       matrix:
         php-versions: ['7.2', '7.3', '7.4']
+        symfony-version: ['4.4.*', '5.0.1']
 
     steps:
       - name: Set PHP Version
@@ -76,6 +77,12 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2.0.0
+
+      - name: Install Global Dependencies
+        run: |
+          composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
