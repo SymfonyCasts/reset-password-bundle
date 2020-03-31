@@ -21,7 +21,7 @@ jobs:
         run: |
           ver=$(php -v | grep -oP '(?<=PHP )\d.\d')
           echo "::set-output name=version::$ver"
-          id: php-ver
+        id: php-ver
 
       - name: Using PHP Version from matrix
         run: |
