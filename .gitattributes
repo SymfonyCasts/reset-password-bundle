@@ -1,4 +1,7 @@
+/docs export-ignore
+/.github export-ignore
 /tests export-ignore
 .php_cs.dist export-ignore
 phpunit.xml.dist export-ignore
 psalm.xml export-ignore
+README.md export-ignore
