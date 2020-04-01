@@ -81,13 +81,13 @@ jobs:
       - name: Install Global Dependencies
         run: |
           composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
-        env:
-          SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
       - name: Install dependencies
         run: |
           composer config minimum-stability stable
           composer install --prefer-dist --no-progress --no-suggest
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
       - name: Unit Tests
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
