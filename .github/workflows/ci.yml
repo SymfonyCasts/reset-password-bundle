@@ -20,14 +20,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
-      - name: Install dependencies
+      - name: Install PHP-CS-Fixer
         run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress --no-suggest
-
-      - name: Where is global home
-        run: composer config --list
 
       - name: Enforce coding standards
         run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
+
+  psalm:
+    name: Psalm Static Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Analyze Source
+        run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
 
   build:
     name: ResetPassword
