@@ -21,13 +21,13 @@ jobs:
         uses: actions/checkout@v2.0.0
 
       - name: Install dependencies
-        run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress --no-suggest
+        run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress --no-suggest --no-dev
 
       - name: Where is global home
         run: composer config --list
 
       - name: Enforce coding standards
-        run: /home/runner/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
+        run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
 
   build:
     name: ResetPassword
