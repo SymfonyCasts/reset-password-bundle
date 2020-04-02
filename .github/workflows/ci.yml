@@ -40,8 +40,8 @@ jobs:
       - name: Analyze Source
         run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
 
-  build:
-    name: ResetPassword
+  tests:
+    name: PHPUnit Test Suite
     runs-on: ubuntu-latest
 
     strategy:
@@ -72,18 +72,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
-#      - name: Validate Composer
-#        run: composer validate --no-check-lock
-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-
-#      - name: Check src with php-cs-Fixer
-#        run: vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
-
-      - name: Psalm Static Analysis
-        run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
-        if: always()
 
       - name: Unit Tests
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
