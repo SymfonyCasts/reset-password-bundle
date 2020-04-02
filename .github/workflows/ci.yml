@@ -26,8 +26,8 @@ jobs:
       - name: Where is global home
         run: composer config --list
 
-  #      - name: Enforce coding standards
-#        run: vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
+      - name: Enforce coding standards
+        run: /home/runner/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
 
   build:
     name: ResetPassword
