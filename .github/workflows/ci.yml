@@ -1,4 +1,4 @@
-name: ResetPasswordBundle CI
+name: Bundle CI
 on:
   push:
   pull_request:
