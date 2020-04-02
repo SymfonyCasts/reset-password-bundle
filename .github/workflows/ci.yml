@@ -45,7 +45,7 @@ jobs:
       - name: Analyze Source
         run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
 
-  tests:
+  phpunit-tests:
     name: PHPUnit Test Suite
     runs-on: ubuntu-latest
 
