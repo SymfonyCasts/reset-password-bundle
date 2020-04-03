@@ -102,7 +102,7 @@ should be addressed in the [Symfony Maker repository](https://github.com/symfony
 
 ## Security Issues
 For **security related vulnerabilities**, we ask that you send an email to 
-`xyz [at] symfonycasts.com` instead of creating an issue. 
+`ryan [at] symfonycasts.com` instead of creating an issue. 
 
 This will give us the opportunity to address the issue without exposing the
 vulnerability before a fix can be published.
