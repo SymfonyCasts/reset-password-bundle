@@ -7,6 +7,8 @@ find a change that break's semver, please create an issue.*
 
 *TBD*
 
+- [#93 - fixed remove-expired CLI command error](https://github.com/SymfonyCasts/reset-password-bundle/pull/93)
+
 ## v1.0.0-BETA2
 
 *April 3rd, 2020*
