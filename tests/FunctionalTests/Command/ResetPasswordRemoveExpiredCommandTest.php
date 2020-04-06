@@ -11,6 +11,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\FunctionalTests\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
@@ -27,7 +28,7 @@ use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFix
 final class ResetPasswordRemoveExpiredCommandTest extends TestCase
 {
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager|object
+     * @var ObjectManager|object
      */
     private $manager;
 

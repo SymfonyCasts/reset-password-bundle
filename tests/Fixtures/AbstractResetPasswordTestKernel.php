@@ -90,7 +90,7 @@ class AbstractResetPasswordTestKernel extends Kernel
                     'App' => [
                         'is_bundle' => false,
                         'type' => 'annotation',
-                        'dir' => '%kernel.project_dir%/tests/Fixtures/Entity/',
+                        'dir' => 'tests/Fixtures/Entity/',
                         'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
                         'alias' => 'App',
                     ],
