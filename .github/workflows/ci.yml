@@ -45,8 +45,64 @@ jobs:
       - name: Analyze Source
         run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
 
-  phpunit-tests:
-    name: PHPUnit Test Suite
+  stable-tests:
+    name: Test against Symfony Stable
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+        symfony-version: ['4.4.*', '5.0.*']
+
+    steps:
+      - name: Set PHP Version
+        run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
+
+      - name: Disable Xdebug
+        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
+
+      - name: Get PHP Version
+        run: |
+          ver=$(php -v | grep -oP '(?<=PHP )\d.\d')
+          echo "::set-output name=version::$ver"
+        id: php-ver
+
+      - name: Using PHP Version from matrix
+        run: |
+          echo "Runner is not using PHP Version defined in the php-versions matrix."
+          php -v
+          exit 1
+        if: steps.php-ver.outputs.version != matrix.php-versions
+
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: Install Global Dependencies
+        run: |
+          composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
+
+      - name: Install dependencies
+        run: |
+          composer config minimum-stability stable
+          composer install --prefer-dist --no-progress --no-suggest
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
+
+      - name: Unit Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
+        if: always()
+
+      - name: Functional Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite functional
+        if: always()
+
+      - name: Integration Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite integration
+        if: always()
+
+  dev-master-tests:
+    name: Test against Symfony Master
     runs-on: ubuntu-latest
 
     strategy:
@@ -79,6 +135,53 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Unit Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
+        if: always()
+
+      - name: Functional Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite functional
+        if: always()
+
+      - name: Integration Tests
+        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite integration
+        if: always()
+
+  lowest-version-tests:
+    name: Test with lowest dependency versions
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+
+    steps:
+      - name: Set PHP Version
+        run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
+
+      - name: Disable Xdebug
+        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
+
+      - name: Get PHP Version
+        run: |
+          ver=$(php -v | grep -oP '(?<=PHP )\d.\d')
+          echo "::set-output name=version::$ver"
+        id: php-ver
+
+      - name: Using PHP Version from matrix
+        run: |
+          echo "Runner is not using PHP Version defined in the php-versions matrix."
+          php -v
+          exit 1
+        if: steps.php-ver.outputs.version != matrix.php-versions
+
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: Install dependencies
+        run: composer update --prefer-lowest --prefer-dist --no-progress --no-suggest
 
       - name: Unit Tests
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
