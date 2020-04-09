@@ -65,7 +65,7 @@ class ResetPasswordHelperTest extends TestCase
     }
 
     /**
-     * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHisThrottling
+     * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHitThrottling
      */
     public function testHasUserThrottlingReturnsFalseWithNoLastRequestDate(): void
     {
@@ -92,7 +92,7 @@ class ResetPasswordHelperTest extends TestCase
     }
 
     /**
-     * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHisThrottling
+     * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHitThrottling
      */
     public function testHasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
     {
