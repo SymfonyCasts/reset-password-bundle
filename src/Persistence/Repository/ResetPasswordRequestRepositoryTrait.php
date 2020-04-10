@@ -12,7 +12,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Persistence\Repository;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
- * Trait can be added to a Doctrine repository to help implement
+ * Trait can be added to a Doctrine ORM repository to help implement
  * ResetPasswordRequestRepositoryInterface.
  *
  * @author Jesse Rushlow <jr@rushlow.dev>
