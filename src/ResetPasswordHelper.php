@@ -64,7 +64,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     {
         $this->resetPasswordCleaner->handleGarbageCollection();
 
-        if ($this->hasUserHisThrottling($user)) {
+        if ($this->hasUserHitThrottling($user)) {
             throw new TooManyPasswordRequestsException();
         }
 
@@ -158,7 +158,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         return $this->repository->findResetPasswordRequest($selector);
     }
 
-    private function hasUserHisThrottling(object $user): bool
+    private function hasUserHitThrottling(object $user): bool
     {
         $lastRequestDate = $this->repository->getMostRecentNonExpiredRequestDate($user);
 
