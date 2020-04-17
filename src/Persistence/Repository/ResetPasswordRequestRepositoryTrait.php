@@ -61,8 +61,13 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
-        $this->getEntityManager()->remove($resetPasswordRequest);
-        $this->getEntityManager()->flush();
+        $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.user = :user')
+            ->setParameter('user', $resetPasswordRequest->getUser())
+            ->getQuery()
+            ->execute()
+        ;
     }
 
     public function removeExpiredResetPasswordRequests(): int
