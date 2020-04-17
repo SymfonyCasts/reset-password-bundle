@@ -94,7 +94,7 @@ class ResetPasswordHelperTest extends TestCase
     /**
      * @covers \SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper::hasUserHitThrottling
      */
-    public function testHasUserThrottlingReturnsFalseIfNotBeforeThrottleTime(): void
+    public function testHasUserThrottlingReturnsNullIfNotBeforeThrottleTime(): void
     {
         $this->mockRepo
             ->expects($this->once())
@@ -102,17 +102,10 @@ class ResetPasswordHelperTest extends TestCase
             ->willReturn('1234')
         ;
 
-        $mockLastRequestTime = $this->createMock(\DateTimeImmutable::class);
-        $mockLastRequestTime
-            ->expects($this->once())
-            ->method('getTimestamp')
-            ->willReturn(1234)
-        ;
-
         $this->mockRepo
             ->expects($this->once())
             ->method('getMostRecentNonExpiredRequestDate')
-            ->willReturn($mockLastRequestTime)
+            ->willReturn(new \DateTime('-3 hours'))
         ;
 
         $this->mockRepo
@@ -121,29 +114,44 @@ class ResetPasswordHelperTest extends TestCase
             ->willReturn(new ResetPasswordTestFixtureRequest())
         ;
 
-        $helper = $this->getPasswordResetHelper();
+        $helper = new ResetPasswordHelper(
+            $this->mockTokenGenerator,
+            $this->mockCleaner,
+            $this->mockRepo,
+            99999999,
+            7200 // 2 hours
+        );
+
         $helper->generateResetToken(new \stdClass());
     }
 
     public function testExceptionThrownIfRequestBeforeThrottleLimit(): void
     {
-        $mockLastRequestTime = $this->createMock(\DateTimeImmutable::class);
-        $mockLastRequestTime
-            ->expects($this->once())
-            ->method('getTimestamp')
-            ->willReturn(9999999999)
-        ;
-
         $this->mockRepo
             ->expects($this->once())
             ->method('getMostRecentNonExpiredRequestDate')
-            ->willReturn($mockLastRequestTime)
+            ->willReturn(new \DateTime('-1 hour'))
         ;
 
-        $this->expectException(TooManyPasswordRequestsException::class);
+        $helper = new ResetPasswordHelper(
+            $this->mockTokenGenerator,
+            $this->mockCleaner,
+            $this->mockRepo,
+            99999999,
+            7200 // 2 hours
+        );
 
-        $helper = $this->getPasswordResetHelper();
-        $helper->generateResetToken(new \stdClass());
+        try {
+            $helper->generateResetToken(new \stdClass());
+        } catch (TooManyPasswordRequestsException $exception) {
+            // account for time changes during test
+            self::assertGreaterThanOrEqual(3599, $exception->getRetryAfter());
+            self::assertLessThanOrEqual(3600, $exception->getRetryAfter());
+
+            return;
+        }
+
+        $this->fail('Exception was not thrown.');
     }
 
     public function testRemoveResetRequestThrowsExceptionWithEmptyToken(): void
