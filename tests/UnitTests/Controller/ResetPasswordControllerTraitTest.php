@@ -27,7 +27,7 @@ class ResetPasswordControllerTraitTest extends TestCase
     private const TOKEN_KEY = 'ResetPasswordPublicToken';
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|SessionInterface
+     * @var MockObject|SessionInterface
      */
     private $mockSession;
 
