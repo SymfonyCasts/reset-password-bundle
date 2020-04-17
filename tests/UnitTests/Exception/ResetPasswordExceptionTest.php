@@ -25,19 +25,19 @@ class ResetPasswordExceptionTest extends TestCase
     public function exceptionDataProvider(): \Generator
     {
         yield [
-            ExpiredResetPasswordTokenException::class,
+            new ExpiredResetPasswordTokenException(),
             'The link in your email is expired. Please try to reset your password again.',
         ];
         yield [
-            InvalidResetPasswordTokenException::class,
+            new InvalidResetPasswordTokenException(),
             'The reset password link is invalid. Please try to reset your password again.',
         ];
         yield [
-            TooManyPasswordRequestsException::class,
+            new TooManyPasswordRequestsException(new \DateTime('+1 hour')),
             'You have already requested a reset password email. Please check your email or try again soon.',
         ];
         yield [
-            FakeRepositoryException::class,
+            new FakeRepositoryException(),
             'Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository` service.',
         ];
     }
@@ -45,18 +45,16 @@ class ResetPasswordExceptionTest extends TestCase
     /**
      * @dataProvider exceptionDataProvider
      */
-    public function testIsReason(string $exception, string $message): void
+    public function testIsReason(ResetPasswordExceptionInterface $exception, string $message): void
     {
-        $result = new $exception();
-        self::assertSame($message, $result->getReason());
+        self::assertSame($message, $exception->getReason());
     }
 
     /**
      * @dataProvider exceptionDataProvider
      */
-    public function testImplementsResetPasswordExceptionInterface(string $exception): void
+    public function testImplementsResetPasswordExceptionInterface(ResetPasswordExceptionInterface $exception): void
     {
-        $interfaces = \class_implements($exception);
-        self::assertArrayHasKey(ResetPasswordExceptionInterface::class, $interfaces);
+        self::assertInstanceOf(ResetPasswordExceptionInterface::class, $exception);
     }
 }

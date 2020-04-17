@@ -64,8 +64,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     {
         $this->resetPasswordCleaner->handleGarbageCollection();
 
-        if ($this->hasUserHitThrottling($user)) {
-            throw new TooManyPasswordRequestsException();
+        if ($availableAt = $this->hasUserHitThrottling($user)) {
+            throw new TooManyPasswordRequestsException($availableAt);
         }
 
         $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $this->resetRequestLifetime));
@@ -158,18 +158,21 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         return $this->repository->findResetPasswordRequest($selector);
     }
 
-    private function hasUserHitThrottling(object $user): bool
+    private function hasUserHitThrottling(object $user): ?\DateTimeInterface
     {
+        /** @var \DateTime|\DateTimeImmutable|null $lastRequestDate */
         $lastRequestDate = $this->repository->getMostRecentNonExpiredRequestDate($user);
 
         if (null === $lastRequestDate) {
-            return false;
+            return null;
         }
 
-        if (($lastRequestDate->getTimestamp() + $this->requestThrottleTime) > \time()) {
-            return true;
+        $availableAt = (clone $lastRequestDate)->add(new \DateInterval("PT{$this->requestThrottleTime}S"));
+
+        if ($availableAt > new \DateTime('now')) {
+            return $availableAt;
         }
 
-        return false;
+        return null;
     }
 }
