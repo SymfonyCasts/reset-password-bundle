@@ -164,7 +164,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
     public function testRemovedExpiredResetPasswordRequestsOnlyRemovedExpiredRequestsFromPersistence(): void
     {
         $expiredFixture = new ResetPasswordTestFixtureRequest();
-        $expiredFixture->expiresAt = new \DateTimeImmutable('-2 hours');
+        $expiredFixture->expiresAt = new \DateTimeImmutable('-2 weeks');
 
         $this->manager->persist($expiredFixture);
 
