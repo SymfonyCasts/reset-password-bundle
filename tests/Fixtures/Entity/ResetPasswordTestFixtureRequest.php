@@ -26,7 +26,7 @@ final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInter
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -68,5 +68,6 @@ final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInter
 
     public function getUser(): object
     {
+        return $this->user;
     }
 }

@@ -152,14 +152,43 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
 
     public function testRemoveResetPasswordRequestRemovedGivenObjectFromPersistence(): void
     {
-        $fixture = new ResetPasswordTestFixtureRequest();
+        $userFixture = new ResetPasswordTestFixtureUser();
+        $requestFixture = new ResetPasswordTestFixtureRequest();
+        $requestFixture->user = $userFixture;
 
-        $this->manager->persist($fixture);
+        $this->manager->persist($requestFixture);
+        $this->manager->persist($userFixture);
         $this->manager->flush();
 
-        $this->repository->removeResetPasswordRequest($fixture);
+        $this->repository->removeResetPasswordRequest($requestFixture);
 
         $this->assertCount(0, $this->repository->findAll());
+    }
+
+    public function testRemoveResetPasswordRequestRemovesAllRequestsForUser(): void
+    {
+        $userFixtureA = new ResetPasswordTestFixtureUser();
+        $userFixtureB = new ResetPasswordTestFixtureUser();
+        $requestFixtureA = new ResetPasswordTestFixtureRequest();
+        $requestFixtureA->user = $userFixtureA;
+        $requestFixtureB = new ResetPasswordTestFixtureRequest();
+        $requestFixtureB->user = $userFixtureA;
+        $requestFixtureC = new ResetPasswordTestFixtureRequest();
+        $requestFixtureC->user = $userFixtureB;
+
+        $this->manager->persist($requestFixtureA);
+        $this->manager->persist($requestFixtureB);
+        $this->manager->persist($requestFixtureC);
+        $this->manager->persist($userFixtureA);
+        $this->manager->persist($userFixtureB);
+        $this->manager->flush();
+
+        $this->repository->removeResetPasswordRequest($requestFixtureB);
+
+        $requests = $this->repository->findAll();
+
+        $this->assertCount(1, $requests);
+        $this->assertSame($requestFixtureC->id, $requests[0]->id);
     }
 
     public function testRemovedExpiredResetPasswordRequestsOnlyRemovedExpiredRequestsFromPersistence(): void
