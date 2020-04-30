@@ -13,10 +13,10 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\AbstractResetPasswordTestKernel;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureRequest;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureUser;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestRepository;
+use SymfonyCasts\Bundle\ResetPassword\Tests\ResetPasswordTestKernel;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -41,7 +41,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
      */
     protected function setUp(): void
     {
-        $kernel = new ResetPasswordFunctionalKernel();
+        $kernel = new ResetPasswordTestKernel();
         $kernel->boot();
 
         $container = $kernel->getContainer();
@@ -219,8 +219,4 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $tool->dropDatabase();
         $tool->createSchema($metaData->getAllMetadata());
     }
-}
-
-class ResetPasswordFunctionalKernel extends AbstractResetPasswordTestKernel
-{
 }
