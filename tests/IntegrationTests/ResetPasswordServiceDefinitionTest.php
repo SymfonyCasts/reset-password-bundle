@@ -12,7 +12,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\IntegrationTests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\AbstractResetPasswordTestKernel;
+use SymfonyCasts\Bundle\ResetPassword\Tests\ResetPasswordTestKernel;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -71,7 +71,7 @@ final class DefinitionPublicCompilerPass implements CompilerPassInterface
 /**
  * @internal
  */
-final class ResetPasswordDefinitionTestKernel extends AbstractResetPasswordTestKernel
+final class ResetPasswordDefinitionTestKernel extends ResetPasswordTestKernel
 {
     public $compilerPass;
 
