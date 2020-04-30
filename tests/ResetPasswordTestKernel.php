@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the SymfonyCasts ResetPasswordBundle package.
+ * Copyright (c) SymfonyCasts <https://symfonycasts.com/>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace SymfonyCasts\Bundle\ResetPassword\Tests;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -40,7 +47,7 @@ class ResetPasswordTestKernel extends Kernel
 
     public function registerBundles(): iterable
     {
-        return array_merge(
+        return \array_merge(
             $this->extraBundles,
             [
                 new FrameworkBundle(),
@@ -126,11 +133,11 @@ class ResetPasswordTestKernel extends Kernel
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/cache'.spl_object_hash($this);
+        return \sys_get_temp_dir().'/cache'.\spl_object_hash($this);
     }
 
     public function getLogDir()
     {
-        return sys_get_temp_dir().'/logs'.spl_object_hash($this);
+        return \sys_get_temp_dir().'/logs'.\spl_object_hash($this);
     }
 }
