@@ -10,21 +10,26 @@
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\IntegrationTests;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\AbstractResetPasswordTestKernel;
+use SymfonyCasts\Bundle\ResetPassword\Tests\ResetPasswordTestKernel;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  */
-class ResetPasswordInterfaceAutowireTest extends TestCase
+final class ResetPasswordInterfaceAutowireTest extends TestCase
 {
     public function testResetPasswordInterfaceIsAutowiredByContainer(): void
     {
-        $kernel = new ResetPasswordIntegrationKernel();
+        $builder = new ContainerBuilder();
+        $builder->autowire(ResetPasswordAutowireTest::class)
+            ->setPublic(true)
+        ;
+
+        $kernel = new ResetPasswordTestKernel($builder);
         $kernel->boot();
+
         $container = $kernel->getContainer();
         $container->get(ResetPasswordAutowireTest::class);
 
@@ -32,19 +37,10 @@ class ResetPasswordInterfaceAutowireTest extends TestCase
     }
 }
 
-class ResetPasswordIntegrationKernel extends AbstractResetPasswordTestKernel
-{
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
-    {
-        parent::configureContainer($container, $loader);
-
-        $container->autowire(ResetPasswordAutowireTest::class)
-            ->setPublic(true)
-        ;
-    }
-}
-
-class ResetPasswordAutowireTest
+/**
+ * @internal
+ */
+final class ResetPasswordAutowireTest
 {
     public function __construct(ResetPasswordHelperInterface $helper)
     {

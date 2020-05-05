@@ -16,8 +16,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Tester\CommandTester;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\AbstractResetPasswordTestKernel;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureRequest;
+use SymfonyCasts\Bundle\ResetPassword\Tests\ResetPasswordTestKernel;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -39,7 +39,7 @@ final class ResetPasswordRemoveExpiredCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $kernel = new CommandKernel();
+        $kernel = new ResetPasswordTestKernel();
         $kernel->boot();
 
         $container = $kernel->getContainer();
@@ -100,8 +100,4 @@ final class ResetPasswordRemoveExpiredCommandTest extends TestCase
         $tool->dropDatabase();
         $tool->createSchema($metaData->getAllMetadata());
     }
-}
-
-class CommandKernel extends AbstractResetPasswordTestKernel
-{
 }
