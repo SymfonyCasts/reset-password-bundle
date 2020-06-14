@@ -80,9 +80,6 @@ class ResetPasswordController extends AbstractController
 
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer)
     {
-        /**
-         * @var ContactInformation $contactInformation
-         */
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy([
             'email' => $emailFormData
         ]);
