@@ -11,6 +11,7 @@ But now, what we only need is the `ResetPasswordController` and the email templa
 ## Example
 
 Simple POST request example for `ResetPasswordController` (please modify it base on your needs):
+
 ```
 // App\Controller\ResetPasswordController
 
@@ -101,8 +102,6 @@ class ResetPasswordController extends AbstractController
     }
 }
 ```
-
-
 
 Now try send a POST request (using Insomnia or Postman) to the route `/reset-password` with `email` parameter and you should receive a new mail in your inbox.
 
