@@ -42,6 +42,14 @@ The above assumes you have already setup
 registered user account & configured Symfony's 
 [mailer](https://symfony.com/doc/current/mailer.html) in your app.
 
+
+
+### POST request without twig for password reset
+
+If your app is fully SPA (Single Page Application) with REST API, certainly you won't be using twig template for pages (except email). Checkout the 
+[simple post request](https://github.com/SymfonyCasts/reset-password-bundle/blob/master/docs/simple-post-request-without-twig.md) 
+guide to setup your POST request.
+
 ## Configuration
 
 You can change the default configuration parameters for the bundle in the 

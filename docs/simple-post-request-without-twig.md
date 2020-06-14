@@ -1,16 +1,13 @@
 # Simple POST request without twig in Controller
 
-If your app is fully SPA (Single Page Application) with REST API, certainly you won't be using twig template for pages (except email).
+In this example, we will use Symfony's Maker Bundle command `bin/console make:reset-password` to generate the files we need from this bundle. Read more at [readme](https://github.com/SymfonyCasts/reset-password-bundle/blob/master/README.md).
 
-## Get Ready
-
-Run Symfony's Maker Bundle command `bin/console make:reset-password`. It will generate a lots of useful stuff like Form component, Twig Template, Controller, Entity and Repository.
-
-But now, what we only need is the `ResetPasswordController` and the email template which will be sent to user's inbox after request.
 
 ## Example
 
-Simple POST request example for `ResetPasswordController` (please modify it base on your needs):
+The `ResetPasswordController` and the email template is what we needed for this example.
+
+In your `ResetPasswordController` (please modify it base on your needs):
 
 ```
 // App\Controller\ResetPasswordController
@@ -28,7 +25,8 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Request a password reset.
+     * Your frontend will call this api endpoint (ajax / axios)
+     * to make a password reset request.
      *
      * @Route("", name="app_forgot_password_request", methods={"POST"})
      */
@@ -41,9 +39,10 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Validates and process the reset URL that the user clicked in their email.
+     * Your frontend will call this api endpoint (ajax / axios) 
+     * when user submit their new password.
      *
-     * @Route("/reset/{token}", name="app_reset_password")
+     * @Route("/reset/{token}", name="app_reset_password", methods={"POST"})
      */
     public function reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null)
     {
@@ -60,8 +59,11 @@ class ResetPasswordController extends AbstractController
             ));
         }
 
-        // The token is valid; allow the user to change their password.
-        // A password reset token should be used only once, remove it.
+        /**
+         * The token is valid; allow the user to change their password.
+         * 
+         * A password reset token should be used only once, remove it.
+         */
         $this->resetPasswordHelper->removeResetRequest($token);
 
         // Encode the plain password, and set it.
@@ -73,18 +75,21 @@ class ResetPasswordController extends AbstractController
         $user->setPassword($encodedPassword);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->json(['message' => 'ok']);
+        return $this->json('', Response::HTTP_NO_CONTENT);
     }
 
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer)
     {
+        /**
+         * @var ContactInformation $contactInformation
+         */
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy([
             'email' => $emailFormData
         ]);
 
-        if(!$user) // just return blank when user not found
+        if(!$user)
         {
-            return $this->json('', Response::HTTP_NO_CONTENT);
+            throw $this->createNotFoundException('User not found.');
         }
 
         try {
@@ -96,14 +101,53 @@ class ResetPasswordController extends AbstractController
             ));
         }
 
-        // create your TemplateEmail() class and send it.
+        $email = (new TemplatedEmail())
+            // change it to your sender
+            ->from(new Address('your@example.com', 'Example'))
+            ->to($user->getEmail())
+            ->subject('Your password reset request')
+            // change it to your email template location
+            ->htmlTemplate('your_email_template_location')
+            ->context([
+                'resetToken' => $resetToken,
+                'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+            ])
+        ;
 
-        return $this->json(['message' => 'A reset password email has been sent to user.']);
+        $mailer->send($email);
+
+        return $this->json(['message' => 'A reset password email has been sent.']);
     }
-}
+```
+
+In your email template:
+```
+<h1>Hi!</h1>
+
+<p>
+    To reset your password, please visit
+    {# 
+        Put your frontend reset password page url here and append it with the token.
+        This link is where your user will visit after click the link.
+
+        We temporarily hardcode it here, you may change it afterward.
+    #}
+    <a href="{{ 'https://www.example.com/reset-password/' ~ resetToken.token }}">here</a>
+    This link will expire in {{ tokenLifetime|date('g') }} hour(s)..
+</p>
+
+<p>
+    Cheers!
+</p>
 ```
 
 Now try send a POST request (using Insomnia or Postman) to the route `/reset-password` with `email` parameter and you should receive a new mail in your inbox.
+
+After user clicks a link in their email, it should redirect to your SPA frontend page where user will key in their new password. When submit, your frontend should call api endpoint `/reset-password/reset/{token}` using ajax / axios with password parameter in body.
+
+Congratulation, now you have POST request password reset without twig in your application.
+
+
 
 
 
