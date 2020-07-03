@@ -67,7 +67,7 @@ final class ResetPasswordHelperAcceptanceTest extends TestCase
         $this->userRepo = $this->manager->getRepository(ResetPasswordTestFixtureUser::class);
     }
 
-    public function testExpiredAtNotAffectedByTimezones(): void
+    public function testExpiresAtNotAffectedByTimezoneChangesAfterTokenGeneration(): void
     {
         $currentTz = \date_default_timezone_get();
 
@@ -100,7 +100,7 @@ final class ResetPasswordHelperAcceptanceTest extends TestCase
         \date_default_timezone_set($currentTz);
     }
 
-    public function testExpiredAtNotAffectedByTimezonesChangeX(): void
+    public function testExpiresAtNotAffectedByTimezoneChangesBeforeTokenGeneration(): void
     {
         $currentTz = \date_default_timezone_get();
 
