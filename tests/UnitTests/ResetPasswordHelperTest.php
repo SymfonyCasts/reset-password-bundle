@@ -331,15 +331,15 @@ class ResetPasswordHelperTest extends TestCase
 
         $expiresAt = $token->getExpiresAt();
 
-        $currentTz = date_default_timezone_get();
+        $currentTz = \date_default_timezone_get();
 
         foreach (DateTimeZone::listIdentifiers() as $tz) {
-            date_default_timezone_set($tz);
+            \date_default_timezone_set($tz);
 
             self::assertFalse($expiresAt->getTimestamp() <= \time());
         }
 
-        date_default_timezone_set($currentTz);
+        \date_default_timezone_set($currentTz);
     }
 
     private function getPasswordResetHelper(int $lifetime = 99999999, int $throttleTime = 99999999): ResetPasswordHelper
