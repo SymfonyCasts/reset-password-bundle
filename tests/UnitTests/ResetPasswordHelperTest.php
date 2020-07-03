@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests;
 
+use DateTimeZone;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
@@ -323,14 +324,32 @@ class ResetPasswordHelperTest extends TestCase
         $helper->validateTokenAndFetchUser($this->randomToken);
     }
 
-    private function getPasswordResetHelper(): ResetPasswordHelper
+    public function testExpiresAtNotAffectedByTimezone(): void
+    {
+        $helper = $this->getPasswordResetHelper(3600, 3600);
+        $token = $helper->generateResetToken(new \stdClass());
+
+        $expiresAt = $token->getExpiresAt();
+
+        $currentTz = date_default_timezone_get();
+
+        foreach (DateTimeZone::listIdentifiers() as $tz) {
+            date_default_timezone_set($tz);
+
+            self::assertFalse($expiresAt->getTimestamp() <= \time());
+        }
+
+        date_default_timezone_set($currentTz);
+    }
+
+    private function getPasswordResetHelper(int $lifetime = 99999999, int $throttleTime = 99999999): ResetPasswordHelper
     {
         return new ResetPasswordHelper(
             $this->mockTokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
-            99999999,
-            99999999
+            $lifetime,
+            $throttleTime
         );
     }
 }
