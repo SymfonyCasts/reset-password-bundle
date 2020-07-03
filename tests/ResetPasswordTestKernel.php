@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestRepository;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureUserRepository;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -100,6 +101,11 @@ class ResetPasswordTestKernel extends Kernel
             ]);
 
             $container->register(ResetPasswordTestFixtureRequestRepository::class)
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+            ;
+
+            $container->register(ResetPasswordTestFixtureUserRepository::class)
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
             ;

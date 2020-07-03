@@ -28,6 +28,9 @@
         <testsuite name="integration">
             <directory>./tests/IntegrationTests</directory>
         </testsuite>
+        <testsuite name="acceptance">
+            <directory>./tests/AcceptanceTests</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

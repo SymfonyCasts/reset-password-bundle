@@ -11,6 +11,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -21,6 +22,8 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  */
 final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInterface
 {
+    use ResetPasswordRequestTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -29,41 +32,39 @@ final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInter
     public $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    public $selector;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    public $expiresAt;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    public $requestedAt;
-
-    /**
      * @ORM\ManyToOne(targetEntity="ResetPasswordTestFixtureUser")
      */
     public $user;
 
-    public function getRequestedAt(): \DateTimeInterface
+    public function __construct(object $user = null, \DateTimeInterface $expiresAt = null, string $selector = null, string $hashedToken = null)
     {
-        return $this->requestedAt;
+        if (null !== $user) {
+            $this->user = $user;
+        }
+
+        if (null !== $expiresAt && null !== $selector && null !== $hashedToken) {
+            $this->initialize($expiresAt, $selector, $hashedToken);
+        } else {
+            $this->requestedAt = new \DateTimeImmutable('now');
+            $this->expiresAt = new \DateTimeImmutable(\sprintf('+%s seconds', 3600));
+            $this->selector = 'selector';
+            $this->hashedToken = 'hashedToken';
+        }
     }
 
-    public function isExpired(): bool
+    public function setExpiredAt(\DateTimeInterface $expiresAt): void
     {
-        return $this->expiresAt->getTimestamp() <= \time();
+        $this->expiresAt = $expiresAt;
     }
 
-    public function getExpiresAt(): \DateTimeInterface
+    public function setRequestedAt(\DateTimeInterface $requestedAt): void
     {
+        $this->requestedAt = $requestedAt;
     }
 
-    public function getHashedToken(): string
+    public function setSelector(string $selector): void
     {
+        $this->selector = $selector;
     }
 
     public function getUser(): object

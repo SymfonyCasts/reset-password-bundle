@@ -70,7 +70,7 @@ final class ResetPasswordRemoveExpiredCommandTest extends TestCase
     public function testRemovedExpiredCommand(): void
     {
         $request = new ResetPasswordTestFixtureRequest();
-        $request->expiresAt = new \DateTimeImmutable('-2 weeks');
+        $request->setExpiredAt(new \DateTimeImmutable('-2 weeks'));
 
         $this->manager->persist($request);
         $this->manager->flush();

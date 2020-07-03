@@ -81,7 +81,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
     public function testFindResetPasswordRequestReturnsObjectWithGivenSelector(): void
     {
         $fixture = new ResetPasswordTestFixtureRequest();
-        $fixture->selector = '1234';
+        $fixture->setSelector('1234');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -98,7 +98,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $this->manager->persist($userFixture);
 
         $fixtureOld = new ResetPasswordTestFixtureRequest();
-        $fixtureOld->requestedAt = new \DateTimeImmutable('-5 minutes');
+        $fixtureOld->setRequestedAt(new \DateTimeImmutable('-5 minutes'));
         $fixtureOld->user = $userFixture;
 
         $this->manager->persist($fixtureOld);
@@ -106,8 +106,8 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $expectedTime = new \DateTimeImmutable();
 
         $fixtureNewest = new ResetPasswordTestFixtureRequest();
-        $fixtureNewest->expiresAt = new \DateTimeImmutable('+1 hours');
-        $fixtureNewest->requestedAt = $expectedTime;
+        $fixtureNewest->setExpiredAt(new \DateTimeImmutable('+1 hours'));
+        $fixtureNewest->setRequestedAt($expectedTime);
         $fixtureNewest->user = $userFixture;
 
         $this->manager->persist($fixtureNewest);
@@ -126,8 +126,8 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
 
         $expiredFixture = new ResetPasswordTestFixtureRequest();
         $expiredFixture->user = $userFixture;
-        $expiredFixture->expiresAt = new \DateTimeImmutable('-1 hours');
-        $expiredFixture->requestedAt = new\DateTimeImmutable('-2 hours');
+        $expiredFixture->setExpiredAt(new \DateTimeImmutable('-1 hours'));
+        $expiredFixture->setRequestedAt(new\DateTimeImmutable('-2 hours'));
 
         $this->manager->persist($expiredFixture);
         $this->manager->flush();
@@ -194,7 +194,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
     public function testRemovedExpiredResetPasswordRequestsOnlyRemovedExpiredRequestsFromPersistence(): void
     {
         $expiredFixture = new ResetPasswordTestFixtureRequest();
-        $expiredFixture->expiresAt = new \DateTimeImmutable('-2 weeks');
+        $expiredFixture->setExpiredAt(new \DateTimeImmutable('-2 weeks'));
 
         $this->manager->persist($expiredFixture);
 
