@@ -53,7 +53,7 @@ jobs:
       fail-fast: false
       matrix:
         php-versions: ['7.2', '7.3', '7.4']
-        symfony-version: ['4.4.*', '5.0.*']
+        symfony-version: ['4.4.*', '5.0.*', '5.1.*']
 
     steps:
       - name: Set PHP Version
@@ -80,7 +80,7 @@ jobs:
 
       - name: Install Global Dependencies
         run: |
-          composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
+          composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-main
 
       - name: Install dependencies
         run: |
@@ -101,8 +101,8 @@ jobs:
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite integration
         if: always()
 
-  dev-master-tests:
-    name: Test against Symfony Master
+  dev-main-tests:
+    name: Test against Symfony Main
     runs-on: ubuntu-latest
 
     strategy:
