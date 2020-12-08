@@ -52,8 +52,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.2', '7.3', '7.4']
-        symfony-version: ['4.4.*', '5.0.*', '5.1.*']
+        php-versions: ['7.2', '7.3', '7.4', '8.0']
+        symfony-version: ['4.4.*', '5.0.*', '5.1.*', '5.2.*']
 
     steps:
       - name: Set PHP Version
@@ -108,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.2', '7.3', '7.4']
+        php-versions: ['7.2', '7.3', '7.4', '8.0']
 
     steps:
       - name: Set PHP Version
@@ -155,7 +155,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.2', '7.3', '7.4']
+        php-versions: ['7.2', '7.3', '7.4', '8.0']
 
     steps:
       - name: Set PHP Version

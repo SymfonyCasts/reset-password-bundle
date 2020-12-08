@@ -127,7 +127,7 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         $expiredFixture = new ResetPasswordTestFixtureRequest();
         $expiredFixture->user = $userFixture;
         $expiredFixture->expiresAt = new \DateTimeImmutable('-1 hours');
-        $expiredFixture->requestedAt = new\DateTimeImmutable('-2 hours');
+        $expiredFixture->requestedAt = new \DateTimeImmutable('-2 hours');
 
         $this->manager->persist($expiredFixture);
         $this->manager->flush();
