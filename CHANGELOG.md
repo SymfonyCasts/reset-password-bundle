@@ -5,6 +5,12 @@ find a change that break's semver, please create an issue.*
 
 ## NEXT
 
+## v1.2.0
+
+*Dec 10th, 2020*
+
+- #134 - Allow the bundle to be used with PHP 8 - thanks to @ker0x
+
 ## v1.1.0
 
 *April 17th, 2020*
