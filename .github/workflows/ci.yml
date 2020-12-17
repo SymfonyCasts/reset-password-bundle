@@ -22,11 +22,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set PHP Version
+        run: sudo update-alternatives --set php /usr/bin/php7.4
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
       - name: Install PHP-CS-Fixer
-        run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress --no-suggest
+        run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress
 
       - name: Enforce coding standards
         run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
@@ -36,11 +38,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set PHP Version
+        run: sudo update-alternatives --set php /usr/bin/php7.4
+
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
 
       - name: Analyze Source
         run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
@@ -53,7 +58,7 @@ jobs:
       fail-fast: false
       matrix:
         php-versions: ['7.2', '7.3', '7.4', '8.0']
-        symfony-version: ['4.4.*', '5.0.*', '5.1.*', '5.2.*']
+        symfony-version: ['4.4.*', '5.2.*']
 
     steps:
       - name: Set PHP Version
@@ -85,7 +90,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer config minimum-stability stable
-          composer install --prefer-dist --no-progress --no-suggest
+          composer update --prefer-dist --no-progress
         env:
           SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
@@ -134,7 +139,7 @@ jobs:
         uses: actions/checkout@v2.0.0
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer update --prefer-dist --no-progress
 
       - name: Unit Tests
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
@@ -181,7 +186,7 @@ jobs:
         uses: actions/checkout@v2.0.0
 
       - name: Install dependencies
-        run: composer update --prefer-lowest --prefer-dist --no-progress --no-suggest
+        run: composer update --prefer-lowest --prefer-dist --no-progress
 
       - name: Unit Tests
         run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
