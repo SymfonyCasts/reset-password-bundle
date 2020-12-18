@@ -5,6 +5,8 @@ find a change that break's semver, please create an issue.*
 
 ## NEXT
 
+## v1.2.1
+
 - [#135](https://github.com/SymfonyCasts/reset-password-bundle/pull/134) Add translation support for signature expiration time
 - [#135](https://github.com/SymfonyCasts/reset-password-bundle/pull/134) Fixed invalid signature expiration time
 
