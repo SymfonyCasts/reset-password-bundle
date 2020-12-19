@@ -323,6 +323,15 @@ class ResetPasswordHelperTest extends TestCase
         $helper->validateTokenAndFetchUser($this->randomToken);
     }
 
+    public function testExpiresAtUsesCurrentTimeZone(): void
+    {
+        $helper = $this->getPasswordResetHelper();
+        $token = $helper->generateResetToken(new \stdClass());
+
+        $expiresAt = $token->getExpiresAt();
+        self::assertSame(\date_default_timezone_get(), $expiresAt->getTimezone()->getName());
+    }
+
     private function getPasswordResetHelper(): ResetPasswordHelper
     {
         return new ResetPasswordHelper(
