@@ -5,9 +5,14 @@ find a change that break's semver, please create an issue.*
 
 ## NEXT
 
+## v1.2.2
+
+- [#139](https://github.com/SymfonyCasts/reset-password-bundle/pull/139) Fixed regression
+  in 1.2.2 with expiration DateTime timezone
+
 ## v1.2.1
 
-- [#135](https://github.com/SymfonyCasts/reset-password-bundle/pull/134) Add translation support for signature expiration time
+- [#135](https://github.com/SymfonyCasts/reset-password-bundle/pull/135) Add translation support for signature expiration time
 - [#135](https://github.com/SymfonyCasts/reset-password-bundle/pull/134) Fixed invalid signature expiration time
 
 ## v1.2.0
