@@ -11,6 +11,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 /**
  * Provides useful methods to a "reset password controller".
@@ -23,13 +24,31 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 trait ResetPasswordControllerTrait
 {
+    /**
+     * @deprecated since 1.3.0, use ResetPasswordControllerTrait::setTokenObjectInSession() instead.
+     */
     private function setCanCheckEmailInSession(): void
     {
+        trigger_deprecation(
+            'symfonycasts/reset-password-bundle',
+            '1.3.0',
+            'Storing the ResetPasswordToken object in the session is more desirable, use ResetPasswordControllerTrait::setTokenObjectInSession() instead.'
+        );
+
         $this->getSessionService()->set('ResetPasswordCheckEmail', true);
     }
 
+    /**
+     * @deprecated since 1.3.0, use ResetPasswordControllerTrait::getTokenObjectFromSession() instead.
+     */
     private function canCheckEmail(): bool
     {
+        trigger_deprecation(
+            'symfonycasts/reset-password-bundle',
+            '1.3.0',
+            'Storing the ResetPasswordToken object in the session is more desirable, use ResetPasswordControllerTrait::getTokenObjectFromSession() instead.'
+        );
+
         return $this->getSessionService()->has('ResetPasswordCheckEmail');
     }
 
@@ -43,12 +62,25 @@ trait ResetPasswordControllerTrait
         return $this->getSessionService()->get('ResetPasswordPublicToken');
     }
 
+    private function setTokenObjectInSession(ResetPasswordToken $token): void
+    {
+        $token->clearToken();
+
+        $this->getSessionService()->set('ResetPasswordToken', $token);
+    }
+
+    private function getTokenObjectFromSession(): ?ResetPasswordToken
+    {
+        return $this->getSessionService()->get('ResetPasswordToken');
+    }
+
     private function cleanSessionAfterReset(): void
     {
         $session = $this->getSessionService();
 
         $session->remove('ResetPasswordPublicToken');
         $session->remove('ResetPasswordCheckEmail');
+        $session->remove('ResetPasswordToken');
     }
 
     private function getSessionService(): SessionInterface

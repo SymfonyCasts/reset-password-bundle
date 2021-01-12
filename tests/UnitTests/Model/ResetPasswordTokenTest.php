@@ -17,6 +17,18 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
  */
 class ResetPasswordTokenTest extends TestCase
 {
+    public function testTokenValueIsSafeForStorage(): void
+    {
+        $token = new ResetPasswordToken('1234', new \DateTimeImmutable(), \time());
+
+        $token->clearToken();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The token property is not set. Calling getToken() after calling clearToken() is not allowed.');
+
+        self::assertSame('void', $token->getToken());
+    }
+
     /**
      * @dataProvider translationIntervalDataProvider
      */

@@ -5,6 +5,10 @@ find a change that break's semver, please create an issue.*
 
 ## NEXT
 
+- [#143](https://github.com/SymfonyCasts/reset-password-bundle/pull/143) Adds controller trait methods to set/get the 
+  `ResetPasswordToken::class` object in the session. The following `ResetPasswordControllerTrait::class` methods have been deprecated: 
+  `setCanCheckEmailInSession()`, `canCheckEmail()`
+
 ## v1.2.2
 
 - [#139](https://github.com/SymfonyCasts/reset-password-bundle/pull/139) Fixed regression
