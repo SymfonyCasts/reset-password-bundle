@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -25,6 +26,7 @@ class ResetPasswordControllerTraitTest extends TestCase
 {
     private const EMAIL_KEY = 'ResetPasswordCheckEmail';
     private const TOKEN_KEY = 'ResetPasswordPublicToken';
+    private const TOKEN_OBJECT_KEY = 'ResetPasswordToken';
 
     /**
      * @var MockObject|SessionInterface
@@ -64,6 +66,9 @@ class ResetPasswordControllerTraitTest extends TestCase
         $fixture->getToken();
     }
 
+    /**
+     * @group legacy
+     */
     public function testSetsEmailFlagInSession(): void
     {
         $this->mockSession
@@ -76,6 +81,9 @@ class ResetPasswordControllerTraitTest extends TestCase
         $fixture->setEmail();
     }
 
+    /**
+     * @group legacy
+     */
     public function testCanCheckEmailUsesCorrectKey(): void
     {
         $this->mockSession
@@ -89,12 +97,43 @@ class ResetPasswordControllerTraitTest extends TestCase
         $fixture->getEmail();
     }
 
+    public function testSetsResetTokenInSession(): void
+    {
+        $token = new ResetPasswordToken('1234', new \DateTimeImmutable(), 1234);
+
+        $this->mockSession
+            ->expects($this->once())
+            ->method('set')
+            ->with(self::TOKEN_OBJECT_KEY, $token)
+        ;
+
+        $fixture = $this->getFixture();
+        $fixture->storeResetPasswordToken($token);
+    }
+
+    public function testGetsResetTokenFromSession(): void
+    {
+        $token = new ResetPasswordToken('1234', new \DateTimeImmutable(), 1234);
+
+        $this->mockSession
+            ->expects($this->once())
+            ->method('get')
+            ->with(self::TOKEN_OBJECT_KEY)
+            ->willReturn($token)
+        ;
+
+        $fixture = $this->getFixture();
+        $result = $fixture->getResetPasswordToken();
+
+        self::assertSame($token, $result);
+    }
+
     public function testCleanSessionAfterServiceRemovesByTokenAndEmailKeys(): void
     {
         $this->mockSession
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('remove')
-            ->withConsecutive([self::TOKEN_KEY], [self::EMAIL_KEY])
+            ->withConsecutive([self::TOKEN_KEY], [self::EMAIL_KEY], [self::TOKEN_OBJECT_KEY])
         ;
 
         $fixture = $this->getFixture();
@@ -163,6 +202,16 @@ class ResetPasswordControllerTraitTest extends TestCase
             public function getToken(): string
             {
                 return $this->getTokenFromSession();
+            }
+
+            public function storeResetPasswordToken(ResetPasswordToken $token): void
+            {
+                $this->setTokenObjectInSession($token);
+            }
+
+            public function getResetPasswordToken(): ?ResetPasswordToken
+            {
+                return $this->getTokenObjectFromSession();
             }
 
             public function clearSession(): void
