@@ -47,12 +47,12 @@ registered user account & configured Symfony's
 You can change the default configuration parameters for the bundle in the 
 `config/packages/reset_password.yaml` config file created by Maker.
 
-```
+```yaml
 symfonycasts_reset_password:
-  request_password_repository: App\Repository\PasswordResetRequestRepository
-  lifetime: 3600
-  throttle_limit: 3600
-  enable_garbage_collection: true
+    request_password_repository: App\Repository\PasswordResetRequestRepository
+    lifetime: 3600
+    throttle_limit: 3600
+    enable_garbage_collection: true
 ```
 
 ### Parameters:
