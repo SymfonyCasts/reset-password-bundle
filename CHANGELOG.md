@@ -5,6 +5,8 @@ find a change that break's semver, please create an issue.*
 
 ## NEXT
 
+- [#145](https://github.com/SymfonyCasts/reset-password-bundle/pull/145) Add German translations
+
 ## v1.3.0
 
 - [#143](https://github.com/SymfonyCasts/reset-password-bundle/pull/143) Adds controller trait methods to set/get the 
