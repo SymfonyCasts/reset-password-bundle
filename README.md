@@ -125,9 +125,10 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 /**
  * @ApiResource(
  *     input=ResetPasswordInput::class,
+ *     output=false,
  *     shortName="reset-password",
  *     collectionOperations={
- *          "post" = {"security" = "is_granted('IS_ANONYMOUS')"},
+ *          "post" = {"security" = "is_granted('IS_ANONYMOUS')", "status" = 202},
  *     },
  *     itemOperations={
  *     },
