@@ -228,6 +228,8 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\ResetPasswordRequest;
+use App\Entity\User;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 class ResetPasswordDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
@@ -239,18 +241,26 @@ class ResetPasswordDataProvider implements ItemDataProviderInterface, Restricted
         $this->resetPasswordHelper = $resetPasswordHelper;
     }
 
-    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
+    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
+        return ResetPasswordRequest::class === $resourceClass && 'put' === $operationName;
+    }
+
+    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): User
+    {
+        if (!is_string($id)) {
+            throw new NotFoundHttpException('Invalid token.');
+        }
+
         $user = $this->resetPasswordHelper->validateTokenAndFetchUser($id);
+
+        if (!$user instanceof User) {
+            throw new NotFoundHttpException('Invalid token.');
+        }
 
         $this->resetPasswordHelper->removeResetRequest($id);
 
         return $user;
-    }
-
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
-    {
-        return ResetPasswordRequest::class === $resourceClass && 'put' === $operationName;
     }
 }
 ```
@@ -320,6 +330,10 @@ class ResetPasswordDataPersister implements ContextAwareDataPersisterInterface
         }
 
         if (isset($context['item_operation_name']) && 'put' === $context['item_operation_name']) {
+            if (!$context['previous_data'] instanceof User) {
+                return;
+            }
+
             $this->changePassword($context['previous_data'], $data->plainTextPassword);
         }
     }
@@ -348,6 +362,10 @@ class ResetPasswordDataPersister implements ContextAwareDataPersisterInterface
         $userId = $previousUser->getId();
 
         $user = $this->userRepository->find($userId);
+
+        if (null === $user) {
+            return;
+        }
 
         $encoded = $this->userPasswordEncoder->encodePassword($user, $plainTextPassword);
 
