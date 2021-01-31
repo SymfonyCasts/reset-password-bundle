@@ -116,23 +116,29 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\ResetPasswordInput;
 use App\Repository\ResetPasswordRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV4;
-use Symfony\Component\Validator\Constraints as Assert;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 
 /**
  * @ApiResource(
+ *     security="is_granted('IS_ANONYMOUS')",
  *     input=ResetPasswordInput::class,
  *     output=false,
  *     shortName="reset-password",
  *     collectionOperations={
- *          "post" = {"security" = "is_granted('IS_ANONYMOUS')", "status" = 202},
+ *          "post" = {
+ *              "denormalization_context"={"groups"={"reset-password:post"}},
+ *              "status" = 202,
+ *              "validation_groups"={"postValidation"},
+ *          },
  *     },
  *     itemOperations={
+ *          "put" = {
+ *              "denormalization_context"={"groups"={"reset-password:put"}},
+ *              "validation_groups"={"putValidation"},
+ *          },
  *     },
- *     denormalizationContext={"groups"={"reset-password:write"}},
  * )
  *
  * @ORM\Entity(repositoryClass=ResetPasswordRequestRepository::class)
@@ -152,15 +158,6 @@ class ResetPasswordRequest implements ResetPasswordRequestInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private User $user;
-
-    /**
-     * This property is not persisted. It's needed when a reset is requested
-     * through the API.
-     * 
-     * @Assert\NotBlank
-     * @Groups({"reset-password:write"})
-     */
-    private string $email;  // email is not actually persisted. We need this to select the user in a API call.
 
     public function __construct(User $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken)
     {
@@ -203,11 +200,58 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ResetPasswordInput
 {
     /**
-     * @Groups({"reset-password:write"})
-     * @Assert\NotBlank
-     * @Assert\Email()
+     * @Assert\NotBlank(groups={"postValidation"})
+     * @Assert\Email(groups={"postValidation"})
+     * @Groups({"reset-password:post"})
      */
-    public ?string $email = null;
+    public string $email;
+
+    /**
+     * @Assert\NotBlank(groups={"putValidation"})
+     * @Groups({"reset-password:put"})
+     */
+    public string $token;
+
+    /**
+     * @Assert\NotBlank(groups={"putValidation"})
+     * @Groups({"reset-password:put"})
+     */
+    public string $plainTextPassword;
+}
+```
+
+```php
+<?php
+
+namespace App\DataProvider;
+
+use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
+use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use App\Entity\ResetPasswordRequest;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+
+class ResetPasswordDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+{
+    private ResetPasswordHelperInterface $resetPasswordHelper;
+
+    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper)
+    {
+        $this->resetPasswordHelper = $resetPasswordHelper;
+    }
+
+    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
+    {
+        $user = $this->resetPasswordHelper->validateTokenAndFetchUser($id);
+
+        $this->resetPasswordHelper->removeResetRequest($id);
+
+        return $user;
+    }
+
+    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    {
+        return ResetPasswordRequest::class === $resourceClass && 'put' === $operationName;
+    }
 }
 ```
 
@@ -221,10 +265,12 @@ token to the user.
 namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use App\Dto\ResetPasswordInput;
 use App\Entity\User;
+use App\Message\SendResetPasswordMessage;
 use App\Repository\UserRepository;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 /**
@@ -232,27 +278,60 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
  */
 class ResetPasswordDataPersister implements ContextAwareDataPersisterInterface
 {
-    private DataPersisterInterface $decoratedDataPersister;
     private UserRepository $userRepository;
     private ResetPasswordHelperInterface $resetPasswordHelper;
+    private MessageBusInterface $messageBus;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
 
-    public function __construct(DataPersisterInterface $decoratedDataPersister, UserRepository $userRepository, ResetPasswordHelperInterface $resetPasswordHelper)
+    public function __construct(UserRepository $userRepository, ResetPasswordHelperInterface $resetPasswordHelper, MessageBusInterface $messageBus, UserPasswordEncoderInterface $userPasswordEncoder)
     {
-        $this->decoratedDataPersister = $decoratedDataPersister;
         $this->userRepository = $userRepository;
         $this->resetPasswordHelper = $resetPasswordHelper;
+        $this->messageBus = $messageBus;
+        $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
     public function supports($data, array $context = []): bool
     {
-        // Make sure to check if data is an instance of the DTO, not the ResetPasswordRequest.
-        return $data instanceof ResetPasswordInput;
+        if (!$data instanceof ResetPasswordInput) {
+            return false;
+        }
+
+        if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
+            return true;
+        }
+
+        if (isset($context['item_operation_name']) && 'put' === $context['item_operation_name']) {
+            return true;
+        }
+
+        return false;
     }
 
+    /**
+     * @param ResetPasswordInput $data
+     */
     public function persist($data, array $context = []): void
     {
-        /** @var ResetPasswordInput $data */
-        $user = $this->userRepository->findOneBy(['email' => $data->email]);
+        if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
+            $this->generateRequest($data->email);
+
+            return;
+        }
+
+        if (isset($context['item_operation_name']) && 'put' === $context['item_operation_name']) {
+            $this->changePassword($context['previous_data'], $data->plainTextPassword);
+        }
+    }
+
+    public function remove($data, array $context = []): void
+    {
+        throw new \RuntimeException('Operation not supported.');
+    }
+
+    private function generateRequest(string $email): void
+    {
+        $user = $this->userRepository->findOneBy(['email' => $email]);
 
         if (!$user instanceof User) {
             return;
@@ -260,14 +339,19 @@ class ResetPasswordDataPersister implements ContextAwareDataPersisterInterface
 
         $token = $this->resetPasswordHelper->generateResetToken($user);
 
-        // Send email || Dispatch Email w/ Messenger
-
-        return;
+        /** @psalm-suppress PossiblyNullArgument */
+        $this->messageBus->dispatch(new SendResetPasswordMessage($user->getEmail(), $token));
     }
 
-    public function remove($data, array $context = []): void
+    private function changePassword(User $previousUser, string $plainTextPassword): void
     {
-        $this->decoratedDataPersister->remove($data);
+        $userId = $previousUser->getId();
+
+        $user = $this->userRepository->find($userId);
+
+        $encoded = $this->userPasswordEncoder->encodePassword($user, $plainTextPassword);
+
+        $this->userRepository->upgradePassword($user, $encoded);
     }
 }
 ```
