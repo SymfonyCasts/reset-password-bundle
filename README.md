@@ -121,26 +121,6 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 
 /**
- * @ApiResource(
- *     security="is_granted('IS_ANONYMOUS')",
- *     input=ResetPasswordInput::class,
- *     output=false,
- *     shortName="reset-password",
- *     collectionOperations={
- *          "post" = {
- *              "denormalization_context"={"groups"={"reset-password:post"}},
- *              "status" = 202,
- *              "validation_groups"={"postValidation"},
- *          },
- *     },
- *     itemOperations={
- *          "put" = {
- *              "denormalization_context"={"groups"={"reset-password:put"}},
- *              "validation_groups"={"putValidation"},
- *          },
- *     },
- * )
- *
  * @ORM\Entity(repositoryClass=ResetPasswordRequestRepository::class)
  */
 class ResetPasswordRequest implements ResetPasswordRequestInterface
@@ -182,39 +162,38 @@ Because the `ResetPasswordHelper::generateResetToken()` method is responsible fo
 creating and persisting a `ResetPasswordRequest` object after the reset token has been
 generated, we can't call `POST /api/reset-passwords` with `['email' => 'someone@example.com']`.
 
-We'll create a Data Transfer Object (`DTO`) first, that will be used by a Data Persister
+We'll create 2 Data Transfer Objects (`DTO`) ~that will be used by a Data Persister
 to generate the actual `ResetPasswordRequest` object from the email address provided
-in the `POST` api call.
+in the `POST` api call.~
 
 ```php
 <?php
 
 namespace App\Dto;
 
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     output=false,
+ *     collectionOperations={},
+ *     itemOperations={"put"},
+ *     shortName="reset-password"
+ * )
+ *
  * @author Jesse Rushlow <jr@rushlow.dev>
  */
 class ResetPasswordInput
 {
     /**
-     * @Assert\NotBlank(groups={"postValidation"})
-     * @Assert\Email(groups={"postValidation"})
-     * @Groups({"reset-password:post"})
-     */
-    public string $email;
-
-    /**
-     * @Assert\NotBlank(groups={"putValidation"})
-     * @Groups({"reset-password:put"})
+     * @ApiProperty(identifier=true, writable=false)
      */
     public string $token;
 
     /**
-     * @Assert\NotBlank(groups={"putValidation"})
-     * @Groups({"reset-password:put"})
+     * @Assert\NotBlank()
      */
     public string $plainTextPassword;
 }
@@ -223,30 +202,34 @@ class ResetPasswordInput
 ```php
 <?php
 
-namespace App\DataTransformer;
+namespace App\Dto;
 
-use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
-use App\Dto\ResetPasswordInput;
-use App\Entity\ResetPasswordRequest;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     output=false,
+ *     collectionOperations={
+ *          "post" = {
+ *              "status" = 202,
+ *          },
+ *     },
+ *     itemOperations={},
+ *     shortName="reset-password-request"
+ * )
+ *
  * @author Jesse Rushlow <jr@rushlow.dev>
  */
-class ResetPasswordInputDataTransformer implements DataTransformerInterface
+class ResetPasswordRequestInput
 {
-    public function transform($object, string $to, array $context = []): object
-    {
-        return $object;
-    }
-
-    public function supportsTransformation($data, string $to, array $context = []): bool
-    {
-        if ($data instanceof ResetPasswordRequest) {
-            return false;
-        }
-
-        return ResetPasswordRequest::class === $to && ($context['input']['class'] ?? null) === ResetPasswordInput::class;
-    }
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     * @ApiProperty(identifier=true)
+     */
+    public string $email;
 }
 ```
 
@@ -257,11 +240,15 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\ResetPasswordRequest;
+use App\Dto\ResetPasswordInput;
 use App\Entity\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
+/**
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ */
 class ResetPasswordDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
     private ResetPasswordHelperInterface $resetPasswordHelper;
@@ -273,7 +260,7 @@ class ResetPasswordDataProvider implements ItemDataProviderInterface, Restricted
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return ResetPasswordRequest::class === $resourceClass && 'put' === $operationName;
+        return ResetPasswordInput::class === $resourceClass && 'put' === $operationName;
     }
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): User
@@ -282,7 +269,12 @@ class ResetPasswordDataProvider implements ItemDataProviderInterface, Restricted
             throw new NotFoundHttpException('Invalid token.');
         }
 
-        $user = $this->resetPasswordHelper->validateTokenAndFetchUser($id);
+        try {
+            $user = $this->resetPasswordHelper->validateTokenAndFetchUser($id);
+        } catch (ResetPasswordExceptionInterface $ex) {
+            // Log exception id needed
+            throw new NotFoundHttpException();
+        }
 
         if (!$user instanceof User) {
             throw new NotFoundHttpException('Invalid token.');
@@ -306,6 +298,7 @@ namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Dto\ResetPasswordInput;
+use App\Dto\ResetPasswordRequestInput;
 use App\Entity\User;
 use App\Message\SendResetPasswordMessage;
 use App\Repository\UserRepository;
@@ -333,7 +326,7 @@ class ResetPasswordDataPersister implements ContextAwareDataPersisterInterface
 
     public function supports($data, array $context = []): bool
     {
-        if (!$data instanceof ResetPasswordInput) {
+        if (!($data instanceof ResetPasswordInput || $data instanceof ResetPasswordRequestInput)) {
             return false;
         }
 
@@ -348,18 +341,17 @@ class ResetPasswordDataPersister implements ContextAwareDataPersisterInterface
         return false;
     }
 
-    /**
-     * @param ResetPasswordInput $data
-     */
     public function persist($data, array $context = []): void
     {
         if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
+            /** @var ResetPasswordRequestInput $data */
             $this->generateRequest($data->email);
 
             return;
         }
 
         if (isset($context['item_operation_name']) && 'put' === $context['item_operation_name']) {
+            /** @var ResetPasswordInput $data */
             if (!$context['previous_data'] instanceof User) {
                 return;
             }
