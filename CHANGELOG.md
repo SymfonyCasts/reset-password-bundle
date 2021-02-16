@@ -10,6 +10,7 @@ find a change that break's semver, please create an issue.*
 - [#149](https://github.com/SymfonyCasts/reset-password-bundle/pull/149) Add Polish translations
 - [#150](https://github.com/SymfonyCasts/reset-password-bundle/pull/145) Add Serbian translations
 - [#151](https://github.com/SymfonyCasts/reset-password-bundle/pull/151) Add Ukrainian translation
+- [#152](https://github.com/SymfonyCasts/reset-password-bundle/pull/152) Add Russian translation
 
 ## v1.3.0
 
