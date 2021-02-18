@@ -97,6 +97,6 @@ trait ResetPasswordControllerTrait
      */
     private function getFakeToken(int $tokenLifetime): ResetPasswordToken
     {
-        return new ResetPasswordToken('fake-token', new \DateTimeImmutable(\sprintf('+%d seconds', $tokenLifetime)), time());
+        return new ResetPasswordToken('fake-token', new \DateTimeImmutable(\sprintf('+%d seconds', $tokenLifetime)), \time());
     }
 }
