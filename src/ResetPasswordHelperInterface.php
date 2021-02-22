@@ -15,6 +15,8 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
+ * @method ResetPasswordToken generateFakeResetToken() Generates a fake ResetPasswordToken.
  */
 interface ResetPasswordHelperInterface
 {
