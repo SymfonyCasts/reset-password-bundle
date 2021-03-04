@@ -4,6 +4,7 @@
 find a change that break's semver, please create an issue.*
 
 ## NEXT
+- [#160](https://github.com/SymfonyCasts/reset-password-bundle/pull/160) Add Italian translation
 
 ## 1.4.0
 
