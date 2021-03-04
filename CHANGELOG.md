@@ -5,6 +5,8 @@ find a change that break's semver, please create an issue.*
 
 ## NEXT
 - [#160](https://github.com/SymfonyCasts/reset-password-bundle/pull/160) Add Italian translation
+- [#157](https://github.com/SymfonyCasts/reset-password-bundle/pull/157) Add Spanish translation
+- [#158](https://github.com/SymfonyCasts/reset-password-bundle/pull/158) Add Portuguese translation
 
 ## 1.4.0
 
@@ -14,8 +16,6 @@ find a change that break's semver, please create an issue.*
 - [#150](https://github.com/SymfonyCasts/reset-password-bundle/pull/145) Add Serbian translations
 - [#151](https://github.com/SymfonyCasts/reset-password-bundle/pull/151) Add Ukrainian translation
 - [#152](https://github.com/SymfonyCasts/reset-password-bundle/pull/152) Add Russian translation
-- [#157](https://github.com/SymfonyCasts/reset-password-bundle/pull/157) Add Spanish translation
-- [#158](https://github.com/SymfonyCasts/reset-password-bundle/pull/158) Add Portuguese translation
 
 ## v1.3.0
 
