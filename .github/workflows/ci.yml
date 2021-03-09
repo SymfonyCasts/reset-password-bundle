@@ -51,7 +51,7 @@ jobs:
         run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
 
   stable-tests:
-    name: Test against Symfony Stable
+    name: Symfony Stable
     runs-on: ubuntu-latest
 
     strategy:
@@ -64,8 +64,8 @@ jobs:
       - name: Set PHP Version
         run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
-      - name: Disable Xdebug
-        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
+#      - name: Disable Xdebug
+#        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
 
       - name: Get PHP Version
         run: |
@@ -107,7 +107,7 @@ jobs:
         if: always()
 
   dev-main-tests:
-    name: Test against Symfony Main
+    name: Symfony Main
     runs-on: ubuntu-latest
 
     strategy:
@@ -119,8 +119,8 @@ jobs:
       - name: Set PHP Version
         run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
-      - name: Disable Xdebug
-        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
+#      - name: Disable Xdebug
+#        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
 
       - name: Get PHP Version
         run: |
@@ -154,7 +154,7 @@ jobs:
         if: always()
 
   lowest-version-tests:
-    name: Test with lowest dependency versions
+    name: Lowest dependencies
     runs-on: ubuntu-latest
 
     strategy:
@@ -166,8 +166,8 @@ jobs:
       - name: Set PHP Version
         run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
-      - name: Disable Xdebug
-        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
+#      - name: Disable Xdebug
+#        run: sudo rm /etc/php/${{ matrix.php-versions }}/cli/conf.d/20-xdebug.ini
 
       - name: Get PHP Version
         run: |
