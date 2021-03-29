@@ -154,6 +154,25 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         return $this->resetRequestLifetime;
     }
 
+    /**
+     * Generate a fake reset token.
+     *
+     * Use this to generate a fake token so that you can, for example, show a
+     * "reset confirmation email sent" page that includes a valid "expiration date",
+     * even if the email was not actually found (and so, a true ResetPasswordToken
+     * was not actually created).
+     *
+     * This method should not be used when timing attacks are a concern.
+     */
+    public function generateFakeResetToken(): ResetPasswordToken
+    {
+        $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $this->resetRequestLifetime));
+
+        $generatedAt = ($expiresAt->getTimestamp() - $this->resetRequestLifetime);
+
+        return new ResetPasswordToken('fake-token', $expiresAt, $generatedAt);
+    }
+
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
     {
         $selector = \substr($token, 0, self::SELECTOR_LENGTH);
