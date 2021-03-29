@@ -3,7 +3,10 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
-## NEXT
+## 1.6.0
+- [#156](https://github.com/SymfonyCasts/reset-password-bundle/pull/156) Add ability to generate fake tokens
+
+## 1.5.0
 - [#160](https://github.com/SymfonyCasts/reset-password-bundle/pull/160) Add Italian translation
 - [#157](https://github.com/SymfonyCasts/reset-password-bundle/pull/157) Add Spanish translation
 - [#158](https://github.com/SymfonyCasts/reset-password-bundle/pull/158) Add Portuguese translation
