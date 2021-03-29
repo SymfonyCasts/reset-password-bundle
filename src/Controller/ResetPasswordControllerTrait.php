@@ -90,13 +90,4 @@ trait ResetPasswordControllerTrait
 
         return $request->getSession();
     }
-
-    /**
-     * Generate a fake token to be used in the session if needed to prevent
-     * revealing if a user exists.
-     */
-    private function getFakeToken(int $tokenLifetime): ResetPasswordToken
-    {
-        return new ResetPasswordToken('fake-token', new \DateTimeImmutable(\sprintf('+%d seconds', $tokenLifetime)), \time());
-    }
 }
