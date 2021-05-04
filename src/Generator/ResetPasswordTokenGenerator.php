@@ -50,7 +50,7 @@ class ResetPasswordTokenGenerator
 
         $selector = $this->randomGenerator->getRandomAlphaNumStr();
 
-        $encodedData = \json_encode([$verifier, $userId, $expiresAt->getTimestamp()]);
+        $encodedData = json_encode([$verifier, $userId, $expiresAt->getTimestamp()]);
 
         return new ResetPasswordTokenComponents(
             $selector,
@@ -61,6 +61,6 @@ class ResetPasswordTokenGenerator
 
     private function getHashedToken(string $data): string
     {
-        return \base64_encode(\hash_hmac('sha256', $data, $this->signingKey, true));
+        return base64_encode(hash_hmac('sha256', $data, $this->signingKey, true));
     }
 }

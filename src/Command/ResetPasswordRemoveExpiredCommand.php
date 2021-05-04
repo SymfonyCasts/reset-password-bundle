@@ -50,7 +50,7 @@ class ResetPasswordRemoveExpiredCommand extends Command
 
         $intRemoved = $this->cleaner->handleGarbageCollection(true);
 
-        $output->writeln(\sprintf('Garbage collection successful. Removed %s reset password request object(s).', $intRemoved));
+        $output->writeln(sprintf('Garbage collection successful. Removed %s reset password request object(s).', $intRemoved));
 
         return 0;
     }

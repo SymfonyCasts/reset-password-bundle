@@ -19,7 +19,7 @@ class ResetPasswordTokenTest extends TestCase
 {
     public function testTokenValueIsSafeForStorage(): void
     {
-        $token = new ResetPasswordToken('1234', new \DateTimeImmutable(), \time());
+        $token = new ResetPasswordToken('1234', new \DateTimeImmutable(), time());
 
         $token->clearToken();
 
@@ -34,14 +34,14 @@ class ResetPasswordTokenTest extends TestCase
      */
     public function testTranslations(int $lifetime, int $expectedInterval, string $unitOfMeasure): void
     {
-        $created = \time();
+        $created = time();
 
         $expire = \DateTimeImmutable::createFromFormat('U', (string) ($created + $lifetime));
 
         $token = new ResetPasswordToken('token', $expire, $created);
 
         self::assertSame(
-            \sprintf('%%count%% %s|%%count%% %ss', $unitOfMeasure, $unitOfMeasure),
+            sprintf('%%count%% %s|%%count%% %ss', $unitOfMeasure, $unitOfMeasure),
             $token->getExpirationMessageKey()
         );
 

@@ -30,10 +30,10 @@ class ResetPasswordRandomGenerator
         while (($len = \strlen($string)) < 20) {
             $size = 20 - $len;
 
-            $bytes = \random_bytes($size);
+            $bytes = random_bytes($size);
 
-            $string .= \substr(
-                \str_replace(['/', '+', '='], '', \base64_encode($bytes)), 0, $size);
+            $string .= substr(
+                str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
         }
 
         return $string;
