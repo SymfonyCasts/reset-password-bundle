@@ -55,7 +55,7 @@ final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInter
 
     public function isExpired(): bool
     {
-        return $this->expiresAt->getTimestamp() <= \time();
+        return $this->expiresAt->getTimestamp() <= time();
     }
 
     public function getExpiresAt(): \DateTimeInterface

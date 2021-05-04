@@ -47,7 +47,7 @@ class ResetPasswordTestKernel extends Kernel
 
     public function registerBundles(): iterable
     {
-        return \array_merge(
+        return array_merge(
             $this->extraBundles,
             [
                 new FrameworkBundle(),
@@ -133,11 +133,11 @@ class ResetPasswordTestKernel extends Kernel
 
     public function getCacheDir()
     {
-        return \sys_get_temp_dir().'/cache'.\spl_object_hash($this);
+        return sys_get_temp_dir().'/cache'.spl_object_hash($this);
     }
 
     public function getLogDir()
     {
-        return \sys_get_temp_dir().'/logs'.\spl_object_hash($this);
+        return sys_get_temp_dir().'/logs'.spl_object_hash($this);
     }
 }

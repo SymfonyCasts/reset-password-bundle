@@ -135,7 +135,7 @@ final class ResetPasswordToken
     public function getExpiresAtIntervalInstance(): \DateInterval
     {
         if (null === $this->generatedAt) {
-            throw new \LogicException(\sprintf('%s initialized without setting the $generatedAt timestamp.', self::class));
+            throw new \LogicException(sprintf('%s initialized without setting the $generatedAt timestamp.', self::class));
         }
 
         $createdAtTime = \DateTimeImmutable::createFromFormat('U', (string) $this->generatedAt);

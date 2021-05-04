@@ -12,7 +12,6 @@ return (new PhpCsFixer\Config())
     ->setRules(array(
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        'native_function_invocation' => ['include' => ['@internal'], 'scope' => 'namespaced', 'strict' => true],
         'header_comment' => [
             'header' => <<<EOF
 This file is part of the SymfonyCasts ResetPasswordBundle package.

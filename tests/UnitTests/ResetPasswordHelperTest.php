@@ -61,7 +61,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
         $this->mockCleaner = $this->createMock(ResetPasswordCleaner::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
-        $this->randomToken = \bin2hex(\random_bytes(20));
+        $this->randomToken = bin2hex(random_bytes(20));
     }
 
     /**
@@ -167,7 +167,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockRepo
             ->expects($this->once())
             ->method('findResetPasswordRequest')
-            ->with(\substr($this->randomToken, 0, 20))
+            ->with(substr($this->randomToken, 0, 20))
             ->willReturn($this->mockResetRequest)
         ;
 
@@ -198,7 +198,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->expectException(InvalidResetPasswordTokenException::class);
 
         $helper = $this->getPasswordResetHelper();
-        $helper->validateTokenAndFetchUser(\substr($this->randomToken, 0, 39));
+        $helper->validateTokenAndFetchUser(substr($this->randomToken, 0, 39));
     }
 
     public function testExceptionIsThrownIfTokenNotFoundDuringValidation(): void
@@ -226,7 +226,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockRepo
             ->expects($this->once())
             ->method('findResetPasswordRequest')
-            ->with(\substr($this->randomToken, 0, 20))
+            ->with(substr($this->randomToken, 0, 20))
             ->willReturn($this->mockResetRequest)
         ;
 
@@ -259,7 +259,7 @@ class ResetPasswordHelperTest extends TestCase
         $this->mockRepo
             ->expects($this->once())
             ->method('findResetPasswordRequest')
-            ->with(\substr($this->randomToken, 0, 20))
+            ->with(substr($this->randomToken, 0, 20))
             ->willReturn($this->mockResetRequest)
         ;
 
@@ -329,7 +329,7 @@ class ResetPasswordHelperTest extends TestCase
         $token = $helper->generateResetToken(new \stdClass());
 
         $expiresAt = $token->getExpiresAt();
-        self::assertSame(\date_default_timezone_get(), $expiresAt->getTimezone()->getName());
+        self::assertSame(date_default_timezone_get(), $expiresAt->getTimezone()->getName());
     }
 
     private function getPasswordResetHelper(): ResetPasswordHelper
