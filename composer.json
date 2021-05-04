@@ -13,7 +13,7 @@
     },
     "require-dev": {
         "doctrine/orm": "^2.7",
-        "friendsofphp/php-cs-fixer": "^2.17",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "symfony/framework-bundle": "^4.4 | ^5.0",
         "symfony/phpunit-bridge": "^5.0",
         "vimeo/psalm": "^4.3",

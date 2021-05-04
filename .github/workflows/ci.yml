@@ -31,7 +31,7 @@ jobs:
         run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress
 
       - name: Enforce coding standards
-        run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php_cs.dist --diff --diff-format udiff --dry-run
+        run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php-cs-fixer.dist.php --diff --dry-run
 
   psalm:
     name: Psalm Static Analysis

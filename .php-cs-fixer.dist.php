@@ -4,19 +4,15 @@ if (!file_exists(__DIR__.'/src') || !file_exists(__DIR__.'/tests')) {
     exit(0);
 }
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new PhpCsFixer\Finder())
     ->in([__DIR__.'/src', __DIR__.'/tests'])
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules(array(
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        '@PHPUnit75Migration:risky' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'protected_to_private' => false,
-        'semicolon_after_instruction' => false,
-        'native_function_invocation' => true,
+        'native_function_invocation' => ['include' => ['@internal'], 'scope' => 'namespaced', 'strict' => true],
         'header_comment' => [
             'header' => <<<EOF
 This file is part of the SymfonyCasts ResetPasswordBundle package.
