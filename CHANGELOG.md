@@ -9,7 +9,7 @@ find a change that break's semver, please create an issue.*
 
 ### Feature
 
-- [#170](https://github.com/SymfonyCasts/reset-password-bundle/pull/170) - Add correct source and target language to xlf files - *@nicodemuz*
+- [#169](https://github.com/SymfonyCasts/reset-password-bundle/pull/169) - Add Finnish language translations - *@nicodemuz*
 
 ## [v1.8.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.8.0)
 
