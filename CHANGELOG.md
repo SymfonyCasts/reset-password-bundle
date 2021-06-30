@@ -3,7 +3,15 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
-## [v1.8.0](https://github.com/symfony/maker-bundle/releases/tag/v1.8.0)
+## [v1.9.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.9.0)
+
+*June 30th, 2021*
+
+### Feature
+
+- [#170](https://github.com/SymfonyCasts/reset-password-bundle/pull/170) - Add correct source and target language to xlf files - *@nicodemuz*
+
+## [v1.8.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.8.0)
 
 *May 5th, 2021*
 
