@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,21 +21,25 @@ trait ResetPasswordRequestTrait
     /**
      * @ORM\Column(type="string", length=20)
      */
+    #[ORM\Column(type: Types::STRING, length: 20)]
     private $selector;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
+    #[ORM\Column(type: Types::STRING, length: 100)]
     private $hashedToken;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private $requestedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private $expiresAt;
 
     private function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
