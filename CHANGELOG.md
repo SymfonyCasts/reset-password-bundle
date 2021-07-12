@@ -3,6 +3,14 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.9.1](https://github.com/symfony/maker-bundle/releases/tag/v1.9.1)
+
+*July 12th, 2021*
+
+### Bug Fix
+
+- [#176](https://github.com/SymfonyCasts/reset-password-bundle/pull/176) - Allow using PHP 8 attributes for doctrine entities - *@Tobion*
+
 ## [v1.9.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.9.0)
 
 *June 30th, 2021*
