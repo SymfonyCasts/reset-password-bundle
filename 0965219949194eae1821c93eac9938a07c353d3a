@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by jrushlow at 2021-07-09T17:12:28Z
+
+Howdy @Tobion - Thanks for the PR! I'm looking into any potential edge cases where having both attributes and annotations on the same property may cause an issue. Aside from that this PR is looking good.
+
+---------------------------------------------------------------------------
+
+by redecs at 2021-07-12T09:02:55Z
+
+I just stumbled into this today and having both the annotations and attributes makes sense (keeps BC while also allowing new project to leverage PHP 8).
+
+Thank you @Tobion for the PR and @jrushlow, @bocharsky-bw for reviewing it!
+
+Looking forward to seeing this in a release soon.
