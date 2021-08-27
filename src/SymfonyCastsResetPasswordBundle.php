@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword;
 
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use SymfonyCasts\Bundle\ResetPassword\DependencyInjection\SymfonyCastsResetPasswordExtension;
 
@@ -18,7 +19,7 @@ use SymfonyCasts\Bundle\ResetPassword\DependencyInjection\SymfonyCastsResetPassw
  */
 class SymfonyCastsResetPasswordBundle extends Bundle
 {
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
             $this->extension = new SymfonyCastsResetPasswordExtension();
