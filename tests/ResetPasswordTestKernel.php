@@ -131,12 +131,12 @@ class ResetPasswordTestKernel extends Kernel
         return $routes;
     }
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir().'/cache'.spl_object_hash($this);
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return sys_get_temp_dir().'/logs'.spl_object_hash($this);
     }

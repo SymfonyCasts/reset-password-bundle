@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class SymfonyCastsResetPasswordExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
         $loader->load('reset_password_services.xml');
@@ -40,7 +40,7 @@ final class SymfonyCastsResetPasswordExtension extends Extension
         $cleanerDefinition->replaceArgument(1, $config['enable_garbage_collection']);
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'symfonycasts_reset_password';
     }

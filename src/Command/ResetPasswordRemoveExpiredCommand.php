@@ -44,7 +44,7 @@ class ResetPasswordRemoveExpiredCommand extends Command
      *
      * @psalm-suppress InvalidReturnType
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Removing expired reset password requests...');
 
