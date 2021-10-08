@@ -72,7 +72,7 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function removeExpiredResetPasswordRequests(): int
     {
-        $time = new \DateTimeImmutable('-1 week');
+        $time = new \DateTimeImmutable('-1 s');
         $query = $this->createQueryBuilder('t')
             ->delete()
             ->where('t.expiresAt <= :time')
