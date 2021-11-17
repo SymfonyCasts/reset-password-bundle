@@ -76,7 +76,7 @@ jobs:
       - name: "Composer install"
         uses: "ramsey/composer-install@v1"
         with:
-            dependency-versions: ${{ dependency-versions }}
+            dependency-versions: "${{ matrix.dependency-versions }}"
             composer-options: "--prefer-dist --no-progress"
 
       - name: Unit Tests
