@@ -14,7 +14,7 @@
     "require-dev": {
         "doctrine/orm": "^2.7",
         "symfony/framework-bundle": "^4.4 | ^5.0 | ^6.0",
-        "symfony/phpunit-bridge": "^5.0",
+        "symfony/phpunit-bridge": "^5.0 | ^6.0",
         "vimeo/psalm": "^4.3",
         "doctrine/doctrine-bundle": "^2.0.3"
     },
