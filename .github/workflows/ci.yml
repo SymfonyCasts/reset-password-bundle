@@ -27,7 +27,7 @@ jobs:
       - name: "Composer install"
         uses: "ramsey/composer-install@v1"
         with:
-            composer-options: "--prefer-dist --no-progress"
+            composer-options: "--prefer-dist --prefer-stable --no-progress"
 
       - name: Install PHP-CS-Fixer
         run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress
