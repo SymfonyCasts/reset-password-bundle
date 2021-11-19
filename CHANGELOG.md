@@ -3,6 +3,18 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.10.0](https://github.com/symfony/maker-bundle/releases/tag/v1.10.0)
+
+*Nov 18th, 2021*
+
+### Feature
+
+- [#183](https://github.com/SymfonyCasts/reset-password-bundle/pull/183) - add method return types for symfony 6 support - *@jrushlow*
+- [#184](https://github.com/SymfonyCasts/reset-password-bundle/pull/184) - [translations] add Dutch translations - *@jrushlow*
+- [#185](https://github.com/SymfonyCasts/reset-password-bundle/pull/185) - [translations] add Czech translations - *@jrushlow*
+- [#187](https://github.com/SymfonyCasts/reset-password-bundle/pull/187) - [translations] Add Japanese translation - *@jrushlow*
+- [#189](https://github.com/SymfonyCasts/reset-password-bundle/pull/187) - add support for symfony 6 - *@jrushlow*
+
 ## [v1.9.1](https://github.com/symfony/maker-bundle/releases/tag/v1.9.1)
 
 *July 12th, 2021*
