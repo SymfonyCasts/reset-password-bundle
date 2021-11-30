@@ -3,7 +3,15 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
-## [v1.10.0](https://github.com/symfony/maker-bundle/releases/tag/v1.10.0)
+## [v1.11.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.11.0)
+
+*Nov 30th, 2021*
+
+### Feature
+
+- [#193](https://github.com/SymfonyCasts/reset-password-bundle/pull/193) - allow deprecation contracts 3.0 - *@jrushlow*
+
+## [v1.10.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.10.0)
 
 *Nov 18th, 2021*
 
