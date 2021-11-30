@@ -34,7 +34,7 @@ jobs:
         run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress
 
       - name: Running Pslam
-        run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml
+        run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml --php-version=8.0
 
       - name: Running php-cs-fixer
         run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php-cs-fixer.dist.php --diff --dry-run
@@ -73,7 +73,7 @@ jobs:
 
       - name: Install Global Dependencies
         run: |
-          composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-main
+          composer global require --no-progress --no-scripts --no-plugins symfony/flex >=1.x
 
       - name: "Composer install"
         uses: "ramsey/composer-install@v1"
