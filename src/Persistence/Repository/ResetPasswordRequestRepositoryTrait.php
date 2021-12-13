@@ -50,7 +50,7 @@ trait ResetPasswordRequestRepositoryTrait
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
         $resetPasswordRequest = $this->createQueryBuilder('t')
             ->where('t.user = :user')
-            ->setParameter('user', $params['value'], $params['type'])
+            ->setParameter('user', $user)
             ->orderBy('t.requestedAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
@@ -71,7 +71,7 @@ trait ResetPasswordRequestRepositoryTrait
         $this->createQueryBuilder('t')
             ->delete()
             ->where('t.user = :user')
-            ->setParameter('user', $params['value'], $params['type'])
+            ->setParameter('user', $resetPasswordRequest->getUser())
             ->getQuery()
             ->execute()
         ;
