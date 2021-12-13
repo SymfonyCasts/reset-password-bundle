@@ -9,6 +9,9 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Persistence\Repository;
 
+use Symfony\Component\Uid\AbstractUid;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\Uuid;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
@@ -41,11 +44,13 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
     {
+        $params = $this->getQueryParams($user);
+
         // Normally there is only 1 max request per use, but written to be flexible
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
         $resetPasswordRequest = $this->createQueryBuilder('t')
             ->where('t.user = :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $params['value'], $params['type'])
             ->orderBy('t.requestedAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
@@ -61,10 +66,12 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
+        $params = $this->getQueryParams($resetPasswordRequest->getUser());
+
         $this->createQueryBuilder('t')
             ->delete()
             ->where('t.user = :user')
-            ->setParameter('user', $resetPasswordRequest->getUser())
+            ->setParameter('user', $params['value'], $params['type'])
             ->getQuery()
             ->execute()
         ;
@@ -81,5 +88,25 @@ trait ResetPasswordRequestRepositoryTrait
         ;
 
         return $query->execute();
+    }
+
+    private function getQueryParams(object $user): array
+    {
+        $paramValue = $user;
+        $paramType = null;
+
+        if (method_exists($paramValue, 'getId') && class_exists(AbstractUid::class)) {
+            if ($paramValue->getId instanceof Uuid) {
+                $paramType = 'uuid';
+                $paramValue = $paramValue->getId();
+            }
+
+            if ($paramValue->getId instanceof Ulid) {
+                $paramType = 'ulid';
+                $paramValue = $paramValue->getId();
+            }
+        }
+
+        return ['value' => $paramValue, 'type' => $paramType];
     }
 }
