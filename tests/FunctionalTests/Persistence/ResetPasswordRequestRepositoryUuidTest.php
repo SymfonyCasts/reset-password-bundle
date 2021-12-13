@@ -13,9 +13,10 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureUser;
+use Symfony\Component\Uid\Uuid;
 use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureUuidRequest;
-use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestRepository;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity\ResetPasswordTestFixtureUser;
+use SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestUuidRepository;
 use SymfonyCasts\Bundle\ResetPassword\Tests\ResetPasswordTestKernel;
 
 /**
@@ -32,7 +33,7 @@ final class ResetPasswordRequestRepositoryUuidTest extends TestCase
     private $manager;
 
     /**
-     * @var ResetPasswordTestFixtureRequestRepository
+     * @var ResetPasswordTestFixtureRequestUuidRepository
      */
     private $repository;
 
@@ -75,7 +76,10 @@ final class ResetPasswordRequestRepositoryUuidTest extends TestCase
 
         $result = $this->repository->getUserIdentifier($fixture);
 
-        self::assertSame('1', $result);
+        $result = Uuid::fromString($result);
+
+        self::assertInstanceOf(Uuid::class, $result);
+//        self::assertSame('1', $result);
     }
 
     public function testFindResetPasswordRequestReturnsObjectWithGivenSelector(): void

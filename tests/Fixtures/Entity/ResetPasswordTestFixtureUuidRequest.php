@@ -18,13 +18,13 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
- * @ORM\Entity(repositoryClass="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestRepository")
+ * @ORM\Entity(repositoryClass="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestUuidRepository")
  */
 final class ResetPasswordTestFixtureUuidRequest implements ResetPasswordRequestInterface
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\Column(type="uuid")
      */
     public $id;
 
