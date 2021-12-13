@@ -17,7 +17,7 @@
         "symfony/phpunit-bridge": "^5.0 | ^6.0",
         "vimeo/psalm": "^4.3",
         "doctrine/doctrine-bundle": "^2.0.3",
-        "symfony/uid": "6.1.x-dev"
+        "symfony/uid": "^v5.1 | ^6.0"
     },
     "conflict": {
         "doctrine/orm": "<2.7",
