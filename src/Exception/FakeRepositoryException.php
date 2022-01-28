@@ -17,6 +17,6 @@ final class FakeRepositoryException extends \Exception implements ResetPasswordE
 {
     public function getReason(): string
     {
-        return 'Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository` service.';
+        return 'Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository" service.';
     }
 }
