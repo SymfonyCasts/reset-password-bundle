@@ -38,7 +38,7 @@ class ResetPasswordExceptionTest extends TestCase
         ];
         yield [
             new FakeRepositoryException(),
-            'Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository` service.',
+            'Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository" service.',
         ];
     }
 
