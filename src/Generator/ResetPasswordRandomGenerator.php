@@ -28,6 +28,7 @@ class ResetPasswordRandomGenerator
         $string = '';
 
         while (($len = \strlen($string)) < 20) {
+            /** @var int<1, max> $size */
             $size = 20 - $len;
 
             $bytes = random_bytes($size);
