@@ -35,7 +35,7 @@ intended the bundle to be used.
 If you used our Symfony Maker command `bin/console make:reset-password` after 
 installation, your app is ready to go. Go to `https://your-apps-domain/reset-password`, 
 fill out the form, click on the link sent to your email, and change your password. 
-That's it! The Reset Password Bundle takes care of the rest.
+That's it! The ResetPasswordBundle takes care of the rest.
 
 The above assumes you have already setup 
 [authentication](https://symfony.com/doc/current/security.html) with a 
@@ -61,7 +61,7 @@ symfonycasts_reset_password:
 
 _Required_
 
-The complete namespace of the repository for the ResetPasswordRequest entity. If
+The complete namespace of the repository for the `ResetPasswordRequest` entity. If
  you used `make:reset-password`, this will be `App\Repository\ResetPasswordRequestRepository`.
 
 #### `lifetime`
