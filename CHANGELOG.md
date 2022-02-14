@@ -3,6 +3,20 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.12.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.12.0)
+
+*February 14th, 2022*
+
+### Feature
+
+- [#211](https://github.com/symfonycasts/reset-password-bundle/pull/211) - Add Dutch translations for exception reasons - *@codedmonkey*
+- [#210](https://github.com/symfonycasts/reset-password-bundle/pull/210) - Add Russian translations for exception reasons - *@bocharsky-bw*
+- [#209](https://github.com/symfonycasts/reset-password-bundle/pull/209) - Add Ukrainian translations for exception reasons - *@bocharsky-bw*
+- [#206](https://github.com/symfonycasts/reset-password-bundle/pull/206) - RFC: Add translations for exception reasons - *@bocharsky-bw*
+- [#200](https://github.com/symfonycasts/reset-password-bundle/pull/200) - Added Slovak translation. - *@zalesak*
+- [#196](https://github.com/symfonycasts/reset-password-bundle/pull/196) - [translations] Add Hungarian translations - *@1ed*
+
+
 ## [v1.11.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.11.0)
 
 *Nov 30th, 2021*
