@@ -22,27 +22,27 @@ trait ResetPasswordRequestTrait
      * @ORM\Column(type="string", length=20)
      */
     #[ORM\Column(type: Types::STRING, length: 20)]
-    private $selector;
+    protected $selector;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
     #[ORM\Column(type: Types::STRING, length: 100)]
-    private $hashedToken;
+    protected $hashedToken;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private $requestedAt;
+    protected $requestedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private $expiresAt;
+    protected $expiresAt;
 
-    private function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    protected function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
     {
         $this->requestedAt = new \DateTimeImmutable('now');
         $this->expiresAt = $expiresAt;
