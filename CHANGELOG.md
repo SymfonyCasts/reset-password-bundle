@@ -3,6 +3,16 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.13.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.13.0)
+
+*February 23rd, 2022*
+
+### Feature
+
+- [#216](https://github.com/symfonycasts/reset-password-bundle/pull/216) - Changed private to protected for the ResetPasswordRequestTrait - *@DavidBilodeau1*
+- [#215](https://github.com/symfonycasts/reset-password-bundle/pull/215) - Added spanish translation for exceptions - *@idmarinas*
+- [#214](https://github.com/symfonycasts/reset-password-bundle/pull/214) - Add French translations for the exceptions - *@DennisdeBest*
+
 ## [v1.12.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.12.0)
 
 *February 14th, 2022*
