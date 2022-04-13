@@ -26,7 +26,7 @@ final class ResetPasswordToken
     private $expiresAt;
 
     /**
-     * @var int|null timestamp when the token was created
+     * @var \DateTimeInterface|null timestamp when the token was created
      */
     private $generatedAt;
 
@@ -35,7 +35,7 @@ final class ResetPasswordToken
      */
     private $transInterval = 0;
 
-    public function __construct(string $token, \DateTimeInterface $expiresAt, int $generatedAt = null)
+    public function __construct(string $token, \DateTimeInterface $expiresAt, \DateTimeInterface $generatedAt = null)
     {
         $this->token = $token;
         $this->expiresAt = $expiresAt;
@@ -138,9 +138,7 @@ final class ResetPasswordToken
             throw new \LogicException(sprintf('%s initialized without setting the $generatedAt timestamp.', self::class));
         }
 
-        $createdAtTime = \DateTimeImmutable::createFromFormat('U', (string) $this->generatedAt);
-
-        return $this->expiresAt->diff($createdAtTime);
+        return $this->expiresAt->diff($this->generatedAt);
     }
 
     private function triggerDeprecation(): void

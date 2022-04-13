@@ -68,9 +68,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
             throw new TooManyPasswordRequestsException($availableAt);
         }
 
-        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $this->resetRequestLifetime));
-
-        $generatedAt = ($expiresAt->getTimestamp() - $this->resetRequestLifetime);
+        $generatedAt = new \DateTimeImmutable();
+        $expiresAt = $generatedAt->modify(sprintf('+%d seconds', $this->resetRequestLifetime));
 
         $tokenComponents = $this->tokenGenerator->createToken($expiresAt, $this->repository->getUserIdentifier($user));
 
@@ -166,9 +165,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function generateFakeResetToken(): ResetPasswordToken
     {
-        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $this->resetRequestLifetime));
-
-        $generatedAt = ($expiresAt->getTimestamp() - $this->resetRequestLifetime);
+        $generatedAt = new \DateTimeImmutable();
+        $expiresAt = $generatedAt->modify(sprintf('+%d seconds', $this->resetRequestLifetime));
 
         return new ResetPasswordToken('fake-token', $expiresAt, $generatedAt);
     }
