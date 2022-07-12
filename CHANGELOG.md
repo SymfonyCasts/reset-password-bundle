@@ -3,6 +3,17 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.14.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.14.0)
+
+*July 12th, 2022*
+
+### Feature
+
+- [#229](https://github.com/symfonycasts/reset-password-bundle/pull/229) - Add catalan translations - *@victormhg*
+### Bug
+
+- [#230](https://github.com/symfonycasts/reset-password-bundle/pull/230) - Add missing target-language attr to all translations - *@bocharsky-bw*
+
 ## [v1.13.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.13.0)
 
 *February 23rd, 2022*
