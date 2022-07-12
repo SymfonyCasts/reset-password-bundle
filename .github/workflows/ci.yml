@@ -71,10 +71,6 @@ jobs:
             coverage: "none"
             php-version: "${{ matrix.php-version }}"
 
-      - name: Install Global Dependencies
-        run: |
-          composer global require --no-progress --no-scripts --no-plugins symfony/flex >=1.x
-
       - name: "Composer install"
         uses: "ramsey/composer-install@v1"
         with:
