@@ -45,8 +45,8 @@ class ResetPasswordRequestTraitTest extends TestCase
 
     public function isExpiredDataProvider(): \Generator
     {
-        yield 'Is expired' => [(time() + (360)), false];
-        yield 'Is Not Expired' => [(time() - (360)), true];
+        yield 'Is expired' => [time() + 360, false];
+        yield 'Is Not Expired' => [time() - 360, true];
     }
 
     /**
