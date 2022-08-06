@@ -39,8 +39,6 @@ class ResetPasswordRemoveExpiredCommand extends Command
 
     /**
      * {@inheritdoc}
-     *
-     * @psalm-suppress InvalidReturnType
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
