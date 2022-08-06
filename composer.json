@@ -19,6 +19,7 @@
         "doctrine/doctrine-bundle": "^2.0.3"
     },
     "conflict": {
+        "php": ">=8.1 <8.1.10",
         "doctrine/orm": "<2.7",
         "symfony/http-foundation": "<4.4",
         "symfony/framework-bundle": "<4.4"
