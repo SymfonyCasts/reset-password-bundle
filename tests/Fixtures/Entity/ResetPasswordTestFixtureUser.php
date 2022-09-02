@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
+ *
  * @ORM\Entity()
  */
 final class ResetPasswordTestFixtureUser

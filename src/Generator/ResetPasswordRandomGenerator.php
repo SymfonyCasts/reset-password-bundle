@@ -14,6 +14,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
+ *
  * @final
  */
 class ResetPasswordRandomGenerator
