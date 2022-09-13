@@ -3,6 +3,18 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.15.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.15.0)
+
+*September 13th, 2022*
+
+### Feature
+
+- [#237](https://github.com/symfonycasts/reset-password-bundle/pull/237) - drop symfony 4.4 support - *@jrushlow*
+
+### Bug
+
+- [#235](https://github.com/symfonycasts/reset-password-bundle/pull/235) - fix expiration diff bug in php 8.1 - *@jrushlow*
+
 ## [v1.14.1](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.14.1)
 
 *August 6th, 2022*
