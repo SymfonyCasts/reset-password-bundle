@@ -3,6 +3,15 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.16.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.16.0)
+
+*October 4th, 2022*
+
+### Feature
+
+- [#245](https://github.com/symfonycasts/reset-password-bundle/pull/245) - [translations] add additional Polish translations and fix pluralizations - *@Flower7C3*
+- [#242](https://github.com/symfonycasts/reset-password-bundle/pull/242) - [translations] Additional German translations - *@dennis-g*
+
 ## [v1.15.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.15.0)
 
 *September 13th, 2022*
