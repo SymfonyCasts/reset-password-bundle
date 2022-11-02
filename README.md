@@ -55,6 +55,17 @@ symfonycasts_reset_password:
     enable_garbage_collection: true
 ```
 
+The production environment may require the `default_uri` to be defined in the `config/packages/routing.yaml` to prevent the URI in emails to point to localhost.
+
+```yaml
+# config/packages/routing.yaml
+when@prod:
+    framework:
+        router:
+            # ...
+            default_uri: '<your project's root URI>'
+```
+
 ### Parameters:
 
 #### `request_password_repository`
