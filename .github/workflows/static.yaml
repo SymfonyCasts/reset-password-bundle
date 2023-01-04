@@ -47,8 +47,8 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '8.1'
-                    tools: psalm
+                    php-version: '8.2'
+                    tools: psalm:4
 
             -   name: Install Composer dependencies
                 run: composer install --no-progress --prefer-dist --optimize-autoloader
