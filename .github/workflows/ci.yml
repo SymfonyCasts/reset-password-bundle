@@ -1,87 +1,55 @@
-name: Bundle CI
+name: PHPUnit
 on:
-  push:
-    branches: ['main']
-  pull_request:
-  schedule:
-    - cron: '0 */12 * * *'
+    push:
+        branches: ['main']
+    pull_request:
+    schedule:
+        - cron: '0 */12 * * *'
 
 jobs:
-  static-analysis:
-    name: Static Analysis
-    runs-on: ubuntu-18.04
+    tests:
+        name: "${{ matrix.php-version }} ${{ matrix.dependency-versions }} deps ${{ matrix.dependency-versions }}"
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: "Checkout code"
-        uses: "actions/checkout@v2"
+        strategy:
+            fail-fast: false
+            matrix:
+                # normal, highest, non-dev installs
+                php-version: ['7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
+                composer-options: ['--prefer-stable']
+                dependency-versions: ['highest']
+                include:
+                    # testing lowest PHP version with lowest dependencies
+                    - php-version: '7.2.5'
+                      dependency-versions: 'lowest'
+                      composer-options: '--prefer-lowest'
 
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-            coverage: "none"
-            php-version: "8.0"
+                    # testing dev versions with highest PHP
+                    - php-version: '8.2'
+                      dependency-versions: 'highest'
+                      composer-options: '' # allow dev deps
 
-      - name: "Validate composer.json"
-        run: "composer validate --strict --no-check-lock"
+        steps:
+            - name: "Checkout code"
+              uses: "actions/checkout@v3"
 
-      - name: "Composer install"
-        uses: "ramsey/composer-install@v1"
-        with:
-            composer-options: "--prefer-stable"
-            dependency-versions: 'highest'
+            - name: "Install PHP"
+              uses: "shivammathur/setup-php@v2"
+              with:
+                  coverage: "none"
+                  php-version: "${{ matrix.php-version }}"
 
-      - name: Install PHP-CS-Fixer
-        run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress
+            - name: "Composer install"
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "${{ matrix.dependency-versions }}"
+                  composer-options: "--prefer-dist --no-progress"
 
-      - name: Running Pslam
-        run: vendor/bin/psalm -c $GITHUB_WORKSPACE/psalm.xml --php-version=8.0
+            - name: Unit Tests
+              run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
 
-      - name: Running php-cs-fixer
-        run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php-cs-fixer.dist.php --diff --dry-run
+            - name: Functional Tests
+              run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite functional
 
-  tests:
-    name: "Tests ${{ matrix.php-version }} ${{ matrix.dependency-versions }} deps ${{ matrix.dependency-versions }}"
-    runs-on: ubuntu-18.04
-
-    strategy:
-      fail-fast: false
-      matrix:
-        # normal, highest, non-dev installs
-        php-version: ['7.2', '7.3', '7.4', '8.0', '8.1']
-        composer-options: ['--prefer-stable']
-        dependency-versions: ['highest']
-        include:
-          # testing lowest PHP version with lowest dependencies
-          - php-version: '7.2.5'
-            dependency-versions: 'lowest'
-            composer-options: '--prefer-lowest'
-
-          # testing dev versions with highest PHP
-          - php-version: '8.0'
-            dependency-versions: 'highest'
-            composer-options: '' # allow dev deps
-
-    steps:
-      - name: "Checkout code"
-        uses: "actions/checkout@v2"
-
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-            coverage: "none"
-            php-version: "${{ matrix.php-version }}"
-
-      - name: "Composer install"
-        uses: "ramsey/composer-install@v1"
-        with:
-            dependency-versions: "${{ matrix.dependency-versions }}"
-            composer-options: "--prefer-dist --no-progress"
-
-      - name: Unit Tests
-        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite unit
-
-      - name: Functional Tests
-        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite functional
-
-      - name: Integration Tests
-        run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite integration
+            - name: Integration Tests
+              run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --testsuite integration
