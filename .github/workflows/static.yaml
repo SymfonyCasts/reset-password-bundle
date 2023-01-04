@@ -1,0 +1,54 @@
+name: Static
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+    release:
+
+jobs:
+    composer-validate:
+        name: Validate composer.json
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Validate
+                run: composer validate --strict
+
+    php-cs-fixer:
+        name: PHP-CS-Fixer
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.1'
+                    tools: php-cs-fixer
+
+            -   name: Run PHP-CS-Fixer
+                run: php-cs-fixer fix --dry-run --diff
+
+    psalm:
+        name: Psalm
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.1'
+                    tools: psalm
+
+            -   name: Run Psalm
+                run: psalm -c $GITHUB_WORKSPACE/psalm.xml --php-version=8.0
