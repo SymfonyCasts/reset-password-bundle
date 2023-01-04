@@ -71,5 +71,10 @@
                 <file name="src/Persistence/Fake/FakeResetPasswordInternalRepository.php"/>
             </errorLevel>
         </InvalidReturnType>
+        <TooManyArguments>
+            <errorLevel type="suppress">
+                <file name="src/Model/ResetPasswordToken.php"/>
+            </errorLevel>
+        </TooManyArguments>
     </issueHandlers>
 </psalm>
