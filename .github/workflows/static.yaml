@@ -54,4 +54,4 @@ jobs:
                 run: composer install --no-progress --prefer-dist --optimize-autoloader
 
             -   name: Run Psalm
-                run: psalm -c $GITHUB_WORKSPACE/psalm.xml --php-version=8.0 --output-format=github
+                run: psalm --output-format=github
