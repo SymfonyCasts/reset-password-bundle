@@ -48,10 +48,10 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: '8.2'
-                    tools: psalm:5
+                    tools: psalm:4
 
             -   name: Install Composer dependencies
                 run: composer install --no-progress --prefer-dist --optimize-autoloader
 
             -   name: Run Psalm
-                run: psalm --output-format=github
+                run: psalm --output-format=github --php-version=8.0 -c $GITHUB_WORKSPACE/psalm.xml
