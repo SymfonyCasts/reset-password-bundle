@@ -23,7 +23,9 @@ final class ResetPasswordTestFixtureUser
 {
     /**
      * @ORM\Id()
+     *
      * @ORM\GeneratedValue()
+     *
      * @ORM\Column(type="integer")
      */
     private $id;
