@@ -332,6 +332,74 @@ class ResetPasswordHelperTest extends TestCase
         self::assertSame(date_default_timezone_get(), $expiresAt->getTimezone()->getName());
     }
 
+    public function testExpiresAtUsingDefault(): void
+    {
+        $helper = new ResetPasswordHelper(
+            $this->mockTokenGenerator,
+            $this->mockCleaner,
+            $this->mockRepo,
+            60,
+            99999999
+        );
+
+        $token = $helper->generateResetToken(new \stdClass());
+        $expiresAt = $token->getExpiresAt();
+
+        self::assertGreaterThan(new \DateTimeImmutable('+55 seconds'), $expiresAt);
+        self::assertLessThan(new \DateTimeImmutable('+65 seconds'), $expiresAt);
+    }
+
+    public function testExpiresAtUsingOverride(): void
+    {
+        $helper = new ResetPasswordHelper(
+            $this->mockTokenGenerator,
+            $this->mockCleaner,
+            $this->mockRepo,
+            60,
+            99999999
+        );
+
+        $token = $helper->generateResetToken(new \stdClass(), 30);
+        $expiresAt = $token->getExpiresAt();
+
+        self::assertGreaterThan(new \DateTimeImmutable('+25 seconds'), $expiresAt);
+        self::assertLessThan(new \DateTimeImmutable('+35 seconds'), $expiresAt);
+    }
+
+    public function testFakeTokenExpiresAtUsingDefault(): void
+    {
+        $helper = new ResetPasswordHelper(
+            $this->mockTokenGenerator,
+            $this->mockCleaner,
+            $this->mockRepo,
+            60,
+            99999999
+        );
+
+        $token = $helper->generateFakeResetToken();
+        $expiresAt = $token->getExpiresAt();
+
+        self::assertGreaterThan(new \DateTimeImmutable('+55 seconds'), $expiresAt);
+        self::assertLessThan(new \DateTimeImmutable('+65 seconds'), $expiresAt);
+    }
+
+    public function testFakeTokenExpiresAtUsingOverride(): void
+    {
+        $helper = new ResetPasswordHelper(
+            $this->mockTokenGenerator,
+            $this->mockCleaner,
+            $this->mockRepo,
+            60,
+            99999999
+        );
+
+        $token = $helper->generateFakeResetToken(30);
+        $expiresAt = $token->getExpiresAt();
+
+        self::assertGreaterThan(new \DateTimeImmutable('+25 seconds'), $expiresAt);
+        self::assertLessThan(new \DateTimeImmutable('+35 seconds'), $expiresAt);
+    }
+
     private function getPasswordResetHelper(): ResetPasswordHelper
     {
         return new ResetPasswordHelper(

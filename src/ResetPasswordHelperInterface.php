@@ -16,7 +16,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
- * @method ResetPasswordToken generateFakeResetToken() Generates a fake ResetPasswordToken.
+ * @method ResetPasswordToken generateFakeResetToken(?int $resetRequestLifetime = null) Generates a fake ResetPasswordToken.
  */
 interface ResetPasswordHelperInterface
 {
@@ -28,9 +28,11 @@ interface ResetPasswordHelperInterface
      * and removeResetRequest() can eventually invalidate it by removing it
      * from storage.
      *
+     * @param ?int $resetRequestLifetime Override the default (to be added to interface in 2.0)
+     *
      * @throws ResetPasswordExceptionInterface
      */
-    public function generateResetToken(object $user): ResetPasswordToken;
+    public function generateResetToken(object $user/*, ?int $resetRequestLifetime = null*/): ResetPasswordToken;
 
     /**
      * Validate a reset request and fetch the user from persistence.
