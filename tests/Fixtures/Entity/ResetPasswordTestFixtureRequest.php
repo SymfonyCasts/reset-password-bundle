@@ -24,7 +24,9 @@ final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInter
 {
     /**
      * @ORM\Id()
+     *
      * @ORM\GeneratedValue()
+     *
      * @ORM\Column(type="integer")
      */
     public $id;
