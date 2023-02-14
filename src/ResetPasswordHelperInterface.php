@@ -32,7 +32,7 @@ interface ResetPasswordHelperInterface
      *
      * @throws ResetPasswordExceptionInterface
      */
-    public function generateResetToken(object $user/*, ?int $resetRequestLifetime = null*/): ResetPasswordToken;
+    public function generateResetToken(object $user/* , ?int $resetRequestLifetime = null */): ResetPasswordToken;
 
     /**
      * Validate a reset request and fetch the user from persistence.
