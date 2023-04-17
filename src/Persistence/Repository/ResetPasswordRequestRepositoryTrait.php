@@ -22,7 +22,7 @@ trait ResetPasswordRequestRepositoryTrait
 {
     public function getUserIdentifier(object $user): string
     {
-        return $this->getEntityManager()
+        return (string) $this->getEntityManager()
             ->getUnitOfWork()
             ->getSingleIdentifierValue($user)
         ;
