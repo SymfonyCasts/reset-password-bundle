@@ -85,9 +85,9 @@ trait ResetPasswordControllerTrait
 
     private function getSessionService(): SessionInterface
     {
-        /** @var Request $request */
-        $request = $this->container->get('request_stack')->getCurrentRequest();
+        /** @var RequestStack $requestStack */
+        $requestStack = $this->container->get('request_stack');
 
-        return $request->getSession();
+        return $requestStack->getSession();
     }
 }
