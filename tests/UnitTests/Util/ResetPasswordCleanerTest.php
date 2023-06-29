@@ -25,9 +25,6 @@ class ResetPasswordCleanerTest extends TestCase
      */
     private $mockRepo;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
