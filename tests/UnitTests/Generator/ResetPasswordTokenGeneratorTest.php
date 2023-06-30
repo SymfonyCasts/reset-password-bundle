@@ -30,9 +30,6 @@ class ResetPasswordTokenGeneratorTest extends TestCase
      */
     private $mockExpiresAt;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);

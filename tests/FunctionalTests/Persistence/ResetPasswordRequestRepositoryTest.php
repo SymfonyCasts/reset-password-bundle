@@ -36,9 +36,6 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
      */
     private $repository;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $kernel = new ResetPasswordTestKernel();

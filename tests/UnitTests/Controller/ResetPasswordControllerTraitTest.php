@@ -33,9 +33,6 @@ class ResetPasswordControllerTraitTest extends TestCase
      */
     private $mockSession;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->mockSession = $this->createMock(SessionInterface::class);
