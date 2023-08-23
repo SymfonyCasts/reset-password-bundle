@@ -49,7 +49,7 @@ You can change the default configuration parameters for the bundle in the
 
 ```yaml
 symfonycasts_reset_password:
-    request_password_repository: App\Repository\PasswordResetRequestRepository
+    request_password_repository: App\Repository\ResetPasswordRequestRepository
     lifetime: 3600
     throttle_limit: 3600
     enable_garbage_collection: true
