@@ -10,8 +10,11 @@ find a change that break's semver, please create an issue.*
 ### Feature
 
 - [#260](https://github.com/symfonycasts/reset-password-bundle/pull/260) - [ci] handle possible return types - *@jrushlow*
-- [#263](https://github.com/symfonycasts/reset-password-bundle/pull/263) - chore: fix type cast in `ResetPasswordRequestRepositoryTrait` when using `declare(strict_types=1);` - *@Crovitche-1623*
 - [#271](https://github.com/symfonycasts/reset-password-bundle/pull/271) - Add el, mk translations - *@zmakrevski*
+
+### Bug
+
+- [#263](https://github.com/symfonycasts/reset-password-bundle/pull/263) - chore: fix type cast in `ResetPasswordRequestRepositoryTrait` when using `declare(strict_types=1);` - *@Crovitche-1623*
 
 ## [v1.17.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.17.0)
 
