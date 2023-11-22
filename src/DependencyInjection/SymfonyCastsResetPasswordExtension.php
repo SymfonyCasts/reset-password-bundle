@@ -27,6 +27,9 @@ final class SymfonyCastsResetPasswordExtension extends Extension
         $loader->load('reset_password_services.xml');
 
         $configuration = $this->getConfiguration($configs, $container);
+        if (!$configuration) {
+            throw new \Exception('Configuration is not expected to be null');
+        }
 
         $config = $this->processConfiguration($configuration, $configs);
 
