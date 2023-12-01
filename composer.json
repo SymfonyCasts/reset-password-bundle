@@ -7,15 +7,15 @@
     "require": {
         "php": ">=7.2.5",
         "ext-json": "*",
-        "symfony/config": "^5.4 | ^6.0",
-        "symfony/dependency-injection": "^5.4 | ^6.0",
+        "symfony/config": "^5.4 | ^6.0 | ^7.0",
+        "symfony/dependency-injection": "^5.4 | ^6.0 | ^7.0",
         "symfony/deprecation-contracts": "^2.2 | ^3.0",
-        "symfony/http-kernel": "^5.4 | ^6.0"
+        "symfony/http-kernel": "^5.4 | ^6.0 | ^7.0"
     },
     "require-dev": {
         "doctrine/orm": "^2.7",
-        "symfony/framework-bundle": "^5.4 | ^6.0",
-        "symfony/phpunit-bridge": "^5.4 | ^6.0",
+        "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0",
+        "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0",
         "doctrine/doctrine-bundle": "^2.0.3",
         "doctrine/annotations": "^1.0"
     },

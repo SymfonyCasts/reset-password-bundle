@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  */
+#[ORM\Entity]
 final class ResetPasswordTestFixtureUser
 {
     /**
@@ -28,5 +29,8 @@ final class ResetPasswordTestFixtureUser
      *
      * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 }

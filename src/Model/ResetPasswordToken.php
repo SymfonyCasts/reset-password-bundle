@@ -143,6 +143,9 @@ final class ResetPasswordToken
         return $this->expiresAt->diff($createdAtTime);
     }
 
+    /**
+     * @psalm-suppress UndefinedFunction
+     */
     private function triggerDeprecation(): void
     {
         trigger_deprecation(
