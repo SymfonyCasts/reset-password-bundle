@@ -51,30 +51,12 @@
         <RawObjectIteration errorLevel="info"/>
 
         <InvalidStringClass errorLevel="info"/>
-        <PossiblyUndefinedMethod>
+
+        <UndefinedInterfaceMethod>
             <errorLevel type="suppress">
                 <file name="src/DependencyInjection/Configuration.php"/>
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::integerNode" />
             </errorLevel>
-        </PossiblyUndefinedMethod>
-        <PossiblyNullReference>
-            <errorLevel type="suppress">
-                <file name="src/DependencyInjection/Configuration.php"/>
-            </errorLevel>
-        </PossiblyNullReference>
-        <PossiblyNullArgument>
-            <errorLevel type="suppress">
-                <file name="src/DependencyInjection/SymfonyCastsResetPasswordExtension.php"/>
-            </errorLevel>
-        </PossiblyNullArgument>
-        <InvalidReturnType>
-            <errorLevel type="suppress">
-                <file name="src/Persistence/Fake/FakeResetPasswordInternalRepository.php"/>
-            </errorLevel>
-        </InvalidReturnType>
-        <TooManyArguments>
-            <errorLevel type="suppress">
-                <file name="src/Model/ResetPasswordToken.php"/>
-            </errorLevel>
-        </TooManyArguments>
+        </UndefinedInterfaceMethod>
     </issueHandlers>
 </psalm>
