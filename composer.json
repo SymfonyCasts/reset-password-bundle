@@ -16,7 +16,7 @@
         "doctrine/orm": "^2.7",
         "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0",
         "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0",
-        "doctrine/doctrine-bundle": "^2.0.3",
+        "doctrine/doctrine-bundle": "^2.4",
         "doctrine/annotations": "^1.0"
     },
     "conflict": {
