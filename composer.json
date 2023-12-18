@@ -5,7 +5,7 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.1.10",
         "ext-json": "*",
         "symfony/config": "^5.4 | ^6.0 | ^7.0",
         "symfony/dependency-injection": "^5.4 | ^6.0 | ^7.0",
@@ -13,15 +13,11 @@
         "symfony/http-kernel": "^5.4 | ^6.0 | ^7.0"
     },
     "require-dev": {
-        "doctrine/orm": "^2.7",
+        "doctrine/orm": "^2.13",
         "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0",
         "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0",
-        "doctrine/doctrine-bundle": "^2.0.3",
+        "doctrine/doctrine-bundle": "^2.8",
         "doctrine/annotations": "^1.0"
-    },
-    "conflict": {
-        "php": ">=8.1 <8.1.10",
-        "doctrine/orm": "<2.7"
     },
     "autoload": {
         "psr-4": {
