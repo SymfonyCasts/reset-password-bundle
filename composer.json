@@ -19,9 +19,6 @@
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/annotations": "^1.0"
     },
-    "conflict": {
-        "doctrine/orm": "<2.7"
-    },
     "autoload": {
         "psr-4": {
             "SymfonyCasts\\Bundle\\ResetPassword\\": "src/"
