@@ -49,7 +49,7 @@ trait ResetPasswordRequestRepositoryTrait
             ->orderBy('t.requestedAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneorNullResult()
+            ->getOneOrNullResult()
         ;
 
         if (null !== $resetPasswordRequest && !$resetPasswordRequest->isExpired()) {
