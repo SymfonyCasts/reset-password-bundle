@@ -36,7 +36,7 @@ class ResetPasswordTestKernel extends Kernel
      * @param array             $routes  Routes to be added to the container e.g. ['name' => 'path']
      * @param BundleInterface[] $bundles Additional bundles to be registered e.g. [new Bundle()]
      */
-    public function __construct(ContainerBuilder $builder = null, array $routes = [], array $bundles = [])
+    public function __construct(?ContainerBuilder $builder = null, array $routes = [], array $bundles = [])
     {
         $this->builder = $builder;
         $this->routes = $routes;
