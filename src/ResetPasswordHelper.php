@@ -60,7 +60,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      *
      * @throws TooManyPasswordRequestsException
      */
-    public function generateResetToken(object $user, int $resetRequestLifetime = null): ResetPasswordToken
+    public function generateResetToken(object $user, ?int $resetRequestLifetime = null): ResetPasswordToken
     {
         $this->resetPasswordCleaner->handleGarbageCollection();
 
@@ -159,7 +159,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      *
      * This method should not be used when timing attacks are a concern.
      */
-    public function generateFakeResetToken(int $resetRequestLifetime = null): ResetPasswordToken
+    public function generateFakeResetToken(?int $resetRequestLifetime = null): ResetPasswordToken
     {
         $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
         $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $resetRequestLifetime));
