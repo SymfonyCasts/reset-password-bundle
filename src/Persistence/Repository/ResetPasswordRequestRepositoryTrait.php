@@ -90,10 +90,10 @@ trait ResetPasswordRequestRepositoryTrait
      * may have undesired consequences for users who have valid
      * ResetPasswordRequests but have not "checked their email" yet.
      *
-     * @TODO _ @legacy This method is useful for something.....
-     *
      * If a "user" object is passed, only the requests for that user
      * will be removed.
+     *
+     * @see https://github.com/SymfonyCasts/reset-password-bundle?tab=readme-ov-file#advanced-usage
      */
     public function removeRequests(?object $user = null): void
     {

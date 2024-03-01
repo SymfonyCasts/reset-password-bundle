@@ -105,6 +105,29 @@ _Optional_ - Defaults to `true`
 Enable or disable the Reset Password Cleaner which handles expired reset password 
 requests that may have been left in persistence.
 
+## Advanced Usage
+
+### Purging `ResetPasswordRequest` objects from persistence
+
+The `ResetPasswordRequestRepositoryInterface::removeRequests()` method, which is 
+implemented in the 
+[ResetPasswordRequestRepositoryTrait](https://github.com/SymfonyCasts/reset-password-bundle/blob/main/src/Persistence/Repository/ResetPasswordRequestRepositoryTrait.php),
+can be used to remove request objects from persistence for a single user or all
+users. This differs from the 
+[garbage collection mechanism](https://github.com/SymfonyCasts/reset-password-bundle/blob/df64d82cca2ee371da5e8c03c227457069ae663e/src/Persistence/Repository/ResetPasswordRequestRepositoryTrait.php#L73)
+which only removes _expired_ request objects for _all_ users automatically.
+
+Typically, you'd call this method when you need to remove request object(s) for 
+a user who changed their email address due to suspicious activity and potentially
+has valid request objects in persistence with their "old" compromised email address.
+In such cases, pass the `user` object to `removeRequest()`.
+
+Passing `null` or omitting a `user` object will remove all request objects from
+persistence - even if any of those requests have not expired.
+
+This method relies on the user objects `primary key` being `immutable`.
+E.g. `User::id = UUID` not something like `User::id = 'john@example.com'`
+
 ## Support
 
 Feel free to open an issue for questions, problems, or suggestions with our bundle.
