@@ -82,4 +82,32 @@ trait ResetPasswordRequestRepositoryTrait
 
         return $query->execute();
     }
+
+    /**
+     * Remove ResetPasswordRequest objects from persistence.
+     *
+     * Warning - This is a destructive operation. Calling this method
+     * may have undesired consequences for users who have valid
+     * ResetPasswordRequests but have not "checked their email" yet.
+     *
+     * @TODO _ @legacy This method is useful for something.....
+     *
+     * If a "user" object is passed, only the requests for that user
+     * will be removed.
+     */
+    public function removeRequests(?object $user = null): void
+    {
+        $query = $this->createQueryBuilder('t')
+            ->delete()
+        ;
+
+        if (null !== $user) {
+            $query
+                ->where('t.user = :user')
+                ->setParameter('user', $user)
+            ;
+        }
+
+        $query->getQuery()->execute();
+    }
 }

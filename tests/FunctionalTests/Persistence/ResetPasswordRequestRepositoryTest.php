@@ -208,6 +208,45 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         self::assertSame($futureFixture, $result[0]);
     }
 
+    public function testRemoveRequestsRemovesAllRequestsFromPersistence(): void
+    {
+        $this->manager->persist(new ResetPasswordTestFixtureRequest());
+        $this->manager->persist(new ResetPasswordTestFixtureRequest());
+
+        $this->manager->flush();
+
+        $this->repository->removeRequests();
+
+        self::assertCount(0, $this->repository->findAll());
+    }
+
+    public function testRemoveRequestsRemovesAllRequestsForASingleUser(): void
+    {
+        $this->manager->persist($userFixture = new ResetPasswordTestFixtureUser());
+        $requestFixtures = [new ResetPasswordTestFixtureRequest(), new ResetPasswordTestFixtureRequest()];
+
+        foreach ($requestFixtures as $fixture) {
+            $fixture->user = $userFixture;
+
+            $this->manager->persist($fixture);
+        }
+
+        $this->manager->persist($differentUserFixture = new ResetPasswordTestFixtureUser());
+
+        $existingRequestFixture = new ResetPasswordTestFixtureRequest();
+        $existingRequestFixture->user = $differentUserFixture;
+
+        $this->manager->persist($existingRequestFixture);
+        $this->manager->flush();
+
+        self::assertCount(3, $this->repository->findAll());
+
+        $this->repository->removeRequests($userFixture);
+
+        self::assertCount(1, $result = $this->repository->findAll());
+        self::assertSame($existingRequestFixture, $result[0]);
+    }
+
     private function configureDatabase(): void
     {
         $metaData = $this->manager->getMetadataFactory();
