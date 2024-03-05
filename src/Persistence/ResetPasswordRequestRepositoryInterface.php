@@ -15,7 +15,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
- * @method void removeRequests(?object $user = null) Remove ResetPasswordRequest objects from persistence.
+ * @method void removeRequests(object $user) Remove a users ResetPasswordRequest objects from persistence.
  */
 interface ResetPasswordRequestRepositoryInterface
 {

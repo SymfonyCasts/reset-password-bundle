@@ -208,18 +208,6 @@ final class ResetPasswordRequestRepositoryTest extends TestCase
         self::assertSame($futureFixture, $result[0]);
     }
 
-    public function testRemoveRequestsRemovesAllRequestsFromPersistence(): void
-    {
-        $this->manager->persist(new ResetPasswordTestFixtureRequest());
-        $this->manager->persist(new ResetPasswordTestFixtureRequest());
-
-        $this->manager->flush();
-
-        $this->repository->removeRequests();
-
-        self::assertCount(0, $this->repository->findAll());
-    }
-
     public function testRemoveRequestsRemovesAllRequestsForASingleUser(): void
     {
         $this->manager->persist($userFixture = new ResetPasswordTestFixtureUser());

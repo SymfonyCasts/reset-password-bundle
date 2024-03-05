@@ -61,7 +61,7 @@ final class FakeResetPasswordInternalRepository implements ResetPasswordRequestR
         throw new FakeRepositoryException();
     }
 
-    public function removeRequests(?object $user = null): void
+    public function removeRequests(object $user): void
     {
         throw new FakeRepositoryException();
     }

@@ -28,7 +28,7 @@ final class FakeResetPasswordInternalRepositoryTest extends TestCase
         yield ['findResetPasswordRequest', ['']];
         yield ['getMostRecentNonExpiredRequestDate', [new \stdClass()]];
         yield ['removeResetPasswordRequest', [$this->createMock(ResetPasswordRequestInterface::class)]];
-        yield ['removeRequests', []];
+        yield ['removeRequests', [new \stdClass()]];
     }
 
     /**
