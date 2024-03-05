@@ -121,9 +121,6 @@ Typically, you'd call this method when you need to remove request object(s) for
 a user who changed their email address due to suspicious activity and potentially
 has valid request objects in persistence with their "old" compromised email address.
 
-This method relies on the user objects `primary key` being `immutable`.
-E.g. `User::id = UUID` not something like `User::id = 'john@example.com'`.
-
 ```php
 // ProfileController
 
