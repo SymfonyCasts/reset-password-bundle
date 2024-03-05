@@ -105,6 +105,52 @@ _Optional_ - Defaults to `true`
 Enable or disable the Reset Password Cleaner which handles expired reset password 
 requests that may have been left in persistence.
 
+## Advanced Usage
+
+### Purging `ResetPasswordRequest` objects from persistence
+
+The `ResetPasswordRequestRepositoryInterface::removeRequests()` method, which is 
+implemented in the 
+[ResetPasswordRequestRepositoryTrait](https://github.com/SymfonyCasts/reset-password-bundle/blob/main/src/Persistence/Repository/ResetPasswordRequestRepositoryTrait.php),
+can be used to remove all request objects from persistence for a single user. This 
+differs from the 
+[garbage collection mechanism](https://github.com/SymfonyCasts/reset-password-bundle/blob/df64d82cca2ee371da5e8c03c227457069ae663e/src/Persistence/Repository/ResetPasswordRequestRepositoryTrait.php#L73)
+which only removes _expired_ request objects for _all_ users automatically.
+
+Typically, you'd call this method when you need to remove request object(s) for 
+a user who changed their email address due to suspicious activity and potentially
+has valid request objects in persistence with their "old" compromised email address.
+
+```php
+// ProfileController
+
+#[Route(path: '/profile/{id}', name: 'app_update_profile', methods: ['GET', 'POST'])]
+public function profile(Request $request, User $user, ResetPasswordRequestRepositoryInterface $repository): Response
+{
+    $originalEmail = $user->getEmail();
+
+    $form = $this->createFormBuilder($user)
+        ->add('email', EmailType::class)
+        ->add('save', SubmitType::class, ['label' => 'Save Profile'])
+        ->getForm()
+    ;
+    
+    $form->handleRequest($request);
+    
+    if ($form->isSubmitted() && $form->isValid()) {
+        if ($originalEmail !== $user->getEmail()) {
+            // The user changed their email address.
+            // Remove any old reset requests for the user.
+            $repository->removeRequests($user);
+        }
+        
+        // Persist the user object and redirect...
+    }
+    
+    return $this->render('profile.html.twig', ['form' => $form]);
+}
+```
+
 ## Support
 
 Feel free to open an issue for questions, problems, or suggestions with our bundle.

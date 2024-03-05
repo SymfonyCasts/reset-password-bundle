@@ -82,4 +82,24 @@ trait ResetPasswordRequestRepositoryTrait
 
         return $query->execute();
     }
+
+    /**
+     * Remove a users ResetPasswordRequest objects from persistence.
+     *
+     * Warning - This is a destructive operation. Calling this method
+     * may have undesired consequences for users who have valid
+     * ResetPasswordRequests but have not "checked their email" yet.
+     *
+     * @see https://github.com/SymfonyCasts/reset-password-bundle?tab=readme-ov-file#advanced-usage
+     */
+    public function removeRequests(object $user): void
+    {
+        $query = $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.user = :user')
+            ->setParameter('user', $user)
+        ;
+
+        $query->getQuery()->execute();
+    }
 }
