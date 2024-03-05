@@ -130,6 +130,8 @@ E.g. `User::id = UUID` not something like `User::id = 'john@example.com'`.
 #[Route(path: '/profile/{id}', name: 'app_update_profile', methods: ['GET', 'POST'])]
 public function profile(Request $request, User $user, ResetPasswordRequestRepositoryInterface $repository): Response
 {
+    $originalEmail = $user->getEmail();
+
     $form = $this->createFormBuilder($user)
         ->add('email', EmailType::class)
         ->add('save', SubmitType::class, ['label' => 'Save Profile'])
@@ -139,17 +141,13 @@ public function profile(Request $request, User $user, ResetPasswordRequestReposi
     $form->handleRequest($request);
     
     if ($form->isSubmitted() && $form->isValid()) {
-        $newEmail = $form->get('email')->getData();
-        
-        if ($newEmail !== $user->getEmail()) {
+        if ($originalEmail !== $user->getEmail()) {
             // The user changed their email address.
             // Remove any old reset requests for the user.
             $repository->removeRequests($user);
         }
         
-        // Persist the user object...
-        
-        return $this->render('success.html.twig');
+        // Persist the user object and redirect...
     }
     
     return $this->render('profile.html.twig', ['form' => $form]);
