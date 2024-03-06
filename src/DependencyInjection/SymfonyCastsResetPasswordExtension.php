@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -32,6 +33,8 @@ final class SymfonyCastsResetPasswordExtension extends Extension
         }
 
         $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setAlias(ResetPasswordRequestRepositoryInterface::class, $config['request_password_repository']);
 
         $helperDefinition = $container->getDefinition('symfonycasts.reset_password.helper');
         $helperDefinition->replaceArgument(2, new Reference($config['request_password_repository']));
