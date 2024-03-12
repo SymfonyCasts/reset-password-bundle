@@ -17,7 +17,8 @@
         "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0",
         "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0",
         "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/annotations": "^1.0"
+        "doctrine/annotations": "^1.0",
+        "symfony/maker-bundle": "^1.53"
     },
     "autoload": {
         "psr-4": {
