@@ -14,13 +14,9 @@ namespace SymfonyCasts\Bundle\ResetPassword\Exception;
  */
 final class TooManyPasswordRequestsException extends \Exception implements ResetPasswordExceptionInterface
 {
-    private $availableAt;
-
-    public function __construct(\DateTimeInterface $availableAt, string $message = '', int $code = 0, ?\Throwable $previous = null)
+    public function __construct(private \DateTimeInterface $availableAt, string $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
-
-        $this->availableAt = $availableAt;
     }
 
     public function getAvailableAt(): \DateTimeInterface

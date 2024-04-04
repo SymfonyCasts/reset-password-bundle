@@ -19,26 +19,11 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
  */
 class ResetPasswordTokenComponents
 {
-    /**
-     * @var string
-     */
-    private $selector;
-
-    /**
-     * @var string
-     */
-    private $verifier;
-
-    /**
-     * @var string
-     */
-    private $hashedToken;
-
-    public function __construct(string $selector, string $verifier, string $hashedToken)
-    {
-        $this->selector = $selector;
-        $this->verifier = $verifier;
-        $this->hashedToken = $hashedToken;
+    public function __construct(
+        private string $selector,
+        private string $verifier,
+        private string $hashedToken
+    ) {
     }
 
     /**

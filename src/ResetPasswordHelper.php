@@ -29,27 +29,17 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private const SELECTOR_LENGTH = 20;
 
-    private $tokenGenerator;
-    private $resetPasswordCleaner;
-    private $repository;
-
     /**
-     * @var int How long a token is valid in seconds
+     * @param int $resetRequestLifetime How long a token is valid in seconds
+     * @param int $requestThrottleTime Another password reset cannot be made faster than this throttle time in seconds
      */
-    private $resetRequestLifetime;
-
-    /**
-     * @var int Another password reset cannot be made faster than this throttle time in seconds
-     */
-    private $requestThrottleTime;
-
-    public function __construct(ResetPasswordTokenGenerator $generator, ResetPasswordCleaner $cleaner, ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime)
-    {
-        $this->tokenGenerator = $generator;
-        $this->resetPasswordCleaner = $cleaner;
-        $this->repository = $repository;
-        $this->resetRequestLifetime = $resetRequestLifetime;
-        $this->requestThrottleTime = $requestThrottleTime;
+    public function __construct(
+        private ResetPasswordTokenGenerator $generator,
+        private ResetPasswordCleaner $cleaner,
+        private ResetPasswordRequestRepositoryInterface $repository,
+        private int $resetRequestLifetime,
+        private int $requestThrottleTime,
+    ) {
     }
 
     /**
@@ -62,7 +52,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function generateResetToken(object $user, ?int $resetRequestLifetime = null): ResetPasswordToken
     {
-        $this->resetPasswordCleaner->handleGarbageCollection();
+        $this->cleaner->handleGarbageCollection();
 
         if ($availableAt = $this->hasUserHitThrottling($user)) {
             throw new TooManyPasswordRequestsException($availableAt);
@@ -74,7 +64,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
-        $tokenComponents = $this->tokenGenerator->createToken($expiresAt, $this->repository->getUserIdentifier($user));
+        $tokenComponents = $this->generator->createToken($expiresAt, $this->repository->getUserIdentifier($user));
 
         $passwordResetRequest = $this->repository->createResetPasswordRequest(
             $user,
@@ -99,7 +89,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function validateTokenAndFetchUser(string $fullToken): object
     {
-        $this->resetPasswordCleaner->handleGarbageCollection();
+        $this->cleaner->handleGarbageCollection();
 
         if (40 !== \strlen($fullToken)) {
             throw new InvalidResetPasswordTokenException();
@@ -117,7 +107,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $user = $resetRequest->getUser();
 
-        $hashedVerifierToken = $this->tokenGenerator->createToken(
+        $hashedVerifierToken = $this->generator->createToken(
             $resetRequest->getExpiresAt(),
             $this->repository->getUserIdentifier($user),
             substr($fullToken, self::SELECTOR_LENGTH)
