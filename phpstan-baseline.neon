@@ -1,0 +1,46 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\Command\\\\ResetPasswordRemoveExpiredCommand\\:\\:\\$cleaner has no type specified\\.$#"
+			count: 1
+			path: src/Command/ResetPasswordRemoveExpiredCommand.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:integerNode\\(\\)\\.$#"
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Property SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\Exception\\\\TooManyPasswordRequestsException\\:\\:\\$availableAt has no type specified\\.$#"
+			count: 1
+			path: src/Exception/TooManyPasswordRequestsException.php
+
+		-
+			message: "#^Method SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\Model\\\\ResetPasswordToken\\:\\:getExpirationMessageData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/ResetPasswordToken.php
+
+		-
+			message: "#^Property SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\ResetPasswordHelper\\:\\:\\$repository has no type specified\\.$#"
+			count: 1
+			path: src/ResetPasswordHelper.php
+
+		-
+			message: "#^Property SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\ResetPasswordHelper\\:\\:\\$resetPasswordCleaner has no type specified\\.$#"
+			count: 1
+			path: src/ResetPasswordHelper.php
+
+		-
+			message: "#^Property SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\ResetPasswordHelper\\:\\:\\$tokenGenerator has no type specified\\.$#"
+			count: 1
+			path: src/ResetPasswordHelper.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$resetRequestLifetime$#"
+			count: 1
+			path: src/ResetPasswordHelperInterface.php
+
+		-
+			message: "#^Property SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\Util\\\\ResetPasswordCleaner\\:\\:\\$repository has no type specified\\.$#"
+			count: 1
+			path: src/Util/ResetPasswordCleaner.php

@@ -17,7 +17,8 @@
         "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0",
         "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0",
         "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/annotations": "^1.0"
+        "doctrine/annotations": "^1.0",
+        "phpstan/phpstan": "^1.11.x-dev"
     },
     "autoload": {
         "psr-4": {
@@ -28,5 +29,8 @@
         "psr-4": {
             "SymfonyCasts\\Bundle\\ResetPassword\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan"
     }
 }

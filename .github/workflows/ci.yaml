@@ -20,4 +20,7 @@ jobs:
         uses: SymfonyCasts/.github/.github/workflows/php-cs-fixer.yaml@main
 
     sca:
-        uses: SymfonyCasts/.github/.github/workflows/psalm.yaml@main
+        uses: SymfonyCasts/.github/.github/workflows/phpstan.yaml@main
+        with:
+            php: 8.3
+            install-phpunit-bridge: true
