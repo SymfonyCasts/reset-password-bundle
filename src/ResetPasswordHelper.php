@@ -31,7 +31,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
 
     /**
      * @param int $resetRequestLifetime How long a token is valid in seconds
-     * @param int $requestThrottleTime Another password reset cannot be made faster than this throttle time in seconds
+     * @param int $requestThrottleTime  Another password reset cannot be made faster than this throttle time in seconds
      */
     public function __construct(
         private ResetPasswordTokenGenerator $generator,
