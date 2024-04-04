@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-        backupGlobals="false"
-        colors="true"
-        bootstrap="vendor/autoload.php"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+    cacheResultFile=".phpunit.cache/test-results"
+    executionOrder="depends,defects"
+    beStrictAboutCoversAnnotation="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    convertDeprecationsToExceptions="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    verbose="true"
+    colors="true"
 >
-
     <php>
         <ini name="error_reporting" value="-1"/>
         <server name="SHELL_VERBOSITY" value="-1"/>
@@ -15,31 +21,30 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0"/>
     </php>
 
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./src/</directory>
-        </include>
-        <exclude>
-            <directory>./src/Resources</directory>
-            <directory>./tests</directory>
-            <directory>./vendor</directory>
-        </exclude>
-    </coverage>
-
     <testsuites>
         <testsuite name="all">
             <directory>./tests</directory>
         </testsuite>
         <testsuite name="unit">
-            <directory>./tests/UnitTests</directory>
+            <directory>./tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
-            <directory>./tests/FunctionalTests</directory>
+            <directory>./tests/Functional</directory>
         </testsuite>
         <testsuite name="integration">
-            <directory>./tests/IntegrationTests</directory>
+            <directory>./tests/Integration</directory>
         </testsuite>
     </testsuites>
+
+    <coverage
+        cacheDirectory=".phpunit.cache/code-coverage"
+        processUncoveredFiles="true"
+    >
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
+
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
     </listeners>
