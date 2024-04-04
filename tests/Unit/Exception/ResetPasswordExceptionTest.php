@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Exception;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Unit\Exception;
 
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;

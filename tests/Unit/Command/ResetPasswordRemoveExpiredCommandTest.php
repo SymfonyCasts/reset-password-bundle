@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Command;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Unit\Command;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;

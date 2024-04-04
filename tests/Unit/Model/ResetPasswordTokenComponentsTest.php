@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Model;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;

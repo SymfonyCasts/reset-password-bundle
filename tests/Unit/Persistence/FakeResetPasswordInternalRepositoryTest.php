@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests\Persistence;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Unit\Persistence;
 
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\FakeRepositoryException;
