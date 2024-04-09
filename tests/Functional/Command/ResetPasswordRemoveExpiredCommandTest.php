@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyCasts\Bundle\ResetPassword\Tests\FunctionalTests\Command;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Functional\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -27,15 +27,9 @@ use SymfonyCasts\Bundle\ResetPassword\Tests\ResetPasswordTestKernel;
  */
 final class ResetPasswordRemoveExpiredCommandTest extends TestCase
 {
-    /**
-     * @var ObjectManager|object
-     */
-    private $manager;
+    private ObjectManager $manager;
 
-    /**
-     * @var CommandTester
-     */
-    private $commandTester;
+    private CommandTester $commandTester;
 
     protected function setUp(): void
     {
