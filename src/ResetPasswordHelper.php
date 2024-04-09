@@ -21,10 +21,8 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
- *
- * @final
  */
-class ResetPasswordHelper implements ResetPasswordHelperInterface
+final class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
     /**
      * The first 20 characters of the token are a "selector".
