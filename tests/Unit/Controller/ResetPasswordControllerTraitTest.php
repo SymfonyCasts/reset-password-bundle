@@ -28,10 +28,7 @@ class ResetPasswordControllerTraitTest extends TestCase
     private const TOKEN_KEY = 'ResetPasswordPublicToken';
     private const TOKEN_OBJECT_KEY = 'ResetPasswordToken';
 
-    /**
-     * @var MockObject|SessionInterface
-     */
-    private $mockSession;
+    private MockObject&SessionInterface $mockSession;
 
     protected function setUp(): void
     {
@@ -61,37 +58,6 @@ class ResetPasswordControllerTraitTest extends TestCase
 
         $fixture = $this->getFixture();
         $fixture->getToken();
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testSetsEmailFlagInSession(): void
-    {
-        $this->mockSession
-            ->expects($this->once())
-            ->method('set')
-            ->with(self::EMAIL_KEY)
-        ;
-
-        $fixture = $this->getFixture();
-        $fixture->setEmail();
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testCanCheckEmailUsesCorrectKey(): void
-    {
-        $this->mockSession
-            ->expects($this->once())
-            ->method('has')
-            ->with(self::EMAIL_KEY)
-            ->willReturn(true)
-        ;
-
-        $fixture = $this->getFixture();
-        $fixture->getEmail();
     }
 
     public function testSetsResetTokenInSession(): void
@@ -137,10 +103,7 @@ class ResetPasswordControllerTraitTest extends TestCase
         $fixture->clearSession();
     }
 
-    /**
-     * @return MockObject|ContainerInterface
-     */
-    private function getConfiguredMockContainer()
+    private function getConfiguredMockContainer(): MockObject&ContainerInterface
     {
         $mockRequest = $this->createMock(Request::class);
         $mockRequest
@@ -179,16 +142,6 @@ class ResetPasswordControllerTraitTest extends TestCase
             public function __construct(ContainerInterface $container)
             {
                 $this->container = $container;
-            }
-
-            public function setEmail(): void
-            {
-                $this->setCanCheckEmailInSession();
-            }
-
-            public function getEmail(): bool
-            {
-                return $this->canCheckEmail();
             }
 
             public function storeToken(string $token): void
