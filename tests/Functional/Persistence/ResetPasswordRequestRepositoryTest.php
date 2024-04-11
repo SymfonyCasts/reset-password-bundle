@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyCasts\Bundle\ResetPassword\Tests\FunctionalTests\Persistence;
+namespace SymfonyCasts\Bundle\ResetPassword\Tests\Functional\Persistence;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Tools\SchemaTool;
