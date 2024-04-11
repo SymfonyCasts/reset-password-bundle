@@ -87,7 +87,7 @@ class ResetPasswordTestKernel extends Kernel
                 ],
                 'orm' => [
                     'auto_generate_proxy_classes' => true,
-                    'auto_mapping' => false,
+                    'auto_mapping' => true,
                     'mappings' => [
                         'App' => [
                             'is_bundle' => false,
