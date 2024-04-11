@@ -17,45 +17,24 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
- *
- * @ORM\Entity(repositoryClass="SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestRepository")
  */
 #[ORM\Entity(repositoryClass: "SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\ResetPasswordTestFixtureRequestRepository")]
 final class ResetPasswordTestFixtureRequest implements ResetPasswordRequestInterface
 {
-    /**
-     * @ORM\Id()
-     *
-     * @ORM\GeneratedValue()
-     *
-     * @ORM\Column(type="integer")
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     public $id;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
     #[ORM\Column(type: 'string', nullable: true)]
     public $selector;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public $expiresAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public $requestedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ResetPasswordTestFixtureUser")
-     */
     #[ORM\ManyToOne(targetEntity: 'ResetPasswordTestFixtureUser')]
     public $user;
 

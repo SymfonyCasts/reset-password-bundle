@@ -87,11 +87,11 @@ class ResetPasswordTestKernel extends Kernel
                 ],
                 'orm' => [
                     'auto_generate_proxy_classes' => true,
-                    'auto_mapping' => true,
+                    'auto_mapping' => false,
                     'mappings' => [
                         'App' => [
                             'is_bundle' => false,
-                            'type' => self::shouldUseAttributes() ? 'attribute' : 'annotation',
+                            'type' => 'attribute',
                             'dir' => 'tests/Fixtures/Entity/',
                             'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
                             'alias' => 'App',
@@ -140,10 +140,5 @@ class ResetPasswordTestKernel extends Kernel
     public function getLogDir(): string
     {
         return sys_get_temp_dir().'/logs'.spl_object_hash($this);
-    }
-
-    public static function shouldUseAttributes(): bool
-    {
-        return Kernel::VERSION_ID >= 70000;
     }
 }
