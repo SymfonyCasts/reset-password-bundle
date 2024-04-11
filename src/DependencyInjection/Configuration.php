@@ -25,7 +25,7 @@ final class Configuration implements ConfigurationInterface
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
+        $rootNode /** @phpstan-ignore-line method.notFound (The last end() call) */
             ->children()
                 ->scalarNode('request_password_repository')
                     ->isRequired()
