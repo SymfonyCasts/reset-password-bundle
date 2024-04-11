@@ -22,16 +22,12 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 class ResetPasswordCleaner
 {
     /**
-     * @var bool Enable/disable garbage collection
+     * @param bool $enabled Enable/disable garbage collection
      */
-    private $enabled;
-
-    private $repository;
-
-    public function __construct(ResetPasswordRequestRepositoryInterface $repository, bool $enabled = true)
-    {
-        $this->repository = $repository;
-        $this->enabled = $enabled;
+    public function __construct(
+        private ResetPasswordRequestRepositoryInterface $repository,
+        private bool $enabled = true,
+    ) {
     }
 
     /**

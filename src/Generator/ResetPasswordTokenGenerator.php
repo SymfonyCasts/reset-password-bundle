@@ -22,19 +22,12 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
 class ResetPasswordTokenGenerator
 {
     /**
-     * @var string Unique, random, cryptographically secure string
+     * @param string $signingKey Unique, random, cryptographically secure string
      */
-    private $signingKey;
-
-    /**
-     * @var ResetPasswordRandomGenerator
-     */
-    private $randomGenerator;
-
-    public function __construct(string $signingKey, ResetPasswordRandomGenerator $generator)
-    {
-        $this->signingKey = $signingKey;
-        $this->randomGenerator = $generator;
+    public function __construct(
+        private string $signingKey,
+        private ResetPasswordRandomGenerator $generator
+    ) {
     }
 
     /**
@@ -46,10 +39,10 @@ class ResetPasswordTokenGenerator
     public function createToken(\DateTimeInterface $expiresAt, $userId, ?string $verifier = null): ResetPasswordTokenComponents
     {
         if (null === $verifier) {
-            $verifier = $this->randomGenerator->getRandomAlphaNumStr();
+            $verifier = $this->generator->getRandomAlphaNumStr();
         }
 
-        $selector = $this->randomGenerator->getRandomAlphaNumStr();
+        $selector = $this->generator->getRandomAlphaNumStr();
 
         $encodedData = json_encode([$verifier, $userId, $expiresAt->getTimestamp()]);
 
