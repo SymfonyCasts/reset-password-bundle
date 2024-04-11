@@ -1,7 +1,0 @@
-parameters:
-	ignoreErrors:
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$resetRequestLifetime$#"
-			count: 1
-			path: src/ResetPasswordHelperInterface.php
-

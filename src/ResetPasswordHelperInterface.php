@@ -28,11 +28,11 @@ interface ResetPasswordHelperInterface
      * and removeResetRequest() can eventually invalidate it by removing it
      * from storage.
      *
-     * @param ?int $resetRequestLifetime Override the default (to be added to interface in 2.0)
+     * @param ?int $resetRequestLifetime Override the default lifetime
      *
      * @throws ResetPasswordExceptionInterface
      */
-    public function generateResetToken(object $user/* , ?int $resetRequestLifetime = null */): ResetPasswordToken;
+    public function generateResetToken(object $user, ?int $resetRequestLifetime = null): ResetPasswordToken;
 
     /**
      * Validate a reset request and fetch the user from persistence.

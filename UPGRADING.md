@@ -2,6 +2,16 @@
 
 ResetPasswordBundle now requires PHP `8.3`+ & Symfony `6.4.5`+
 
+## ResetPasswordHelperInterface
+
+- The `$resetRequestLifetime` argument for `generateResetToken()` must exist in 
+classes that implement the interface.
+
+```diff
+- public function generateResetToken(object $user/* , ?int $resetRequestLifetime = null */): ResetPasswordToken;
++ public function generateResetToken(object $user, ?int $resetRequestLifetime = null): ResetPasswordToken;
+```
+
 ## ResetPasswordHelper
 
 - Class became `@final` in `v1.22.0` and in `v2.0.0` the `@final` annotation was 

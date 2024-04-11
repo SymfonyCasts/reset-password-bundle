@@ -9,6 +9,7 @@ find a change that break's semver, please create an issue.*
 
 ### Feature
 
+- [#300](https://github.com/symfonycasts/reset-password-bundle/pull/300) - [interface] change `generateResetToken()` signature - *@jrushlow*
 - [#298](https://github.com/symfonycasts/reset-password-bundle/pull/298) - replace final annotation with final class keyword - *@jrushlow*
 
 ## [v1.18.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.18.0)
