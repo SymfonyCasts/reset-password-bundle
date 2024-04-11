@@ -10,6 +10,7 @@ find a change that break's semver, please create an issue.*
 ### Feature
 
 - [#298](https://github.com/symfonycasts/reset-password-bundle/pull/298) - replace final annotation with final class keyword - *@jrushlow*
+- [#295](https://github.com/symfonycasts/reset-password-bundle/pull/295) - [command] use `AsCommand` attribute - *@jrushlow*
 
 ## [v1.18.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.18.0)
 
