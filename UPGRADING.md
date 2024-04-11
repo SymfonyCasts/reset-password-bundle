@@ -29,3 +29,8 @@ replaced with the `final` class keyword. Extending this class is not allowed.
 - Removed deprecated `setCanCheckEmailInSession()` method from trait.
 
 - Removed deprecated `canCheckEmail()` method from trait.
+
+## ResetPasswordRequestTrait
+
+- Annotation support for ResetPasswordRequest Doctrine entities that use the
+trait has been dropped - attribute mapping is required.
