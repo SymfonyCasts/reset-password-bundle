@@ -87,8 +87,7 @@ class ResetPasswordTestKernel extends Kernel
                 ],
                 'orm' => [
                     'auto_generate_proxy_classes' => true,
-                    'controller_resolver' => ['auto_mapping' => false], // @see https://github.com/doctrine/DoctrineBundle/pull/1762
-                    'enable_lazy_ghost_objects' => true, // @see https://github.com/doctrine/DoctrineBundle/pull/1733
+                    'auto_mapping' => false,
                     'mappings' => [
                         'App' => [
                             'is_bundle' => false,
@@ -98,7 +97,6 @@ class ResetPasswordTestKernel extends Kernel
                             'alias' => 'App',
                         ],
                     ],
-                    'report_fields_where_declared' => true,  // @see https://github.com/doctrine/DoctrineBundle/pull/1661
                 ],
             ]);
 
