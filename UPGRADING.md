@@ -21,3 +21,5 @@ replaced with the `final` class keyword. Extending this class is not allowed.
 
 - Class became `@final` in `v1.22.0` and in `v2.0.0` the `@final` annotation was
     replaced with the `final` class keyword. Extending this class is not allowed.
+
+- Command is now registered using the Symfony `#[AsCommand]` attribute
