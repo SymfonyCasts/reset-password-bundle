@@ -116,6 +116,8 @@ final class ResetPasswordToken
     }
 
     /**
+     * @return array<string, int>
+     *
      * @throws \LogicException
      */
     public function getExpirationMessageData(): array
