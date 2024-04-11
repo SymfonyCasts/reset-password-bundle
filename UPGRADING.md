@@ -23,3 +23,9 @@ replaced with the `final` class keyword. Extending this class is not allowed.
     replaced with the `final` class keyword. Extending this class is not allowed.
 
 - Command is now registered using the Symfony `#[AsCommand]` attribute
+
+## ResetPasswordControllerTrait
+
+- Removed deprecated `setCanCheckEmailInSession()` method from trait.
+
+- Removed deprecated `canCheckEmail()` method from trait.
