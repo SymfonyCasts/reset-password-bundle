@@ -22,7 +22,7 @@ replaced with the `final` class keyword. Extending this class is not allowed.
 - Class became `@final` in `v1.22.0` and in `v2.0.0` the `@final` annotation was
     replaced with the `final` class keyword. Extending this class is not allowed.
 
-- Command is now registered using the Symfony `#[AsCommand]` attribute
+- Command is now registered using the Symfony `#[AsCommand]` attribute.
 
 ## ResetPasswordControllerTrait
 
@@ -34,3 +34,26 @@ replaced with the `final` class keyword. Extending this class is not allowed.
 
 - Annotation support for ResetPasswordRequest Doctrine entities that use the
 trait has been dropped - attribute mapping is required.
+
+- Property types were added to `selector`, `hashedToken`, `requestedAt`, & `expiresAt`.
+
+```diff
+- protected $selector;
++ protected string $selector;
+
+- protected $hashedToken;
++ protected string $hashedToken;
+
+- protected $requestedAt;
++ protected \DateTimeImmutable $requestedAt;
+
+- protected $expiresAt;
++ protected \DateTimeInterface $expiresAt;
+```
+
+- `initalize()` now returns `void`. Previously the return type was not declared
+
+```diff
+- protected function initialize(....)
++ protected function initialize(....): void
+```
