@@ -99,3 +99,6 @@ instantiate a token object with a `null` `$token` value. This is intentional._
 - public function createToken(\DateTimeInterface $expiresAt, $userId, ?string $verifier = null): ResetPasswordTokenComponents
 + public function createToken(\DateTimeInterface $expiresAt, int|string $userId, ?string $verifier = null): ResetPasswordTokenComponents
 ```
+
+- `createToken()` now throws a `ResetPasswordRuntimeException` when unable to convert
+the `$verified`, `$userId`, and `$expiresAt` values to json.

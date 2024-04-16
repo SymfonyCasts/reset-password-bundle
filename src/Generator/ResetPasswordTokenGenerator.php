@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Generator;
 
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordRuntimeException;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
 
 /**
@@ -35,6 +36,8 @@ class ResetPasswordTokenGenerator
      *
      * @param int|string $userId   Unique user identifier
      * @param ?string    $verifier Only required for token comparison
+     *
+     * @throws ResetPasswordRuntimeException
      */
     public function createToken(\DateTimeInterface $expiresAt, int|string $userId, ?string $verifier = null): ResetPasswordTokenComponents
     {
@@ -44,7 +47,11 @@ class ResetPasswordTokenGenerator
 
         $selector = $this->generator->getRandomAlphaNumStr();
 
-        $encodedData = json_encode([$verifier, $userId, $expiresAt->getTimestamp()]);
+        try {
+            $encodedData = json_encode(value: [$verifier, $userId, $expiresAt->getTimestamp()], flags: \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new ResetPasswordRuntimeException(message: 'Unable to create token. Invalid JSON.', previous: $exception);
+        }
 
         return new ResetPasswordTokenComponents(
             $selector,
