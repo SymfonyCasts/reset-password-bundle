@@ -66,3 +66,12 @@ trait has been dropped - attribute mapping is required.
 - Method's `getExpirationMessageKey`, `getExpirationMessageData`, & `getExpiresAtIntervalInstance`
   no longer potentially throw a `LogicException`. They now throw a `ResetPasswordRuntimeException`
   if an invalid `$generatedAt` timestamp is provided to the class constructor.
+
+## ResetPasswordTokenGenerator
+
+- Type added for `createToken()`'s `$userId` argument
+
+```diff
+- public function createToken(\DateTimeInterface $expiresAt, $userId, ?string $verifier = null): ResetPasswordTokenComponents
++ public function createToken(\DateTimeInterface $expiresAt, int|string $userId, ?string $verifier = null): ResetPasswordTokenComponents
+```
