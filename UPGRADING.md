@@ -75,6 +75,22 @@ is no longer allowed. The argument is also now mandatory.
 + public function __construct(string $token, \DateTimeInterface $expiresAt, int $generatedAt)
 ```
 
+- Property types were added to `token`, `expiresAt`, `generatedAt`.
+
+```diff
+- private $token;
++ private ?string $token;
+
+- private $expiresAt;
++ private \DateTimeInterface $expiresAt;
+
+- private $generatedAt;
++ private int $generatedAt;
+```
+
+_Note: When calling `ResetPasswordToken::clearToken()`, the value of `$token` is set to `null`. It is not possible to 
+instantiate a token object with a `null` `$token` value. This is intentional._
+
 ## ResetPasswordTokenGenerator
 
 - Type added for `createToken()`'s `$userId` argument

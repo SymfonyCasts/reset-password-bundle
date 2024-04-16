@@ -17,31 +17,23 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordRuntimeException;
  */
 final class ResetPasswordToken
 {
-    /**
-     * @var string|null selector + non-hashed verifier token
-     */
-    private $token;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $expiresAt;
-
-    /**
-     * @var int timestamp when the token was created
-     */
-    private int $generatedAt;
+    private ?string $token;
 
     /**
      * @var int expiresAt translator interval
      */
-    private $transInterval = 0;
+    private int $transInterval = 0;
 
-    public function __construct(string $token, \DateTimeInterface $expiresAt, int $generatedAt)
-    {
+    /**
+     * @param string $token       selector + non-hashed verifier token
+     * @param int    $generatedAt timestamp when the token was created
+     */
+    public function __construct(
+        string $token,
+        private \DateTimeInterface $expiresAt,
+        private int $generatedAt
+    ) {
         $this->token = $token;
-        $this->expiresAt = $expiresAt;
-        $this->generatedAt = $generatedAt;
     }
 
     /**
