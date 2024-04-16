@@ -9,6 +9,8 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordRuntimeException;
+
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
@@ -52,11 +54,13 @@ final class ResetPasswordToken
      * Internally, this consists of two parts - the selector and
      * the hashed token - but that's an implementation detail
      * of how the token will later be parsed.
+     *
+     * @throws ResetPasswordRuntimeException
      */
     public function getToken(): string
     {
         if (null === $this->token) {
-            throw new \RuntimeException('The token property is not set. Calling getToken() after calling clearToken() is not allowed.');
+            throw new ResetPasswordRuntimeException('The token property is not set. Calling getToken() after calling clearToken() is not allowed.');
         }
 
         return $this->token;
@@ -85,7 +89,7 @@ final class ResetPasswordToken
      *
      * symfony/translation is required to translate into a non-English locale.
      *
-     * @throws \LogicException
+     * @throws ResetPasswordRuntimeException
      */
     public function getExpirationMessageKey(): string
     {
@@ -118,7 +122,7 @@ final class ResetPasswordToken
     /**
      * @return array<string, int>
      *
-     * @throws \LogicException
+     * @throws ResetPasswordRuntimeException
      */
     public function getExpirationMessageData(): array
     {
@@ -130,9 +134,7 @@ final class ResetPasswordToken
     /**
      * Get the interval that the token is valid for.
      *
-     * @throws \LogicException
-     *
-     * @psalm-suppress PossiblyFalseArgument
+     * @throws ResetPasswordRuntimeException
      */
     public function getExpiresAtIntervalInstance(): \DateInterval
     {
@@ -141,6 +143,10 @@ final class ResetPasswordToken
         }
 
         $createdAtTime = \DateTimeImmutable::createFromFormat('U', (string) $this->generatedAt);
+
+        if (false === $createdAtTime) {
+            throw new ResetPasswordRuntimeException(sprintf('Unable to create DateTimeInterface instance from "generatedAt": %s', $this->generatedAt));
+        }
 
         return $this->expiresAt->diff($createdAtTime);
     }
