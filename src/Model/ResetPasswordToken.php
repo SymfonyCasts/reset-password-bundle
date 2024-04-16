@@ -28,24 +28,20 @@ final class ResetPasswordToken
     private $expiresAt;
 
     /**
-     * @var int|null timestamp when the token was created
+     * @var int timestamp when the token was created
      */
-    private $generatedAt;
+    private int $generatedAt;
 
     /**
      * @var int expiresAt translator interval
      */
     private $transInterval = 0;
 
-    public function __construct(string $token, \DateTimeInterface $expiresAt, ?int $generatedAt = null)
+    public function __construct(string $token, \DateTimeInterface $expiresAt, int $generatedAt)
     {
         $this->token = $token;
         $this->expiresAt = $expiresAt;
         $this->generatedAt = $generatedAt;
-
-        if (null === $generatedAt) {
-            $this->triggerDeprecation();
-        }
     }
 
     /**
@@ -138,10 +134,6 @@ final class ResetPasswordToken
      */
     public function getExpiresAtIntervalInstance(): \DateInterval
     {
-        if (null === $this->generatedAt) {
-            throw new \LogicException(sprintf('%s initialized without setting the $generatedAt timestamp.', self::class));
-        }
-
         $createdAtTime = \DateTimeImmutable::createFromFormat('U', (string) $this->generatedAt);
 
         if (false === $createdAtTime) {
@@ -149,18 +141,5 @@ final class ResetPasswordToken
         }
 
         return $this->expiresAt->diff($createdAtTime);
-    }
-
-    /**
-     * @psalm-suppress UndefinedFunction
-     */
-    private function triggerDeprecation(): void
-    {
-        trigger_deprecation(
-            'symfonycasts/reset-password-bundle',
-            '1.2',
-            'Initializing the %s without setting the "$generatedAt" constructor argument is deprecated. The default "null" will be removed in the future.',
-            self::class
-        );
     }
 }

@@ -67,6 +67,14 @@ trait has been dropped - attribute mapping is required.
   no longer potentially throw a `LogicException`. They now throw a `ResetPasswordRuntimeException`
   if an invalid `$generatedAt` timestamp is provided to the class constructor.
 
+- Passing `null` for the `$generatedAt` argument when instantiating a new token object
+is no longer allowed. The argument is also now mandatory.
+
+```diff
+- public function __construct(string $token, \DateTimeInterface $expiresAt, ?int $generatedAt = null)
++ public function __construct(string $token, \DateTimeInterface $expiresAt, int $generatedAt)
+```
+
 ## ResetPasswordTokenGenerator
 
 - Type added for `createToken()`'s `$userId` argument
