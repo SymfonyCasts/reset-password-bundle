@@ -18,40 +18,19 @@ use Doctrine\ORM\Mapping as ORM;
  */
 trait ResetPasswordRequestTrait
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=20)
-     */
     #[ORM\Column(type: Types::STRING, length: 20)]
-    protected $selector;
+    protected string $selector;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100)
-     */
     #[ORM\Column(type: Types::STRING, length: 100)]
-    protected $hashedToken;
+    protected string $hashedToken;
 
-    /**
-     * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime_immutable")
-     */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    protected $requestedAt;
+    protected \DateTimeImmutable $requestedAt;
 
-    /**
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(type="datetime_immutable")
-     */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    protected $expiresAt;
+    protected \DateTimeInterface $expiresAt;
 
-    /** @return void */
-    protected function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    protected function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken): void
     {
         $this->requestedAt = new \DateTimeImmutable('now');
         $this->expiresAt = $expiresAt;

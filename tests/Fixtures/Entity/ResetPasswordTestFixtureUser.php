@@ -16,19 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
- *
- * @ORM\Entity()
  */
 #[ORM\Entity]
 final class ResetPasswordTestFixtureUser
 {
-    /**
-     * @ORM\Id()
-     *
-     * @ORM\GeneratedValue()
-     *
-     * @ORM\Column(type="integer")
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

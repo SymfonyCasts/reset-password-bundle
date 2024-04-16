@@ -9,6 +9,7 @@ find a change that break's semver, please create an issue.*
 
 ### Feature
 
+- [#303](https://github.com/symfonycasts/reset-password-bundle/pull/303) - [trait] remove annotation support for ResetPasswordRequest objects - *@jrushlow*
 - [#302](https://github.com/symfonycasts/reset-password-bundle/pull/302) - [trait] remove deprecated methods in `ReserPasswordControllerTrait` - *@jrushlow*
 - [#300](https://github.com/symfonycasts/reset-password-bundle/pull/300) - [interface] change `generateResetToken()` signature - *@jrushlow*
 - [#298](https://github.com/symfonycasts/reset-password-bundle/pull/298) - replace final annotation with final class keyword - *@jrushlow*

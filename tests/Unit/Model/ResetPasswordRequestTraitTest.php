@@ -9,6 +9,8 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests\Unit\Model;
 
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
 use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
@@ -26,21 +28,28 @@ class ResetPasswordRequestTraitTest extends TestCase
 
     public function propertyDataProvider(): \Generator
     {
-        yield ['selector', '@ORM\Column(type="string", length=20)'];
-        yield ['hashedToken', '@ORM\Column(type="string", length=100)'];
-        yield ['requestedAt', '@ORM\Column(type="datetime_immutable")'];
-        yield ['expiresAt', '@ORM\Column(type="datetime_immutable")'];
+        yield ['selector', ['type' => Types::STRING, 'length' => 20]];
+        yield ['hashedToken', ['type' => Types::STRING, 'length' => 100]];
+        yield ['requestedAt', ['type' => Types::DATETIME_IMMUTABLE]];
+        yield ['expiresAt', ['type' => Types::DATETIME_IMMUTABLE]];
     }
 
     /**
      * @dataProvider propertyDataProvider
      */
-    public function testORMAnnotationSetOnProperty(string $propertyName, string $expectedAnnotation): void
+    public function testORMAnnotationSetOnProperty(string $propertyName, array $expectedAttributeProperties): void
     {
         $property = new \ReflectionProperty(ResetPasswordRequestTrait::class, $propertyName);
-        $result = $property->getDocComment();
+        $attributes = $property->getAttributes(Column::class);
 
-        self::assertStringContainsString($expectedAnnotation, $result, sprintf('%s::%s does not contain "%s" in the docBlock.', ResetPasswordRequestTrait::class, $propertyName, $expectedAnnotation));
+        self::assertCount(1, $attributes);
+
+        foreach ($expectedAttributeProperties as $argumentName => $expectedValue) {
+            $attributeArguments = $attributes[0]->getArguments();
+
+            self::assertArrayHasKey($argumentName, $attributeArguments);
+            self::assertSame($expectedValue, $attributeArguments[$argumentName]);
+        }
     }
 
     public function isExpiredDataProvider(): \Generator
