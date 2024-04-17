@@ -33,8 +33,8 @@ class ResetPasswordTokenGenerator
     /**
      * Get a cryptographically secure token with it's non-hashed components.
      *
-     * @param mixed  $userId   Unique user identifier
-     * @param string $verifier Only required for token comparison
+     * @param int|string $userId   Unique user identifier
+     * @param ?string    $verifier Only required for token comparison
      */
     public function createToken(\DateTimeInterface $expiresAt, $userId, ?string $verifier = null): ResetPasswordTokenComponents
     {
