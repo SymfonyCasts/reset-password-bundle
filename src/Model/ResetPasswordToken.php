@@ -17,35 +17,23 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordRuntimeException;
  */
 final class ResetPasswordToken
 {
-    /**
-     * @var string|null selector + non-hashed verifier token
-     */
-    private $token;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $expiresAt;
-
-    /**
-     * @var int|null timestamp when the token was created
-     */
-    private $generatedAt;
+    private ?string $token;
 
     /**
      * @var int expiresAt translator interval
      */
-    private $transInterval = 0;
+    private int $transInterval = 0;
 
-    public function __construct(string $token, \DateTimeInterface $expiresAt, ?int $generatedAt = null)
-    {
+    /**
+     * @param string $token       selector + non-hashed verifier token
+     * @param int    $generatedAt timestamp when the token was created
+     */
+    public function __construct(
+        string $token,
+        private \DateTimeInterface $expiresAt,
+        private int $generatedAt
+    ) {
         $this->token = $token;
-        $this->expiresAt = $expiresAt;
-        $this->generatedAt = $generatedAt;
-
-        if (null === $generatedAt) {
-            $this->triggerDeprecation();
-        }
     }
 
     /**
@@ -138,10 +126,6 @@ final class ResetPasswordToken
      */
     public function getExpiresAtIntervalInstance(): \DateInterval
     {
-        if (null === $this->generatedAt) {
-            throw new \LogicException(sprintf('%s initialized without setting the $generatedAt timestamp.', self::class));
-        }
-
         $createdAtTime = \DateTimeImmutable::createFromFormat('U', (string) $this->generatedAt);
 
         if (false === $createdAtTime) {
@@ -149,18 +133,5 @@ final class ResetPasswordToken
         }
 
         return $this->expiresAt->diff($createdAtTime);
-    }
-
-    /**
-     * @psalm-suppress UndefinedFunction
-     */
-    private function triggerDeprecation(): void
-    {
-        trigger_deprecation(
-            'symfonycasts/reset-password-bundle',
-            '1.2',
-            'Initializing the %s without setting the "$generatedAt" constructor argument is deprecated. The default "null" will be removed in the future.',
-            self::class
-        );
     }
 }
