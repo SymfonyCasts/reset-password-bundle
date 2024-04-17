@@ -57,3 +57,12 @@ trait has been dropped - attribute mapping is required.
 - protected function initialize(....)
 + protected function initialize(....): void
 ```
+
+## ResetPasswordToken
+
+- Method `getToken()` now throws a `ResetPasswordRuntimeException` instead of a
+`\RuntimeException` if the `clearToken()` method has been previously called. 
+
+- Method's `getExpirationMessageKey`, `getExpirationMessageData`, & `getExpiresAtIntervalInstance`
+  no longer potentially throw a `LogicException`. They now throw a `ResetPasswordRuntimeException`
+  if an invalid `$generatedAt` timestamp is provided to the class constructor.
