@@ -21,7 +21,6 @@ trait ResetPasswordRequestTrait
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=20)
      */
     #[ORM\Column(type: Types::STRING, length: 20)]
     protected $selector;
@@ -29,7 +28,6 @@ trait ResetPasswordRequestTrait
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=100)
      */
     #[ORM\Column(type: Types::STRING, length: 100)]
     protected $hashedToken;
@@ -37,7 +35,6 @@ trait ResetPasswordRequestTrait
     /**
      * @var \DateTimeImmutable
      *
-     * @ORM\Column(type="datetime_immutable")
      */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     protected $requestedAt;
@@ -45,7 +42,6 @@ trait ResetPasswordRequestTrait
     /**
      * @var \DateTimeInterface
      *
-     * @ORM\Column(type="datetime_immutable")
      */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     protected $expiresAt;
