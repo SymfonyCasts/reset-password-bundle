@@ -26,6 +26,7 @@ class ResetPasswordTokenGenerator
      * @param string $signingKey Unique, random, cryptographically secure string
      */
     public function __construct(
+        #[\SensitiveParameter]
         private string $signingKey,
         private ResetPasswordRandomGenerator $generator
     ) {
