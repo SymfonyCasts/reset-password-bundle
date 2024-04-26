@@ -14,10 +14,8 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
- *
- * @final
  */
-class ResetPasswordTokenComponents
+final class ResetPasswordTokenComponents
 {
     public function __construct(
         #[\SensitiveParameter]

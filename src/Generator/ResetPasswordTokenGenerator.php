@@ -17,10 +17,8 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
- *
- * @final
  */
-class ResetPasswordTokenGenerator
+final class ResetPasswordTokenGenerator
 {
     /**
      * @param string $signingKey Unique, random, cryptographically secure string
