@@ -25,7 +25,7 @@ class SymfonyCastsResetPasswordBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->rootNode()
+        $definition->rootNode() /** @phpstan-ignore method.notFound */
             ->children()
                 ->scalarNode('request_password_repository')
                     ->isRequired()
@@ -47,17 +47,18 @@ class SymfonyCastsResetPasswordBundle extends AbstractBundle
         ;
     }
 
+    /** @param array<string, string|int|bool> $config */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $container->import('../config/reset_password_services.xml');
 
         $container->services()
             ->get('symfonycasts.reset_password.helper')
-                ->arg(2, new Reference($config['request_password_repository']))
+                ->arg(2, new Reference((string) $config['request_password_repository']))
                 ->arg(3, $config['lifetime'])
                 ->arg(4, $config['throttle_limit'])
             ->get('symfonycasts.reset_password.cleaner')
-                ->arg(0, new Reference($config['request_password_repository']))
+                ->arg(0, new Reference((string) $config['request_password_repository']))
                 ->arg(1, $config['enable_garbage_collection'])
         ;
     }
