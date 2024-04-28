@@ -151,6 +151,88 @@ public function profile(Request $request, User $user, ResetPasswordRequestReposi
 }
 ```
 
+### Multiple "User" Entities
+
+```diff
+// ResetPasswordController
+
+private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer, TranslatorInterface $translator): RedirectResponse
+    {
+        $user = $this->entityManager->getRepository(User::class)->findOneBy([
+            'email' => $emailFormData,
+        ]);
+
++        if (null === $user) {
++            $user = $this->entityManager->getRepository(Admin::class)->findOneBy([
++                'email' => $emailFormData,
++            ]);
+        }
+
+        // Do not reveal whether a user account was found or not.
+        if (!$user) {
+            return $this->redirectToRoute('app_check_email');
+        }
+...
+```
+
+```diff
+<?php
+
+namespace App\Entity;
+
+use App\Repository\ResetPasswordRequestRepository;
+use Doctrine\ORM\Mapping as ORM;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+
+#[ORM\Entity(repositoryClass: ResetPasswordRequestRepository::class)]
+class ResetPasswordRequest implements ResetPasswordRequestInterface
+{
+    use ResetPasswordRequestTrait;
+
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\ManyToOne]
+-    #[ORM\JoinColumn(nullable: false)]
++    #[ORM\JoinColumn(nullable: true)]
+    private ?User $user = null;
+
++    #[ORM\ManyToOne]
++    #[ORM\JoinColumn(nullable: true)]
++    private ?Admin $admin = null;
+
+    public function __construct(
+-        User $user,
++        User|Admin $user,
+        \DateTimeInterface $expiresAt,
+        string $selector,
+        string $hashedToken,
+    ) {
+-        $this->user = $user;
++        if ($user instanceof User) {
++            $this->user = $user;
++        } else {
++            $this->admin = $user;
++        }
+
+        $this->initialize($expiresAt, $selector, $hashedToken);
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+-    public function getUser(): User
++    public function getUser(): User|Admin
+    {
+-        return $this->user;
++        return $this->user ?? $this->admin;
+    }
+}
+```
+
 ## Support
 
 Feel free to open an issue for questions, problems, or suggestions with our bundle.
