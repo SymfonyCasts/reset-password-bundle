@@ -20,93 +20,71 @@ use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
  */
 class ResetPasswordTokenGeneratorTest extends TestCase
 {
-    /**
-     * @var MockObject|ResetPasswordRandomGenerator
-     */
-    private $mockRandomGenerator;
-
-    /**
-     * @var MockObject|\DateTimeImmutable
-     */
-    private $mockExpiresAt;
+    private MockObject&\DateTimeImmutable $mockExpiresAt;
+    private ResetPasswordTokenGenerator $tokenGenerator;
 
     protected function setUp(): void
     {
-        $this->mockRandomGenerator = $this->createMock(ResetPasswordRandomGenerator::class);
         $this->mockExpiresAt = $this->createMock(\DateTimeImmutable::class);
+        $this->tokenGenerator = new ResetPasswordTokenGenerator('secret-key', new ResetPasswordRandomGenerator());
     }
 
-    public function testSelectorGeneratedByRandomGenerator(): void
+    public function testCreateTokenReturnsValidHashedTokenComponents(): void
     {
-        $this->mockRandomGenerator
-            ->expects($this->exactly(2))
-            ->method('getRandomAlphaNumStr')
-        ;
+        $result = $this->tokenGenerator->createToken($this->mockExpiresAt, 'userId');
 
-        $generator = $this->getTokenGenerator();
-        $generator->createToken($this->mockExpiresAt, 'userId');
+        // The public token = "selector token" + "verifier token"
+        self::assertSame(20, \strlen($result->getSelector()));
+        self::assertSame(40, \strlen($result->getPublicToken()));
+
+        $verifier = substr($result->getPublicToken(), 20, 20);
+
+        $expectedHash = base64_encode(hash_hmac(
+            algo: 'sha256',
+            data: json_encode([$verifier, 'userId', $this->mockExpiresAt->getTimestamp()]),
+            key: 'secret-key',
+            binary: true
+        ));
+
+        self::assertSame($expectedHash, $result->getHashedToken());
     }
 
-    public function testHashedTokenIsCreatedWithExpectedParams(): void
+    public function testCreateTokenUsesProvidedVerifierToken(): void
     {
-        $this->mockRandomGenerator
-            ->expects($this->exactly(2))
-            ->method('getRandomAlphaNumStr')
-            ->willReturnOnConsecutiveCalls('verifier', 'selector')
-        ;
+        $result = $this->tokenGenerator->createToken($this->mockExpiresAt, 'userId', '1234');
 
-        $this->mockExpiresAt
-            ->expects($this->once())
-            ->method('getTimestamp')
-            ->willReturn(2020)
-        ;
+        $expectedHash = base64_encode(hash_hmac(
+            algo: 'sha256',
+            data: json_encode(['1234', 'userId', $this->mockExpiresAt->getTimestamp()]),
+            key: 'secret-key',
+            binary: true
+        ));
 
-        $expected = hash_hmac(
-            'sha256',
-            json_encode(['verifier', 'user1234', 2020]),
-            'key',
-            true
-        );
-
-        $generator = $this->getTokenGenerator();
-        $result = $generator->createToken($this->mockExpiresAt, 'user1234');
-
-        self::assertSame(base64_encode($expected), $result->getHashedToken());
+        self::assertSame($expectedHash, $result->getHashedToken());
     }
 
-    public function testHashedTokenIsCreatedUsingOptionVerifierParam(): void
+    public function testCreateTokenUsesProvidedParams(): void
     {
-        $date = 2020;
-        $userId = 'user1234';
-        $knownVerifier = 'verified';
+        $result = $this->tokenGenerator->createToken($this->mockExpiresAt, 'userId', '1234');
 
-        $this->mockRandomGenerator
-            ->expects($this->once())
-            ->method('getRandomAlphaNumStr')
-            ->willReturnOnConsecutiveCalls('un-used-verifier', 'selector')
-        ;
+        $expectedHash = base64_encode(hash_hmac(
+            algo: 'sha256',
+            data: json_encode(['1234', 'userId', '0123456789']),
+            key: 'secret-key',
+            binary: true
+        ));
 
-        $this->mockExpiresAt
-            ->expects($this->once())
-            ->method('getTimestamp')
-            ->willReturn($date)
-        ;
+        // We used a "fake" timestamp in our expectedHash
+        self::assertNotSame($expectedHash, $result->getHashedToken());
 
-        $knownToken = hash_hmac(
-            'sha256',
-            json_encode([$knownVerifier, $userId, $date]),
-            'key',
-            true
-        );
+        $expectedHash = base64_encode(hash_hmac(
+            algo: 'sha256',
+            data: json_encode(['1234', 'bad-user-id', $this->mockExpiresAt->getTimestamp()]),
+            key: 'secret-key',
+            binary: true
+        ));
 
-        $generator = $this->getTokenGenerator();
-        $result = $generator->createToken($this->mockExpiresAt, $userId, $knownVerifier);
-
-        self::assertSame(base64_encode($knownToken), $result->getHashedToken());
-    }
-
-    private function getTokenGenerator(): ResetPasswordTokenGenerator
-    {
-        return new ResetPasswordTokenGenerator('key', $this->mockRandomGenerator);
+        // We used a "fake" user id in our expectedHash
+        self::assertNotSame($expectedHash, $result->getHashedToken());
     }
 }
