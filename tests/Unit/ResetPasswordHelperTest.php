@@ -31,7 +31,7 @@ class ResetPasswordHelperTest extends TestCase
     private MockObject&ResetPasswordRequestRepositoryInterface $mockRepo;
     private ResetPasswordTokenGenerator $tokenGenerator;
     private MockObject&ResetPasswordRequestInterface $mockResetRequest;
-    private MockObject|ResetPasswordCleaner $mockCleaner;
+    private MockObject&ResetPasswordCleaner $mockCleaner;
     private string $randomToken;
 
     protected function setUp(): void
