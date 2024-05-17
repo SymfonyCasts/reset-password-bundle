@@ -45,7 +45,7 @@ class ResetPasswordFunctionalTest extends TestCase
         $composerJson = json_decode(file_get_contents(sprintf('%s/composer.json', $this->appPath)), associative: true, flags: \JSON_THROW_ON_ERROR);
 
         $composerJson['repositories']['symfonycasts/reset-password-bundle'] = [
-            'type' => 'git',
+            'type' => 'path',
             'url' => $bundlePath,
             'options' => [
                 'versions' => [
