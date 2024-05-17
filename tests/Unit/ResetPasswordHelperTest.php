@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
@@ -27,35 +28,16 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
  */
 class ResetPasswordHelperTest extends TestCase
 {
-    /**
-     * @var MockObject|ResetPasswordRequestRepositoryInterface
-     */
-    private $mockRepo;
-
-    /**
-     * @var MockObject|ResetPasswordTokenGenerator
-     */
-    private $mockTokenGenerator;
-
-    /**
-     * @var MockObject|ResetPasswordRequestInterface
-     */
-    private $mockResetRequest;
-
-    /**
-     * @var MockObject|ResetPasswordCleaner
-     */
-    private $mockCleaner;
-
-    /**
-     * @var string
-     */
-    private $randomToken;
+    private MockObject&ResetPasswordRequestRepositoryInterface $mockRepo;
+    private ResetPasswordTokenGenerator $tokenGenerator;
+    private MockObject&ResetPasswordRequestInterface $mockResetRequest;
+    private MockObject|ResetPasswordCleaner $mockCleaner;
+    private string $randomToken;
 
     protected function setUp(): void
     {
         $this->mockRepo = $this->createMock(ResetPasswordRequestRepositoryInterface::class);
-        $this->mockTokenGenerator = $this->createMock(ResetPasswordTokenGenerator::class);
+        $this->tokenGenerator = new ResetPasswordTokenGenerator('secret-key', new ResetPasswordRandomGenerator());
         $this->mockCleaner = $this->createMock(ResetPasswordCleaner::class);
         $this->mockResetRequest = $this->createMock(ResetPasswordRequestInterface::class);
         $this->randomToken = bin2hex(random_bytes(20));
@@ -112,7 +94,7 @@ class ResetPasswordHelperTest extends TestCase
         ;
 
         $helper = new ResetPasswordHelper(
-            $this->mockTokenGenerator,
+            $this->tokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
             99999999,
@@ -131,7 +113,7 @@ class ResetPasswordHelperTest extends TestCase
         ;
 
         $helper = new ResetPasswordHelper(
-            $this->mockTokenGenerator,
+            $this->tokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
             99999999,
@@ -332,7 +314,7 @@ class ResetPasswordHelperTest extends TestCase
     public function testExpiresAtUsingDefault(): void
     {
         $helper = new ResetPasswordHelper(
-            $this->mockTokenGenerator,
+            $this->tokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
             60,
@@ -349,7 +331,7 @@ class ResetPasswordHelperTest extends TestCase
     public function testExpiresAtUsingOverride(): void
     {
         $helper = new ResetPasswordHelper(
-            $this->mockTokenGenerator,
+            $this->tokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
             60,
@@ -366,7 +348,7 @@ class ResetPasswordHelperTest extends TestCase
     public function testFakeTokenExpiresAtUsingDefault(): void
     {
         $helper = new ResetPasswordHelper(
-            $this->mockTokenGenerator,
+            $this->tokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
             60,
@@ -383,7 +365,7 @@ class ResetPasswordHelperTest extends TestCase
     public function testFakeTokenExpiresAtUsingOverride(): void
     {
         $helper = new ResetPasswordHelper(
-            $this->mockTokenGenerator,
+            $this->tokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
             60,
@@ -400,7 +382,7 @@ class ResetPasswordHelperTest extends TestCase
     private function getPasswordResetHelper(): ResetPasswordHelper
     {
         return new ResetPasswordHelper(
-            $this->mockTokenGenerator,
+            $this->tokenGenerator,
             $this->mockCleaner,
             $this->mockRepo,
             99999999,
