@@ -19,7 +19,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  *
  * @final
  */
-class ResetPasswordCleaner
+class ResetPasswordCleaner implements ResetPasswordCleanerInterface
 {
     /**
      * @param bool $enabled Enable/disable garbage collection
