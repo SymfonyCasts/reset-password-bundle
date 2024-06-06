@@ -11,45 +11,21 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
- * @author Ryan Weaver   <ryan@symfonycasts.com>
- *
- * @internal
  */
-final class ResetPasswordTokenComponents implements ResetPasswordTokenComponentsInterface
+interface ResetPasswordTokenComponentsInterface
 {
-    public function __construct(
-        #[\SensitiveParameter]
-        private string $selector,
-
-        #[\SensitiveParameter]
-        private string $verifier,
-
-        #[\SensitiveParameter]
-        private string $hashedToken
-    ) {
-    }
-
     /**
      * @return string Non-hashed random string used to fetch request objects from persistence
      */
-    public function getSelector(): string
-    {
-        return $this->selector;
-    }
+    public function getSelector(): string;
 
     /**
      * @return string The hashed non-public token used to validate reset password requests
      */
-    public function getHashedToken(): string
-    {
-        return $this->hashedToken;
-    }
+    public function getHashedToken(): string;
 
     /**
      * The public token consists of a concatenated random non-hashed selector string and random non-hashed verifier string.
      */
-    public function getPublicToken(): string
-    {
-        return $this->selector.$this->verifier;
-    }
+    public function getPublicToken(): string;
 }

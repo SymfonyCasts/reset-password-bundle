@@ -9,12 +9,12 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Generator;
 
-use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponentsInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  */
 interface ResetPasswordTokenGeneratorInterface
 {
-    public function createToken(\DateTimeInterface $expiresAt, int|string $userId, ?string $verifier = null): ResetPasswordTokenComponents;
+    public function createToken(\DateTimeInterface $expiresAt, int|string $userId, ?string $verifier = null): ResetPasswordTokenComponentsInterface;
 }
