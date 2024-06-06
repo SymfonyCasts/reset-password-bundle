@@ -3,6 +3,68 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
+## [v1.22.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.22.0)
+
+*June 6th, 2024*
+
+### Feature
+
+- [#296](https://github.com/SymfonyCasts/reset-password-bundle/pull/296) - [command] make class final - *@jrushlow*
+- [#297](https://github.com/SymfonyCasts/reset-password-bundle/pull/297) - [ResetPasswordHelper] class to become final - *@jrushlow*
+- [#305](https://github.com/SymfonyCasts/reset-password-bundle/pull/305) - [trait] add type annotations to ResetPasswordRequestTrait - *@jrushlow*
+- [#310](https://github.com/SymfonyCasts/reset-password-bundle/pull/310) - [generator] [1.x] userId argument should be either a string or int - *@jrushlow*
+- [#320](https://github.com/SymfonyCasts/reset-password-bundle/pull/320) - Add missing Czech translations - *@dfridrich*
+
+## [v1.21.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.21.0)
+
+*March 5th, 2024*
+
+### Feature
+
+- [#284](https://github.com/SymfonyCasts/reset-password-bundle/pull/284) - [persistence] remove ResetPasswordRequest objects programmatically - *@jrushlow*
+
+## [v1.20.3](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.20.3)
+
+*February 20th, 2024*
+
+### Minor
+
+- [#283](https://github.com/SymfonyCasts/reset-password-bundle/pull/283) - [ci] php-cs-fixer it up - *@jrushlow*
+
+## [v1.20.2](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.20.2)
+
+*January 22nd, 2024*
+
+### Bug
+
+- [#280](https://github.com/SymfonyCasts/reset-password-bundle/pull/280) - Add ro transalation - *@dragosholban*
+- [#281](https://github.com/SymfonyCasts/reset-password-bundle/pull/281) - Fix risky falsy comparison thanks to Psalm - *@bocharsky-bw*
+
+## [v1.20.1](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.20.1)
+
+*January 2nd, 2024*
+
+### Bug
+
+- [#279](https://github.com/SymfonyCasts/reset-password-bundle/pull/279) - Fix incorrect case of getOneOrNullResult - *@glaubinix*
+
+## [v1.20.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.20.0)
+
+*December 18th, 2023*
+
+### Feature
+
+- [#277](https://github.com/SymfonyCasts/reset-password-bundle/pull/277) - Drop legacy PHP 7.2-8.0 support - *@bocharsky-bw*
+- [#278](https://github.com/SymfonyCasts/reset-password-bundle/pull/278) - Added Mongolian translations - *erkhem42*
+
+## [v1.19.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.19.0)
+
+*December 1st, 2023*
+
+### Feature
+
+- [#274](https://github.com/SymfonyCasts/reset-password-bundle/pull/274) - Allow Symfony 7 - *@bocharsky-bw*
+
 ## [v1.18.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.18.0)
 
 *September 19th, 2023*
