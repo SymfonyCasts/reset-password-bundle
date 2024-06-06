@@ -17,7 +17,8 @@
         "symfony/framework-bundle": "^6.4.5 | ^7.0",
         "symfony/phpunit-bridge": "^6.4.5 | ^7.0",
         "doctrine/doctrine-bundle": "^2.8",
-        "phpstan/phpstan": "^1.11.x-dev"
+        "phpstan/phpstan": "^1.11.x-dev",
+        "symfony/process": "^6.4 | ^7.0 | ^7.1"
     },
     "autoload": {
         "psr-4": {
