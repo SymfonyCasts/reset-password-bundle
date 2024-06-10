@@ -64,6 +64,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function generateResetToken(object $user, ?int $resetRequestLifetime = null): ResetPasswordToken
     {
+        throw new \RuntimeException('Woops!');
+        //        return new ResetPasswordToken('dfsdf', new \DateTimeImmutable());
         $this->resetPasswordCleaner->handleGarbageCollection();
 
         if ($availableAt = $this->hasUserHitThrottling($user)) {
