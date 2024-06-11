@@ -32,6 +32,17 @@
         }
     },
     "scripts": {
-        "phpstan": "vendor/bin/phpstan"
+        "tools:upgrade": [
+            "@tools:upgrade:php-cs-fixer",
+            "@tools:upgrade:phpstan"
+        ],
+        "tools:upgrade:php-cs-fixer": "composer upgrade -W -d tools/php-cs-fixer",
+        "tools:upgrade:phpstan": "composer upgrade -W -d tools/phpstan",
+        "tools:run": [
+            "@tools:run:php-cs-fixer",
+            "@tools:run:phpstan"
+        ],
+        "tools:run:php-cs-fixer": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix",
+        "tools:run:phpstan": "tools/phpstan/vendor/bin/phpstan --memory-limit=1G"
     }
 }
