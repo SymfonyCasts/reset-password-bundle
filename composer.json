@@ -17,7 +17,8 @@
         "symfony/framework-bundle": "^6.4.5 | ^7.0",
         "symfony/phpunit-bridge": "^6.4.5 | ^7.0",
         "doctrine/doctrine-bundle": "^2.8",
-        "symfony/process": "^6.4 | ^7.0 | ^7.1"
+        "symfony/process": "^6.4 | ^7.0 | ^7.1",
+        "symfonycasts/internal-test-helpers": "dev-main"
     },
     "autoload": {
         "psr-4": {
@@ -29,6 +30,13 @@
             "SymfonyCasts\\Bundle\\ResetPassword\\Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "name": "symfonycasts/internal-test-helpers",
+            "url": "https://github.com/symfonycasts/internal-test-helpers"
+        }
+    ],
     "scripts": {
         "tools:upgrade": [
             "@tools:upgrade:php-cs-fixer",
