@@ -87,7 +87,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
      */
-    public function validateTokenAndFetchUser(string $fullToken): object
+    public function validateTokenAndFetchUser(#[\SensitiveParameter] string $fullToken): object
     {
         $this->cleaner->handleGarbageCollection();
 
@@ -123,7 +123,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
     /**
      * @throws InvalidResetPasswordTokenException
      */
-    public function removeResetRequest(string $fullToken): void
+    public function removeResetRequest(#[\SensitiveParameter] string $fullToken): void
     {
         $request = $this->findResetPasswordRequest($fullToken);
 
@@ -159,7 +159,7 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
         return new ResetPasswordToken('fake-token', $expiresAt, $generatedAt);
     }
 
-    private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
+    private function findResetPasswordRequest(#[\SensitiveParameter] string $token): ?ResetPasswordRequestInterface
     {
         $selector = substr($token, 0, self::SELECTOR_LENGTH);
 

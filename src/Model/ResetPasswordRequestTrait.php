@@ -30,7 +30,7 @@ trait ResetPasswordRequestTrait
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     protected \DateTimeInterface $expiresAt;
 
-    protected function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken): void
+    protected function initialize(\DateTimeInterface $expiresAt, #[\SensitiveParameter] string $selector, #[\SensitiveParameter] string $hashedToken): void
     {
         $this->requestedAt = new \DateTimeImmutable('now');
         $this->expiresAt = $expiresAt;

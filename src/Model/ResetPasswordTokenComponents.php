@@ -20,8 +20,13 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
 class ResetPasswordTokenComponents
 {
     public function __construct(
+        #[\SensitiveParameter]
         private string $selector,
+
+        #[\SensitiveParameter]
         private string $verifier,
+
+        #[\SensitiveParameter]
         private string $hashedToken
     ) {
     }
