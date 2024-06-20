@@ -139,8 +139,9 @@ final class ResetPasswordToken
         }
 
         $createdAtTime = \DateTimeImmutable::createFromFormat('U', (string) $this->generatedAt);
+        $expiresAt = \DateTimeImmutable::createFromFormat('U', (string) $this->expiresAt->getTimestamp());
 
-        return $this->expiresAt->diff($createdAtTime);
+        return $expiresAt->diff($createdAtTime);
     }
 
     /**
