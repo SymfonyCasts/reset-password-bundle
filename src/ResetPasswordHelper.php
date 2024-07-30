@@ -72,7 +72,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
 
-        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $resetRequestLifetime));
+        $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $resetRequestLifetime));
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
@@ -164,7 +164,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     public function generateFakeResetToken(?int $resetRequestLifetime = null): ResetPasswordToken
     {
         $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
-        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $resetRequestLifetime));
+        $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $resetRequestLifetime));
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
