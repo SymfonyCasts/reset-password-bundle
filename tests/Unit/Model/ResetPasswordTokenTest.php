@@ -41,7 +41,7 @@ class ResetPasswordTokenTest extends TestCase
         $token = new ResetPasswordToken('token', $expire, $created);
 
         self::assertSame(
-            sprintf('%%count%% %s|%%count%% %ss', $unitOfMeasure, $unitOfMeasure),
+            \sprintf('%%count%% %s|%%count%% %ss', $unitOfMeasure, $unitOfMeasure),
             $token->getExpirationMessageKey()
         );
 
