@@ -40,7 +40,7 @@ class ResetPasswordRequestTraitTest extends TestCase
         $property = new \ReflectionProperty(ResetPasswordRequestTrait::class, $propertyName);
         $result = $property->getDocComment();
 
-        self::assertStringContainsString($expectedAnnotation, $result, sprintf('%s::%s does not contain "%s" in the docBlock.', ResetPasswordRequestTrait::class, $propertyName, $expectedAnnotation));
+        self::assertStringContainsString($expectedAnnotation, $result, \sprintf('%s::%s does not contain "%s" in the docBlock.', ResetPasswordRequestTrait::class, $propertyName, $expectedAnnotation));
     }
 
     public function isExpiredDataProvider(): \Generator

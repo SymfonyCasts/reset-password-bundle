@@ -34,7 +34,7 @@ final class ResetPasswordFunctionalTest extends TestCase
 
         // Copy over app fixtures that were "generated" by maker-bundle - we should replace this with make:reset-password like
         // we do above for make:user... reason for the fixtures: lazy
-        $fixturesPath = sprintf('%s/tests/Fixtures/App', $this->appTestHelper->rootPath);
+        $fixturesPath = \sprintf('%s/tests/Fixtures/App', $this->appTestHelper->rootPath);
         $this->appTestHelper->fs->mirror($fixturesPath, $appPath, options: ['override' => true]);
 
         // Setup persistence
