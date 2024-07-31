@@ -11,16 +11,15 @@ namespace SymfonyCasts\Bundle\ResetPassword\Generator;
 
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordRuntimeException;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponents;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordTokenComponentsInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
  * @internal
- *
- * @final
  */
-class ResetPasswordTokenGenerator
+final class ResetPasswordTokenGenerator implements ResetPasswordTokenGeneratorInterface
 {
     /**
      * @param string $signingKey Unique, random, cryptographically secure string
@@ -40,7 +39,7 @@ class ResetPasswordTokenGenerator
      *
      * @throws ResetPasswordRuntimeException
      */
-    public function createToken(\DateTimeInterface $expiresAt, int|string $userId, ?string $verifier = null): ResetPasswordTokenComponents
+    public function createToken(\DateTimeInterface $expiresAt, int|string $userId, ?string $verifier = null): ResetPasswordTokenComponentsInterface
     {
         if (null === $verifier) {
             $verifier = $this->generator->getRandomAlphaNumStr();

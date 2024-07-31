@@ -12,11 +12,11 @@ namespace SymfonyCasts\Bundle\ResetPassword;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
-use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator;
+use SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGeneratorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
-use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
+use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleanerInterface;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -34,8 +34,8 @@ final class ResetPasswordHelper implements ResetPasswordHelperInterface
      * @param int $requestThrottleTime  Another password reset cannot be made faster than this throttle time in seconds
      */
     public function __construct(
-        private ResetPasswordTokenGenerator $generator,
-        private ResetPasswordCleaner $cleaner,
+        private ResetPasswordTokenGeneratorInterface $generator,
+        private ResetPasswordCleanerInterface $cleaner,
         private ResetPasswordRequestRepositoryInterface $repository,
         private int $resetRequestLifetime,
         private int $requestThrottleTime,
