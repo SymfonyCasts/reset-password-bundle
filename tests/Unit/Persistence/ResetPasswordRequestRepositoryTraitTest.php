@@ -22,7 +22,7 @@ class ResetPasswordRequestRepositoryTraitTest extends TestCase
 {
     public function testTraitIsCompatibleWithInterface(): void
     {
-        $fixture = new class() implements ResetPasswordRequestRepositoryInterface {
+        $fixture = new class implements ResetPasswordRequestRepositoryInterface {
             use ResetPasswordRequestRepositoryTrait;
 
             public function createResetPasswordRequest(
