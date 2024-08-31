@@ -29,7 +29,7 @@ class ResetPasswordRequestRepositoryTraitTest extends TestCase
                 object $user,
                 \DateTimeInterface $expiresAt,
                 string $selector,
-                string $hashedToken
+                string $hashedToken,
             ): ResetPasswordRequestInterface {
             }
         };
