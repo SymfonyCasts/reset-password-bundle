@@ -31,7 +31,7 @@ final class ResetPasswordToken
     public function __construct(
         string $token,
         private \DateTimeInterface $expiresAt,
-        private int $generatedAt
+        private int $generatedAt,
     ) {
         $this->token = $token;
     }
@@ -129,7 +129,7 @@ final class ResetPasswordToken
         $createdAtTime = \DateTimeImmutable::createFromFormat('U', (string) $this->generatedAt);
 
         if (false === $createdAtTime) {
-            throw new ResetPasswordRuntimeException(sprintf('Unable to create DateTimeInterface instance from "generatedAt": %s', $this->generatedAt));
+            throw new ResetPasswordRuntimeException(\sprintf('Unable to create DateTimeInterface instance from "generatedAt": %s', $this->generatedAt));
         }
 
         return $this->expiresAt->diff($createdAtTime);

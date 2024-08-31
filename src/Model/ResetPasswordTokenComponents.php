@@ -27,7 +27,7 @@ class ResetPasswordTokenComponents
         private string $verifier,
 
         #[\SensitiveParameter]
-        private string $hashedToken
+        private string $hashedToken,
     ) {
     }
 

@@ -23,7 +23,7 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 final class ResetPasswordRemoveExpiredCommand extends Command
 {
     public function __construct(
-        private ResetPasswordCleaner $cleaner
+        private ResetPasswordCleaner $cleaner,
     ) {
         parent::__construct();
     }
