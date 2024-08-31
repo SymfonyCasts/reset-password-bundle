@@ -37,7 +37,7 @@ final class ResetPasswordTestFixtureRequestRepository extends ServiceEntityRepos
         object $user,
         \DateTimeInterface $expiresAt,
         string $selector,
-        string $hashedToken
+        string $hashedToken,
     ): ResetPasswordRequestInterface {
     }
 }
