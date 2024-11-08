@@ -168,7 +168,9 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
-        return new ResetPasswordToken('fake-token', $expiresAt, $generatedAt);
+        $fakeToken = bin2hex(random_bytes(16));
+
+        return new ResetPasswordToken($fakeToken, $expiresAt, $generatedAt);
     }
 
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
