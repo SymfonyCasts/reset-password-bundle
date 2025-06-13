@@ -57,6 +57,27 @@ symfonycasts_reset_password:
     enable_garbage_collection: true
 ```
 
+If using PHP configuration files:
+
+<details>
+  <summary>config/packages/reset_password.php</summary>
+
+```php
+use App\Repository\ResetPasswordRequestRepository;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('symfonycasts_reset_password', [
+        'request_password_repository' => ResetPasswordRequestRepository::class,
+        'lifetime' => 3600,
+        'throttle_limit' => 3600,
+        'enable_garbage_collection' => true,
+    ]);
+};
+```
+</details>
+
+
 The production environment may require the `default_uri` to be defined in the `config/packages/routing.yaml` to prevent the URI in emails to point to localhost.
 
 ```yaml
@@ -67,6 +88,24 @@ when@prod:
             # ...
             default_uri: '<your project's root URI>'
 ```
+
+If using PHP configuration files:
+
+<details>
+  <summary>config/packages/routing.php</summary>
+
+```php
+    if ($containerConfigurator->env() === 'prod') {
+        $containerConfigurator->extension('framework', [
+            'router' => [
+                # ...
+                'default_uri' => '<your project’s root URI>'
+            ],
+        ]);
+    }
+```
+</details>
+
 
 ### Parameters:
 
