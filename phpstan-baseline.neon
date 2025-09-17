@@ -6,7 +6,7 @@ parameters:
 			path: src/Command/ResetPasswordRemoveExpiredCommand.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:integerNode\\(\\)\\.$#"
+			message: "#^Method SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\DependencyInjection\\\\Configuration\\:\\:getConfigTreeBuilder\\(\\) return type with generic class Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\TreeBuilder does not specify its types\\: T$#"
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
