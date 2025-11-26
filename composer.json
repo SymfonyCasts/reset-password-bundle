@@ -6,18 +6,18 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=8.1.10",
-        "symfony/config": "^5.4 | ^6.0 | ^7.0",
-        "symfony/dependency-injection": "^5.4 | ^6.0 | ^7.0",
+        "symfony/config": "^5.4 | ^6.0 | ^7.0 | ^8.0",
+        "symfony/dependency-injection": "^5.4 | ^6.0 | ^7.0 | ^8.0",
         "symfony/deprecation-contracts": "^2.2 | ^3.0",
-        "symfony/http-kernel": "^5.4 | ^6.0 | ^7.0"
+        "symfony/http-kernel": "^5.4 | ^6.0 | ^7.0 | ^8.0"
     },
     "require-dev": {
         "doctrine/orm": "^2.13",
-        "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0",
-        "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0",
+        "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0 | ^8.0",
+        "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0 | ^8.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/annotations": "^1.0",
-        "symfony/process": "^6.4 | ^7.0 | ^7.1",
+        "symfony/process": "^6.4 | ^7.0 | ^8.0",
         "symfonycasts/internal-test-helpers": "dev-main"
     },
     "autoload": {
