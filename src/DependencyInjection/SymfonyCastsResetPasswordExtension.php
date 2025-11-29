@@ -12,7 +12,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -23,8 +23,8 @@ final class SymfonyCastsResetPasswordExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
-        $loader->load('reset_password_services.xml');
+        $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
+        $loader->load('reset_password_services.php');
 
         $configuration = $this->getConfiguration($configs, $container);
         if (!$configuration) {
