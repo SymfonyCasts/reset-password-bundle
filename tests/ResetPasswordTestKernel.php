@@ -86,7 +86,7 @@ class ResetPasswordTestKernel extends Kernel
                     'url' => 'sqlite:///'.$this->getCacheDir().'/app.db',
                 ],
                 'orm' => [
-                    'auto_generate_proxy_classes' => true,
+                    #'auto_generate_proxy_classes' => true,
                     'auto_mapping' => true,
                     'mappings' => [
                         'App' => [
