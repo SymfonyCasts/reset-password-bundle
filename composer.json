@@ -13,7 +13,7 @@
         "symfony/http-kernel": "^5.4 | ^6.0 | ^7.0 | ^8.0"
     },
     "require-dev": {
-        "doctrine/orm": "^2.13 | ^3.0",
+        "doctrine/orm": "^2.18 | ^3.0",
         "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0 | ^8.0",
         "symfony/phpunit-bridge": "^5.4 | ^6.0 | ^7.0 | ^8.0",
         "doctrine/doctrine-bundle": "^2.8 | ^3.0",

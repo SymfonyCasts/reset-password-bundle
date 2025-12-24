@@ -156,6 +156,7 @@ class ResetPasswordTestKernel extends Kernel
     public static function shouldUseAttributes(): bool
     {
         $doctrineBundleVersion = InstalledVersions::getVersion('doctrine/doctrine-bundle');
+
         return Kernel::VERSION_ID >= 70000 || version_compare($doctrineBundleVersion, '3.0.0', '>');
     }
 }
