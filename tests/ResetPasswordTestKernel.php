@@ -82,7 +82,6 @@ class ResetPasswordTestKernel extends Kernel
             );
 
             $orm = [
-                'auto_mapping' => true,
                 'mappings' => [
                     'App' => [
                         'is_bundle' => false,
@@ -155,8 +154,8 @@ class ResetPasswordTestKernel extends Kernel
 
     public static function shouldUseAttributes(): bool
     {
-        $doctrineBundleVersion = InstalledVersions::getVersion('doctrine/doctrine-bundle');
+        $ormVersion = InstalledVersions::getVersion('doctrine/orm');
 
-        return Kernel::VERSION_ID >= 70000 || version_compare($doctrineBundleVersion, '3.0.0', '>');
+        return Kernel::VERSION_ID >= 70000 || version_compare($ormVersion, '3.0.0', '>=');
     }
 }
