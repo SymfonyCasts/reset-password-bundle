@@ -9,7 +9,9 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests;
 
+use Composer\InstalledVersions;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\ORM\Configuration;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -80,22 +82,36 @@ class ResetPasswordTestKernel extends Kernel
                 ]
             );
 
+
+            $orm = [
+                'auto_mapping' => true,
+                'mappings' => [
+                    'App' => [
+                        'is_bundle' => false,
+                        'type' => self::shouldUseAttributes() ? 'attribute' : 'annotation',
+                        'dir' => 'tests/Fixtures/Entity/',
+                        'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
+                        'alias' => 'App',
+                    ],
+                ]
+            ];
+
+            // doctrine-bundle
+            if (null !== $doctrineBundleVersion = InstalledVersions::getVersion('doctrine/doctrine-bundle')) {
+                // v2
+                if (version_compare($doctrineBundleVersion, '3.0.0', '<')) {
+                    $orm['auto_generate_proxy_classes'] = true;
+                    $orm['report_fields_where_declared'] = true;
+                }
+            }
+
             $container->loadFromExtension('doctrine', [
                 'dbal' => [
                     'driver' => 'pdo_sqlite',
                     'url' => 'sqlite:///'.$this->getCacheDir().'/app.db',
                 ],
                 'orm' => [
-                    'auto_mapping' => true,
-                    'mappings' => [
-                        'App' => [
-                            'is_bundle' => false,
-                            'type' => self::shouldUseAttributes() ? 'attribute' : 'annotation',
-                            'dir' => 'tests/Fixtures/Entity/',
-                            'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
-                            'alias' => 'App',
-                        ],
-                    ],
+                    $orm
                 ],
             ]);
 
