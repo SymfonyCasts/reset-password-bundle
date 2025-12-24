@@ -11,7 +11,6 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests;
 
 use Composer\InstalledVersions;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Doctrine\ORM\Configuration;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -156,6 +155,7 @@ class ResetPasswordTestKernel extends Kernel
 
     public static function shouldUseAttributes(): bool
     {
-        return Kernel::VERSION_ID >= 70000;
+        $doctrineBundleVersion = InstalledVersions::getVersion('doctrine/doctrine-bundle');
+        return Kernel::VERSION_ID >= 70000 || version_compare($doctrineBundleVersion, '3.0.0', '>');
     }
 }
