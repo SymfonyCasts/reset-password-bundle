@@ -82,7 +82,6 @@ class ResetPasswordTestKernel extends Kernel
                 ]
             );
 
-
             $orm = [
                 'auto_mapping' => true,
                 'mappings' => [
@@ -93,7 +92,7 @@ class ResetPasswordTestKernel extends Kernel
                         'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
                         'alias' => 'App',
                     ],
-                ]
+                ],
             ];
 
             // doctrine-bundle
@@ -110,9 +109,7 @@ class ResetPasswordTestKernel extends Kernel
                     'driver' => 'pdo_sqlite',
                     'url' => 'sqlite:///'.$this->getCacheDir().'/app.db',
                 ],
-                'orm' => [
-                    $orm
-                ],
+                'orm' => $orm,
             ]);
 
             $container->register(ResetPasswordTestFixtureRequestRepository::class)
