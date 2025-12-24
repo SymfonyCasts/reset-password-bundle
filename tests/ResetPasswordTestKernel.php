@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Tests;
 
+use Composer\InstalledVersions;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -80,24 +81,33 @@ class ResetPasswordTestKernel extends Kernel
                 ]
             );
 
+            $orm = [
+                'mappings' => [
+                    'App' => [
+                        'is_bundle' => false,
+                        'type' => self::shouldUseAttributes() ? 'attribute' : 'annotation',
+                        'dir' => 'tests/Fixtures/Entity/',
+                        'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
+                        'alias' => 'App',
+                    ],
+                ],
+            ];
+
+            // doctrine-bundle
+            if (null !== $doctrineBundleVersion = InstalledVersions::getVersion('doctrine/doctrine-bundle')) {
+                // v2
+                if (version_compare($doctrineBundleVersion, '3.0.0', '<')) {
+                    $orm['auto_generate_proxy_classes'] = true;
+                    $orm['report_fields_where_declared'] = true;
+                }
+            }
+
             $container->loadFromExtension('doctrine', [
                 'dbal' => [
                     'driver' => 'pdo_sqlite',
                     'url' => 'sqlite:///'.$this->getCacheDir().'/app.db',
                 ],
-                'orm' => [
-                    'auto_generate_proxy_classes' => true,
-                    'auto_mapping' => true,
-                    'mappings' => [
-                        'App' => [
-                            'is_bundle' => false,
-                            'type' => self::shouldUseAttributes() ? 'attribute' : 'annotation',
-                            'dir' => 'tests/Fixtures/Entity/',
-                            'prefix' => 'SymfonyCasts\Bundle\ResetPassword\Tests\Fixtures\Entity',
-                            'alias' => 'App',
-                        ],
-                    ],
-                ],
+                'orm' => $orm,
             ]);
 
             $container->register(ResetPasswordTestFixtureRequestRepository::class)
@@ -144,6 +154,8 @@ class ResetPasswordTestKernel extends Kernel
 
     public static function shouldUseAttributes(): bool
     {
-        return Kernel::VERSION_ID >= 70000;
+        $ormVersion = InstalledVersions::getVersion('doctrine/orm');
+
+        return Kernel::VERSION_ID >= 70000 || version_compare($ormVersion, '3.0.0', '>=');
     }
 }

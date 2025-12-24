@@ -6,11 +6,6 @@ parameters:
 			path: src/Command/ResetPasswordRemoveExpiredCommand.php
 
 		-
-			message: "#^Method SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\DependencyInjection\\\\Configuration\\:\\:getConfigTreeBuilder\\(\\) return type with generic class Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\TreeBuilder does not specify its types\\: T$#"
-			count: 1
-			path: src/DependencyInjection/Configuration.php
-
-		-
 			message: "#^Property SymfonyCasts\\\\Bundle\\\\ResetPassword\\\\Exception\\\\TooManyPasswordRequestsException\\:\\:\\$availableAt has no type specified\\.$#"
 			count: 1
 			path: src/Exception/TooManyPasswordRequestsException.php
