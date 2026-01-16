@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Persistence\Repository;
 
+use Symfony\Component\Clock\Clock;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
@@ -72,7 +73,7 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function removeExpiredResetPasswordRequests(): int
     {
-        $time = new \DateTimeImmutable('-1 week');
+        $time = Clock::get()->now()->modify('-1 week');
         $query = $this->createQueryBuilder('t')
             ->delete()
             ->where('t.expiresAt <= :time')

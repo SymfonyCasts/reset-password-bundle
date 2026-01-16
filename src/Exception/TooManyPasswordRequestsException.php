@@ -9,6 +9,8 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Exception;
 
+use Symfony\Component\Clock\Clock;
+
 /**
  * @author Ryan Weaver <ryan@symfonycasts.com>
  */
@@ -30,7 +32,7 @@ final class TooManyPasswordRequestsException extends \Exception implements Reset
 
     public function getRetryAfter(): int
     {
-        return $this->getAvailableAt()->getTimestamp() - (new \DateTime('now'))->getTimestamp();
+        return $this->getAvailableAt()->getTimestamp() - Clock::get()->now()->getTimestamp();
     }
 
     public function getReason(): string
