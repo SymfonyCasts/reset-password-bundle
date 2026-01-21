@@ -9,6 +9,7 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword;
 
+use Symfony\Component\Clock\Clock;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
@@ -72,7 +73,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
 
-        $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $resetRequestLifetime));
+        $expiresAt = Clock::get()->now()->modify(\sprintf('+%d seconds', $resetRequestLifetime));
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
@@ -164,7 +165,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     public function generateFakeResetToken(?int $resetRequestLifetime = null): ResetPasswordToken
     {
         $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
-        $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $resetRequestLifetime));
+        $expiresAt = Clock::get()->now()->modify(\sprintf('+%d seconds', $resetRequestLifetime));
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
@@ -191,7 +192,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $availableAt = (clone $lastRequestDate)->add(new \DateInterval("PT{$this->requestThrottleTime}S"));
 
-        if ($availableAt > new \DateTime('now')) {
+        if ($availableAt > Clock::get()->now()) {
             return $availableAt;
         }
 
