@@ -67,7 +67,7 @@ trait ResetPasswordRequestTrait
 
     public function isExpired(): bool
     {
-        return $this->expiresAt->getTimestamp() <= time();
+        return $this->expiresAt->getTimestamp() <= Clock::get()->now()->getTimestamp();
     }
 
     public function getExpiresAt(): \DateTimeInterface
