@@ -57,7 +57,7 @@ trait ResetPasswordRequestRepositoryTrait
 
         // Normally there is only 1 max request per use, but written to be flexible
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
-        $resetPasswordRequest
+        $resetPasswordRequest = $resetPasswordRequest
             ->where('t.user = :user')
             ->orderBy('t.requestedAt', 'DESC')
             ->setMaxResults(1)
