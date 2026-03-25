@@ -10,6 +10,7 @@
 namespace SymfonyCasts\Bundle\ResetPassword\Persistence\Repository;
 
 use Doctrine\DBAL\ParameterType;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Uid\Ulid;
@@ -46,18 +47,11 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
     {
-        $identifier = $this->getIdentifier($user);
-        $resetPasswordRequest = $this->createQueryBuilder('t');
-
-        if ($identifier instanceof Ulid || $identifier instanceof Uuid) {
-            $resetPasswordRequest->setParameter('user', $identifier->toBinary(), ParameterType::BINARY);
-        } else {
-            $resetPasswordRequest->setParameter('user', $user);
-        }
+        $builder = $this->setUserParam($this->createQueryBuilder('t'), $user);
 
         // Normally there is only 1 max request per use, but written to be flexible
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
-        $resetPasswordRequest = $resetPasswordRequest
+        $resetPasswordRequest = $builder
             ->where('t.user = :user')
             ->orderBy('t.requestedAt', 'DESC')
             ->setMaxResults(1)
@@ -74,17 +68,9 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
-        $user = $resetPasswordRequest->getUser();
-        $identifier = $this->getIdentifier($user);
-        $query = $this->createQueryBuilder('t');
+        $builder = $this->setUserParam($this->createQueryBuilder('t'), $resetPasswordRequest->getUser());
 
-        if ($identifier instanceof Ulid || $identifier instanceof Uuid) {
-            $query->setParameter('user', $identifier->toBinary(), ParameterType::BINARY);
-        } else {
-            $query->setParameter('user', $user);
-        }
-
-        $query
+        $builder
             ->delete()
             ->where('t.user = :user')
             ->getQuery()
@@ -116,26 +102,25 @@ trait ResetPasswordRequestRepositoryTrait
      */
     public function removeRequests(object $user): void
     {
-        $identifier = $this->getIdentifier($user);
-        $query = $this->createQueryBuilder('t');
-
-        if ($identifier instanceof Ulid || $identifier instanceof Uuid) {
-            $query->setParameter('user', $identifier->toBinary(), ParameterType::BINARY);
-        } else {
-            $query->setParameter('user', $user);
-        }
-
-        $query
+        $builder = $this->setUserParam($this->createQueryBuilder('t'), $user)
             ->delete()
             ->where('t.user = :user')
         ;
 
-        $query->getQuery()->execute();
+        $builder->getQuery()->execute();
     }
 
-    private function getIdentifier(object $user): mixed
+    private function setUserParam(QueryBuilder $queryBuilder, object $user): QueryBuilder
     {
         $meta = $this->getEntityManager()->getClassMetadata(get_class($user));
-        return PropertyAccess::createPropertyAccessor()->getValue($user, $meta->getSingleIdentifierFieldName());
+        $identifier = PropertyAccess::createPropertyAccessor()->getValue($user, $meta->getSingleIdentifierFieldName());
+
+        if ($identifier instanceof Ulid || $identifier instanceof Uuid) {
+            $queryBuilder->setParameter('user', $identifier->toBinary(), ParameterType::BINARY);
+        } else {
+            $queryBuilder->setParameter('user', $user);
+        }
+
+        return $queryBuilder;
     }
 }
