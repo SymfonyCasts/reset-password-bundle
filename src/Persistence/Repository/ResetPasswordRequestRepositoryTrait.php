@@ -112,7 +112,7 @@ trait ResetPasswordRequestRepositoryTrait
 
     private function setUserParam(QueryBuilder $queryBuilder, object $user): QueryBuilder
     {
-        $meta = $this->getEntityManager()->getClassMetadata(get_class($user));
+        $meta = $this->getEntityManager()->getClassMetadata($user::class);
         $identifier = PropertyAccess::createPropertyAccessor()->getValue($user, $meta->getSingleIdentifierFieldName());
 
         if ($identifier instanceof Ulid || $identifier instanceof Uuid) {
