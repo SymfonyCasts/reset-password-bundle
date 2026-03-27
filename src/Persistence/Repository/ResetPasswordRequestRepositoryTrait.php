@@ -9,7 +9,6 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Persistence\Repository;
 
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -115,8 +114,10 @@ trait ResetPasswordRequestRepositoryTrait
         $meta = $this->getEntityManager()->getClassMetadata($user::class);
         $identifier = PropertyAccess::createPropertyAccessor()->getValue($user, $meta->getSingleIdentifierFieldName());
 
-        if ($identifier instanceof Ulid || $identifier instanceof Uuid) {
-            $queryBuilder->setParameter('user', $identifier->toBinary(), ParameterType::BINARY);
+        if ($identifier instanceof Ulid) {
+            $queryBuilder->setParameter('user', $identifier, 'ulid');
+        } elseif ($identifier instanceof Uuid) {
+            $queryBuilder->setParameter('user', $identifier, 'uuid');
         } else {
             $queryBuilder->setParameter('user', $user);
         }
