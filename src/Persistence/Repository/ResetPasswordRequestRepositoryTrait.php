@@ -9,7 +9,11 @@
 
 namespace SymfonyCasts\Bundle\ResetPassword\Persistence\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Clock\Clock;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\Uuid;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 /**
@@ -42,11 +46,12 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
     {
+        $builder = $this->setUserParam($this->createQueryBuilder('t'), $user);
+
         // Normally there is only 1 max request per use, but written to be flexible
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
-        $resetPasswordRequest = $this->createQueryBuilder('t')
+        $resetPasswordRequest = $builder
             ->where('t.user = :user')
-            ->setParameter('user', $user)
             ->orderBy('t.requestedAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
@@ -62,10 +67,11 @@ trait ResetPasswordRequestRepositoryTrait
 
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
-        $this->createQueryBuilder('t')
+        $builder = $this->setUserParam($this->createQueryBuilder('t'), $resetPasswordRequest->getUser());
+
+        $builder
             ->delete()
             ->where('t.user = :user')
-            ->setParameter('user', $resetPasswordRequest->getUser())
             ->getQuery()
             ->execute()
         ;
@@ -95,12 +101,27 @@ trait ResetPasswordRequestRepositoryTrait
      */
     public function removeRequests(object $user): void
     {
-        $query = $this->createQueryBuilder('t')
+        $builder = $this->setUserParam($this->createQueryBuilder('t'), $user)
             ->delete()
             ->where('t.user = :user')
-            ->setParameter('user', $user)
         ;
 
-        $query->getQuery()->execute();
+        $builder->getQuery()->execute();
+    }
+
+    private function setUserParam(QueryBuilder $queryBuilder, object $user): QueryBuilder
+    {
+        $meta = $this->getEntityManager()->getClassMetadata($user::class);
+        $identifier = PropertyAccess::createPropertyAccessor()->getValue($user, $meta->getSingleIdentifierFieldName());
+
+        if ($identifier instanceof Ulid) {
+            $queryBuilder->setParameter('user', $identifier, 'ulid');
+        } elseif ($identifier instanceof Uuid) {
+            $queryBuilder->setParameter('user', $identifier, 'uuid');
+        } else {
+            $queryBuilder->setParameter('user', $user);
+        }
+
+        return $queryBuilder;
     }
 }
