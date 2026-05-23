@@ -198,6 +198,302 @@ Feel free to open an issue for questions, problems, or suggestions with our bund
 Issues pertaining to Symfony's Maker Bundle, specifically `make:reset-password`,
 should be addressed in the [Symfony Maker repository](https://github.com/symfony/maker-bundle).
 
+## API Usage Example
+
+If you're using [API Platform](https://api-platform.com/), this example will
+demonstrate how to implement ResetPasswordBundle into the API.
+
+```php
+// src/Entity/ResetPasswordRequest
+
+<?php
+
+namespace App\Entity;
+
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Dto\ResetPasswordInput;
+use App\Repository\ResetPasswordRequestRepository;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\UuidV4;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+
+/**
+ * @ORM\Entity(repositoryClass=ResetPasswordRequestRepository::class)
+ */
+class ResetPasswordRequest implements ResetPasswordRequestInterface
+{
+    use ResetPasswordRequestTrait;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="string", unique=true)
+     */
+    private string $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
+
+    public function __construct(User $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    {
+        $this->id = new UuidV4();
+        $this->user = $user;
+        $this->initialize($expiresAt, $selector, $hashedToken);
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+}
+```
+
+Because the `ResetPasswordHelper::generateResetToken()` method is responsible for
+creating and persisting a `ResetPasswordRequest` object after the reset token has been
+generated, we can't call `POST /api/reset-passwords` with `['email' => 'someone@example.com']`.
+
+We'll create 2 Data Transfer Objects (`DTO`) ~that will be used by a Data Persister
+to generate the actual `ResetPasswordRequest` object from the email address provided
+in the `POST` api call.~
+
+```php
+<?php
+
+namespace App\Dto;
+
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ApiResource(
+ *     output=false,
+ *     collectionOperations={},
+ *     itemOperations={"put"},
+ *     shortName="reset-password"
+ * )
+ *
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ */
+class ResetPasswordInput
+{
+    /**
+     * @ApiProperty(identifier=true, writable=false)
+     */
+    public string $token;
+
+    /**
+     * @Assert\NotBlank()
+     */
+    public string $plainTextPassword;
+}
+```
+
+```php
+<?php
+
+namespace App\Dto;
+
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ApiResource(
+ *     output=false,
+ *     collectionOperations={
+ *          "post" = {
+ *              "status" = 202,
+ *          },
+ *     },
+ *     itemOperations={},
+ *     shortName="reset-password-request"
+ * )
+ *
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ */
+class ResetPasswordRequestInput
+{
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     * @ApiProperty(identifier=true)
+     */
+    public string $email;
+}
+```
+
+```php
+<?php
+
+namespace App\DataProvider;
+
+use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
+use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use App\Dto\ResetPasswordInput;
+use App\Entity\User;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+
+/**
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ */
+class ResetPasswordDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+{
+    private ResetPasswordHelperInterface $resetPasswordHelper;
+
+    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper)
+    {
+        $this->resetPasswordHelper = $resetPasswordHelper;
+    }
+
+    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
+    {
+        return ResetPasswordInput::class === $resourceClass && 'put' === $operationName;
+    }
+
+    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): User
+    {
+        if (!is_string($id)) {
+            throw new NotFoundHttpException('Invalid token.');
+        }
+
+        try {
+            $user = $this->resetPasswordHelper->validateTokenAndFetchUser($id);
+        } catch (ResetPasswordExceptionInterface $ex) {
+            // Log exception id needed
+            throw new NotFoundHttpException();
+        }
+
+        if (!$user instanceof User) {
+            throw new NotFoundHttpException('Invalid token.');
+        }
+
+        $this->resetPasswordHelper->removeResetRequest($id);
+
+        return $user;
+    }
+}
+```
+
+Finally we'll create a Data Persister that is responsible for using the
+`ResetPasswordHelper::class` to generate a `ResetPasswordRequest` and email the
+token to the user.
+
+```php
+<?php
+
+namespace App\DataPersister;
+
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use App\Dto\ResetPasswordInput;
+use App\Dto\ResetPasswordRequestInput;
+use App\Entity\User;
+use App\Message\SendResetPasswordMessage;
+use App\Repository\UserRepository;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+
+/**
+ * @author Jesse Rushlow <jr@rushlow.dev>
+ */
+class ResetPasswordDataPersister implements ContextAwareDataPersisterInterface
+{
+    private UserRepository $userRepository;
+    private ResetPasswordHelperInterface $resetPasswordHelper;
+    private MessageBusInterface $messageBus;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
+
+    public function __construct(UserRepository $userRepository, ResetPasswordHelperInterface $resetPasswordHelper, MessageBusInterface $messageBus, UserPasswordEncoderInterface $userPasswordEncoder)
+    {
+        $this->userRepository = $userRepository;
+        $this->resetPasswordHelper = $resetPasswordHelper;
+        $this->messageBus = $messageBus;
+        $this->userPasswordEncoder = $userPasswordEncoder;
+    }
+
+    public function supports($data, array $context = []): bool
+    {
+        if (!($data instanceof ResetPasswordInput || $data instanceof ResetPasswordRequestInput)) {
+            return false;
+        }
+
+        if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
+            return true;
+        }
+
+        if (isset($context['item_operation_name']) && 'put' === $context['item_operation_name']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function persist($data, array $context = []): void
+    {
+        if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
+            /** @var ResetPasswordRequestInput $data */
+            $this->generateRequest($data->email);
+
+            return;
+        }
+
+        if (isset($context['item_operation_name']) && 'put' === $context['item_operation_name']) {
+            /** @var ResetPasswordInput $data */
+            if (!$context['previous_data'] instanceof User) {
+                return;
+            }
+
+            $this->changePassword($context['previous_data'], $data->plainTextPassword);
+        }
+    }
+
+    public function remove($data, array $context = []): void
+    {
+        throw new \RuntimeException('Operation not supported.');
+    }
+
+    private function generateRequest(string $email): void
+    {
+        $user = $this->userRepository->findOneBy(['email' => $email]);
+
+        if (!$user instanceof User) {
+            return;
+        }
+
+        $token = $this->resetPasswordHelper->generateResetToken($user);
+
+        /** @psalm-suppress PossiblyNullArgument */
+        $this->messageBus->dispatch(new SendResetPasswordMessage($user->getEmail(), $token));
+    }
+
+    private function changePassword(User $previousUser, string $plainTextPassword): void
+    {
+        $userId = $previousUser->getId();
+
+        $user = $this->userRepository->find($userId);
+
+        if (null === $user) {
+            return;
+        }
+
+        $encoded = $this->userPasswordEncoder->encodePassword($user, $plainTextPassword);
+
+        $this->userRepository->upgradePassword($user, $encoded);
+    }
+}
+```
+
 ## Security Issues
 For **security related vulnerabilities**, we ask that you send an email to 
 `ryan [at] symfonycasts.com` instead of creating an issue. 
