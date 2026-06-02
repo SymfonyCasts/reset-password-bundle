@@ -198,9 +198,6 @@ Feel free to open an issue for questions, problems, or suggestions with our bund
 Issues pertaining to Symfony's Maker Bundle, specifically `make:reset-password`,
 should be addressed in the [Symfony Maker repository](https://github.com/symfony/maker-bundle).
 
-## Security Issues
-For **security related vulnerabilities**, we ask that you send an email to 
-`ryan [at] symfonycasts.com` instead of creating an issue. 
+## Security Policy
 
-This will give us the opportunity to address the issue without exposing the
-vulnerability before a fix can be published.
+If you discover a security vulnerability, please do not open a public issue or pull request. Instead, please review this repository's [Security Policy](https://github.com/SymfonyCasts/reset-password-bundle/security) for instructions on how to report it responsibly.
