@@ -22,6 +22,8 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
+ * @implements ResetPasswordRequestRepositoryInterface<object>
+ *
  * @internal
  */
 final class FakeResetPasswordInternalRepository implements ResetPasswordRequestRepositoryInterface

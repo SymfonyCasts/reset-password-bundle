@@ -12,6 +12,8 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
+ * @template TUser of object
  */
 interface ResetPasswordRequestInterface
 {
@@ -37,6 +39,8 @@ interface ResetPasswordRequestInterface
 
     /**
      * Get the user whom requested a password reset.
+     *
+     * @return TUser
      */
     public function getUser(): object;
 }
