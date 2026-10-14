@@ -52,7 +52,7 @@ trait ResetPasswordRequestRepositoryTrait
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
         $resetPasswordRequest = $builder
             ->where('t.user = :user')
-            ->orderBy('t.requestedAt', 'DESC')
+            ->orderBy('t.requestedAt', \SortDirection::Descending)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
