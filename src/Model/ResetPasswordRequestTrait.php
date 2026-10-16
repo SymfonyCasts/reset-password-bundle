@@ -52,7 +52,7 @@ trait ResetPasswordRequestTrait
     protected $expiresAt;
 
     /** @return void */
-    protected function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    protected function initialize(\DateTimeInterface $expiresAt, string $selector, string $hashedToken): void
     {
         $this->requestedAt = Clock::get()->now();
         $this->expiresAt = $expiresAt;
