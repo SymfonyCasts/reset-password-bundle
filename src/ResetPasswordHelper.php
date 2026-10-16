@@ -23,6 +23,10 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
+ * @template TUser of object
+ *
+ * @implements ResetPasswordHelperInterface<TUser>
+ *
  * @final
  */
 class ResetPasswordHelper implements ResetPasswordHelperInterface
@@ -32,8 +36,19 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private const SELECTOR_LENGTH = 20;
 
+    /**
+     * @var ResetPasswordTokenGenerator
+     */
     private $tokenGenerator;
+
+    /**
+     * @var ResetPasswordCleaner
+     */
     private $resetPasswordCleaner;
+
+    /**
+     * @var ResetPasswordRequestRepositoryInterface<TUser>
+     */
     private $repository;
 
     /**
@@ -46,6 +61,9 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     private $requestThrottleTime;
 
+    /**
+     * @param ResetPasswordRequestRepositoryInterface<TUser> $repository
+     */
     public function __construct(ResetPasswordTokenGenerator $generator, ResetPasswordCleaner $cleaner, ResetPasswordRequestRepositoryInterface $repository, int $resetRequestLifetime, int $requestThrottleTime)
     {
         $this->tokenGenerator = $generator;
@@ -60,6 +78,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      *
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
+     *
+     * @param TUser $user
      *
      * @throws TooManyPasswordRequestsException
      */
@@ -97,6 +117,8 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
+     * @return TUser
+     *
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
      */
@@ -174,6 +196,9 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         return new ResetPasswordToken($fakeToken, $expiresAt, $generatedAt);
     }
 
+    /**
+     * @return ResetPasswordRequestInterface<TUser>|null
+     */
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
     {
         $selector = substr($token, 0, self::SELECTOR_LENGTH);
@@ -181,6 +206,9 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         return $this->repository->findResetPasswordRequest($selector);
     }
 
+    /**
+     * @param TUser $user
+     */
     private function hasUserHitThrottling(object $user): ?\DateTimeInterface
     {
         /** @var \DateTime|\DateTimeImmutable|null $lastRequestDate */

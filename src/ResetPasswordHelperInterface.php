@@ -16,6 +16,8 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
+ * @template TUser of object
+ *
  * @method ResetPasswordToken generateFakeResetToken(?int $resetRequestLifetime = null) Generates a fake ResetPasswordToken.
  */
 interface ResetPasswordHelperInterface
@@ -42,6 +44,8 @@ interface ResetPasswordHelperInterface
      * a ResetPasswordExceptionInterface instance should be thrown.
      *
      * @param string $fullToken selector string + verifier string provided by the user
+     *
+     * @return TUser
      *
      * @throws ResetPasswordExceptionInterface
      */

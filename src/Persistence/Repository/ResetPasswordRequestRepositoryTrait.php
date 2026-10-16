@@ -22,9 +22,14 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  *
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
+ * @template TUser of object
  */
 trait ResetPasswordRequestRepositoryTrait
 {
+    /**
+     * @param TUser $user
+     */
     public function getUserIdentifier(object $user): string
     {
         return (string) $this->getEntityManager()
@@ -33,23 +38,32 @@ trait ResetPasswordRequestRepositoryTrait
         ;
     }
 
+    /**
+     * @param ResetPasswordRequestInterface<TUser> $resetPasswordRequest
+     */
     public function persistResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
         $this->getEntityManager()->persist($resetPasswordRequest);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @return ResetPasswordRequestInterface<TUser>
+     */
     public function findResetPasswordRequest(string $selector): ?ResetPasswordRequestInterface
     {
         return $this->findOneBy(['selector' => $selector]);
     }
 
+    /**
+     * @param TUser $user
+     */
     public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
     {
         $builder = $this->setUserParam($this->createQueryBuilder('t'), $user);
 
         // Normally there is only 1 max request per use, but written to be flexible
-        /** @var ResetPasswordRequestInterface $resetPasswordRequest */
+        /** @var ResetPasswordRequestInterface<TUser> $resetPasswordRequest */
         $resetPasswordRequest = $builder
             ->where('t.user = :user')
             ->orderBy('t.requestedAt', 'DESC')
@@ -65,6 +79,9 @@ trait ResetPasswordRequestRepositoryTrait
         return null;
     }
 
+    /**
+     * @param ResetPasswordRequestInterface<TUser> $resetPasswordRequest
+     */
     public function removeResetPasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest): void
     {
         $builder = $this->setUserParam($this->createQueryBuilder('t'), $resetPasswordRequest->getUser());
@@ -98,6 +115,8 @@ trait ResetPasswordRequestRepositoryTrait
      * ResetPasswordRequests but have not "checked their email" yet.
      *
      * @see https://github.com/SymfonyCasts/reset-password-bundle?tab=readme-ov-file#advanced-usage
+     *
+     * @param TUser $user
      */
     public function removeRequests(object $user): void
     {

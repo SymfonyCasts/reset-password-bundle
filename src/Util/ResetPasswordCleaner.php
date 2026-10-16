@@ -26,8 +26,14 @@ class ResetPasswordCleaner
      */
     private $enabled;
 
+    /**
+     * @var ResetPasswordRequestRepositoryInterface<object>
+     */
     private $repository;
 
+    /**
+     * @param ResetPasswordRequestRepositoryInterface<object> $repository
+     */
     public function __construct(ResetPasswordRequestRepositoryInterface $repository, bool $enabled = true)
     {
         $this->repository = $repository;
