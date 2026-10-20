@@ -183,7 +183,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     {
         $expiresAt = Clock::get()->now()->modify(\sprintf('+%d seconds', $resetRequestLifetime));
 
-        return $expiresAt->setTime((int) $expiresAt->format('G'), (int) $expiresAt->format('i'), (int) $expiresAt->format('s'));
+        return $expiresAt->setTimestamp($expiresAt->getTimestamp());
     }
 
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface
