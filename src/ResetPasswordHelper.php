@@ -73,7 +73,7 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
 
         $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
 
-        $expiresAt = Clock::get()->now()->modify(\sprintf('+%d seconds', $resetRequestLifetime));
+        $expiresAt = $this->createExpiresAt($resetRequestLifetime);
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
@@ -165,13 +165,25 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     public function generateFakeResetToken(?int $resetRequestLifetime = null): ResetPasswordToken
     {
         $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
-        $expiresAt = Clock::get()->now()->modify(\sprintf('+%d seconds', $resetRequestLifetime));
+        $expiresAt = $this->createExpiresAt($resetRequestLifetime);
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
         $fakeToken = bin2hex(random_bytes(16));
 
         return new ResetPasswordToken($fakeToken, $expiresAt, $generatedAt);
+    }
+
+    /**
+     * The microseconds are dropped: the token is signed with the timestamp, which
+     * only keeps whole seconds, so a mapping storing them (e.g. Carbon's Doctrine
+     * types) could round expiresAt up to the next second and break verification.
+     */
+    private function createExpiresAt(int $resetRequestLifetime): \DateTimeImmutable
+    {
+        $expiresAt = Clock::get()->now()->modify(\sprintf('+%d seconds', $resetRequestLifetime));
+
+        return $expiresAt->setTime((int) $expiresAt->format('G'), (int) $expiresAt->format('i'), (int) $expiresAt->format('s'));
     }
 
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface

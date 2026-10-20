@@ -11,6 +11,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Tests\UnitTests;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Clock\Test\ClockSensitiveTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
@@ -27,6 +28,8 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
  */
 class ResetPasswordHelperTest extends TestCase
 {
+    use ClockSensitiveTrait;
+
     /**
      * @var MockObject|ResetPasswordRequestRepositoryInterface
      */
@@ -395,6 +398,38 @@ class ResetPasswordHelperTest extends TestCase
 
         self::assertGreaterThan(new \DateTimeImmutable('+25 seconds'), $expiresAt);
         self::assertLessThan(new \DateTimeImmutable('+35 seconds'), $expiresAt);
+    }
+
+    public function testExpiresAtHasNoMicroseconds(): void
+    {
+        self::mockTime(new \DateTimeImmutable('2026-10-20 12:00:00.600000'));
+
+        $isTruncated = static fn (\DateTimeInterface $expiresAt): bool => '2026-10-20 12:01:00.000000' === $expiresAt->format('Y-m-d H:i:s.u');
+
+        $this->mockTokenGenerator
+            ->expects($this->once())
+            ->method('createToken')
+            ->with(self::callback($isTruncated))
+        ;
+
+        $this->mockRepo
+            ->expects($this->once())
+            ->method('createResetPasswordRequest')
+            ->with(self::anything(), self::callback($isTruncated))
+        ;
+
+        $token = $this->getPasswordResetHelper()->generateResetToken(new \stdClass(), 60);
+
+        self::assertTrue($isTruncated($token->getExpiresAt()));
+    }
+
+    public function testFakeTokenExpiresAtHasNoMicroseconds(): void
+    {
+        self::mockTime(new \DateTimeImmutable('2026-10-20 12:00:00.600000'));
+
+        $token = $this->getPasswordResetHelper()->generateFakeResetToken(60);
+
+        self::assertSame('2026-10-20 12:01:00.000000', $token->getExpiresAt()->format('Y-m-d H:i:s.u'));
     }
 
     private function getPasswordResetHelper(): ResetPasswordHelper
