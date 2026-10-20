@@ -192,6 +192,55 @@ public function profile(Request $request, User $user, ResetPasswordRequestReposi
 }
 ```
 
+### Case-sensitive `selector` lookups on MySQL / MariaDB
+
+The `selector` column mapped in `ResetPasswordRequestTrait` doesn't set an explicit
+collation, so it inherits the default collation of your table. On MySQL and MariaDB
+this is usually a case-insensitive one (e.g. `utf8mb4_unicode_ci`), which means a
+request can be looked up with a selector that only differs in letter case.
+
+This doesn't allow anyone to reset a password: the selector is only used to find the
+request, while the secret part of the token (the verifier) is always validated
+case-sensitively against the stored HMAC hash. Still, if you prefer exact matches,
+you can override the column mapping in your entity and set a binary collation:
+
+```php
+// src/Entity/ResetPasswordRequest.php
+
+namespace App\Entity;
+
+use App\Repository\ResetPasswordRequestRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+
+#[ORM\Entity(repositoryClass: ResetPasswordRequestRepository::class)]
+#[ORM\AttributeOverrides([
+    new ORM\AttributeOverride(
+        name: 'selector',
+        column: new ORM\Column(type: Types::STRING, length: 20, options: ['collation' => 'utf8mb4_bin'])
+    ),
+])]
+class ResetPasswordRequest implements ResetPasswordRequestInterface
+{
+    use ResetPasswordRequestTrait;
+
+    // ...
+}
+```
+
+Use a binary collation that matches your table's charset (e.g. `utf8mb4_bin` for
+`utf8mb4`), then generate and run a migration:
+
+```
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+```
+
+This is not needed on PostgreSQL or SQLite, which compare strings case-sensitively
+by default.
+
 ## Support
 
 Feel free to open an issue for questions, problems, or suggestions with our bundle.
