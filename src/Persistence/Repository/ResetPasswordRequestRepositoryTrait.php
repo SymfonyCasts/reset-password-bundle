@@ -10,6 +10,7 @@
 namespace SymfonyCasts\Bundle\ResetPassword\Persistence\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\PaginatorInterface;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Uid\Ulid;
@@ -52,7 +53,7 @@ trait ResetPasswordRequestRepositoryTrait
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
         $resetPasswordRequest = $builder
             ->where('t.user = :user')
-            ->orderBy('t.requestedAt', 'DESC')
+            ->orderBy('t.requestedAt', interface_exists(PaginatorInterface::class) ? \SortDirection::Descending : 'DESC') // BC Layer for `doctrine/orm:<3.7'
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
