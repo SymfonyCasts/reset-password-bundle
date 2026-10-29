@@ -13,7 +13,7 @@ namespace SymfonyCasts\Bundle\ResetPassword\Model;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
- * @template TUser of object
+ * @template TUser of object = object
  */
 interface ResetPasswordRequestInterface
 {

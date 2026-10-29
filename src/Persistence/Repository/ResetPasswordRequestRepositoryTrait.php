@@ -24,7 +24,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
  *
- * @template TUser of object
+ * @template TUser of object = object
  */
 trait ResetPasswordRequestRepositoryTrait
 {
@@ -49,7 +49,7 @@ trait ResetPasswordRequestRepositoryTrait
     }
 
     /**
-     * @return ResetPasswordRequestInterface<TUser>
+     * @return ResetPasswordRequestInterface<TUser>|null
      */
     public function findResetPasswordRequest(string $selector): ?ResetPasswordRequestInterface
     {
@@ -64,7 +64,7 @@ trait ResetPasswordRequestRepositoryTrait
         $builder = $this->setUserParam($this->createQueryBuilder('t'), $user);
 
         // Normally there is only 1 max request per use, but written to be flexible
-        /** @var ResetPasswordRequestInterface<TUser> $resetPasswordRequest */
+        /** @var ResetPasswordRequestInterface<TUser>|null $resetPasswordRequest */
         $resetPasswordRequest = $builder
             ->where('t.user = :user')
             ->orderBy('t.requestedAt', interface_exists(PaginatorInterface::class) ? \SortDirection::Descending : 'DESC') // BC Layer for `doctrine/orm:<3.7'
