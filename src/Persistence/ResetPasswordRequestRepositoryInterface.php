@@ -17,14 +17,14 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
  *
  * @template TUser of object = object
  *
- * @method void removeRequests(object $user) Remove a users ResetPasswordRequest objects from persistence.
+ * @method void removeRequests(TUser $user) Remove a users ResetPasswordRequest objects from persistence.
  */
 interface ResetPasswordRequestRepositoryInterface
 {
     /**
      * Create a new ResetPasswordRequest object.
      *
-     * @param object $user        User entity - typically implements Symfony\Component\Security\Core\User\UserInterface
+     * @param TUser  $user        User entity - typically implements Symfony\Component\Security\Core\User\UserInterface
      * @param string $selector    A non-hashed random string used to fetch a request from persistence
      * @param string $hashedToken The hashed token used to verify a reset request
      *
